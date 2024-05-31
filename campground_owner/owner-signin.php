@@ -16,13 +16,33 @@ if (isset($_SESSION["owner"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <?php include("../css.php") ?>
+    <style>
+        body {
+            background: url('https://via.placeholder.com/1920x1080') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .login-panel {
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 200px;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
     <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="login-panel">
             <img src="../images/logo-search-grid-1x.png" alt="" class="logo">
-            <h1 class="h2 mt-2">Please Sign In</h1>
+            <h1 class="h2 mt-2 text-center">營地主登入</h1>
             <form action="doLogin.php" method="post">
                 <div class="input-area">
                     <div class="form-floating">
@@ -41,7 +61,7 @@ if (isset($_SESSION["owner"])) {
                 <?php unset($_SESSION["errorMsg"]);
                 endif; ?>
                 <div class="form-check my-3">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked >
                     <label class="form-check-label" for="flexCheckChecked">
                         記住我
                     </label>
@@ -49,7 +69,7 @@ if (isset($_SESSION["owner"])) {
                 <div class="d-grid mb-2">
                     <a class="btn btn-warning" type="submit">登入</a>
                 </div>
-                <div class="d-grid mb-5">
+                <div class="d-grid mb-2">
                     <a class="btn btn-warning" href="owner-signup.php"><i class="fa-solid fa-user-plus"></i> 註冊</a>
                 </div>
             </form>
