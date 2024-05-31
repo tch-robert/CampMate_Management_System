@@ -16,7 +16,7 @@
         --aside-width: 280px;
         --header-height: 186px;
         --primary-color: #9ba45c;
-        --secondary-color: #e2d8cc;
+        --secondary-color: #eee8df;
     }
 
     body {
