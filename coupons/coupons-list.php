@@ -56,6 +56,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>優惠券管理</title>
+    <!-- css -->
     <?php include("../css.php") ?>
     <style>
         .container {
@@ -79,14 +80,12 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 
             th.id-col,
             td.id-col {
-                width: 5%;
-                /* 縮小ID列的寬度 */
+                width: 4%;
             }
 
             th.func-col,
             td.func-col {
                 width: 15%;
-                /* 加大功能列的寬度 */
             }
 
             .btn.active {
@@ -98,6 +97,48 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
+    <!--Show Details Modal -->
+    <div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">優惠券詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="couponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">刪除優惠券</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="deleteCouponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="deleteCoupon()">
+                            確認刪除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 優惠券管理列表 -->
     <div class="container">
         <h1 class="pt-4"><?= $pageTitle ?></h1>
         <div class="d-flex justify-content-between align-items-center py-3">
@@ -112,7 +153,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="搜尋..." name="search" value="<?= htmlspecialchars($search) ?>">
                     <button class="btn btn-primary" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i> 搜尋
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
             </form>
@@ -147,32 +188,6 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <i class="fa-solid fa-dollar-sign mt-2"></i>
                     </a>
                 </div>
-                <!-- <div class="btn-group">
-                    <button type="button" class="btn btn-primary" disabled>
-                        期限
-                    </button>
-                    <form action="" method="get">
-                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
-                        <input type="hidden" name="order" value="<?= htmlspecialchars($order) ?>">
-                        <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-auto">
-                                <input type="date" class="form-control form-control-sm" name="start" value="<?= htmlspecialchars($startDate) ?>">
-                            </div>
-                            <div class="col-auto">
-                                <i class="fa-solid fa-arrow-right-long"></i>
-                            </div>
-                            <div class="col-auto">
-                                <input type="date" class="form-control form-control-sm" name="end" value="<?= htmlspecialchars($endDate) ?>">
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-calendar-check"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div> -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary" disabled>
                         期限
@@ -241,24 +256,21 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?= htmlspecialchars($coupon["end_date"]) ?></td>
                         <td><?= htmlspecialchars($coupon["status"]) ?></td>
                         <td class="func-col">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
+                            <button type="button" class="btn btn-primary" onclick="showCouponDetails(<?= $coupon['id'] ?>)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-success">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="showDeleteModal(<?= $coupon['id'] ?>)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <!-- 分頁按鈕 -->
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
@@ -270,7 +282,56 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             <?php endfor; ?>
         </ul>
     </nav>
-    </div>
+    <!-- js -->
+    <?php include("../js.php") ?>
+    <script>
+        function showCouponDetails(couponId) {
+            $.ajax({
+                url: 'get-coupon-details.php',
+                type: 'GET',
+                data: {
+                    id: couponId
+                },
+                success: function(response) {
+                    $('#couponDetails').html(response);
+                    $('#couponModal').modal('show');
+                }
+            });
+        }
+
+        function showDeleteModal(couponId) {
+            $.ajax({
+                url: 'get-coupon-details.php',
+                type: 'GET',
+                data: {
+                    id: couponId
+                },
+                success: function(response) {
+                    $('#deleteCouponDetails').html(response);
+                    $('#confirmDeleteButton').attr('data-id', couponId);
+                    $('#deleteModal').modal('show');
+                }
+            });
+        }
+
+        function deleteCoupon() {
+            let couponId = $('#confirmDeleteButton').attr('data-id');
+            $.ajax({
+                url: 'delete-coupon.php',
+                type: 'POST',
+                data: {
+                    id: couponId
+                },
+                success: function(response) {
+                    // alert('刪除成功');
+                    location.reload();
+                },
+                error: function() {
+                    alert('刪除失敗');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
