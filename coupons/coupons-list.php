@@ -58,17 +58,41 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <title>優惠券管理</title>
     <?php include("../css.php") ?>
     <style>
-        table {
+        .container {
+            min-height: 100vh;
+            /* 設置容器的最小高度 */
+            overflow-x: hidden;
+            /* 隱藏水平滾動條 */
+        }
 
+        table {
+            width: 100%;
+            table-layout: fixed;
+
+            /* 固定表格佈局 */
             th,
             td {
                 text-align: center;
+                word-wrap: break-word;
+                /* 允許單詞換行 */
             }
-        }
 
-        .btn.active {
-            background-color: #0056b3;
-            color: white;
+            th.id-col,
+            td.id-col {
+                width: 5%;
+                /* 縮小ID列的寬度 */
+            }
+
+            th.func-col,
+            td.func-col {
+                width: 15%;
+                /* 加大功能列的寬度 */
+            }
+
+            .btn.active {
+                background-color: #0056b3;
+                color: white;
+            }
         }
     </style>
 </head>
@@ -123,6 +147,32 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <i class="fa-solid fa-dollar-sign mt-2"></i>
                     </a>
                 </div>
+                <!-- <div class="btn-group">
+                    <button type="button" class="btn btn-primary" disabled>
+                        期限
+                    </button>
+                    <form action="" method="get">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                        <input type="hidden" name="order" value="<?= htmlspecialchars($order) ?>">
+                        <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <input type="date" class="form-control form-control-sm" name="start" value="<?= htmlspecialchars($startDate) ?>">
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa-solid fa-arrow-right-long"></i>
+                            </div>
+                            <div class="col-auto">
+                                <input type="date" class="form-control form-control-sm" name="end" value="<?= htmlspecialchars($endDate) ?>">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div> -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary" disabled>
                         期限
@@ -151,12 +201,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-fixed">
             <thead>
                 <tr class="text-nowrap">
-                    <th>ID</th>
+                    <th class="id-col">ID</th>
                     <th>名稱</th>
                     <th>類別</th>
                     <th>折扣</th>
@@ -166,13 +214,13 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     <th>起始日期</th>
                     <th>結束日期</th>
                     <th>狀態</th>
-                    <th>功能</th>
+                    <th class="func-col">功能</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($rows as $coupon) : ?>
                     <tr>
-                        <td><?= htmlspecialchars($coupon["id"]) ?></td>
+                        <td class="id-col"><?= htmlspecialchars($coupon["id"]) ?></td>
                         <td><?= htmlspecialchars($coupon["coupon_name"]) ?></td>
                         <td><?= htmlspecialchars($coupon["category"]) ?></td>
                         <td>
@@ -192,7 +240,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?= htmlspecialchars($coupon["start_date"]) ?></td>
                         <td><?= htmlspecialchars($coupon["end_date"]) ?></td>
                         <td><?= htmlspecialchars($coupon["status"]) ?></td>
-                        <td>
+                        <td class="func-col">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary">
                                     <i class="fa-solid fa-eye"></i>
