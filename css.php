@@ -12,15 +12,5 @@
 
 <!-- css -->
 <style>
-    :root {
-        --aside-width: 280px;
-        --header-height: 186px;
-        --primary-color: #9ba45c;
-        --secondary-color: #eee8df;
-    }
 
-    body {
-        font-family: "Montserrat", "Noto Sans TC";
-        background: var(--secondary-color);
-    }
 </style>
