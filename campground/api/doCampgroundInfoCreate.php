@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("../../db_connect.php");
 
 if(!isset($_POST["email"])){
@@ -20,7 +21,7 @@ $longitude = $_POST["longitude"];
 $introduction = $_POST["introduction"];
 
 if(!empty($latitude) && !empty($longitude)){
-    $geolocation = $latitude.",".$longitude;
+    $geolocation = $longitude.",".$latitude;
 }else{
     $geolocation = "";
 }
@@ -92,7 +93,8 @@ if($conn->query($sql)===TRUE){
     $last_id = $conn->insert_id;
     $data=[
         "status"=>1,
-        "message"=> "新資料輸入成功, id 為 $last_id"
+        "message"=> "新資料輸入成功, id 為 $last_id",
+        "id"=>$last_id,
     ];
     echo json_encode($data);
     exit;
@@ -105,5 +107,6 @@ if($conn->query($sql)===TRUE){
     exit;
 }
 
+// $_SESSION["campground_id"] = $last_id;
 
 $conn->close();
