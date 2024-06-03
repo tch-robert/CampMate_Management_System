@@ -1,6 +1,9 @@
 <?php
 require_once("../db_connect.php");
 
+if (isset($_POST["mainPicDelete"])) {
+}
+
 //抓取button的value判斷要怎麼作動
 $buttonAct = $_POST["action"];
 //如果是0 就代表是取消按鈕 所以取消並且exit
