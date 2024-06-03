@@ -1,13 +1,15 @@
 <?php
+include("session_check_login.php");
+
 require_once("../db_connect.php");
 
-$sqlAll="SELECT * FROM campground_info";
+$sqlAll="SELECT * FROM campground_info WHERE campground_owner_id=$owner_id";
 $resultAll = $conn->query($sqlAll);
 $allCampgroundCount = $resultAll->num_rows;
 
 if(isset($_GET["search"])){
     $search=$_GET["search"];
-    $sql="SELECT id, campground_name , phone, email, position FROM campground_info WHERE campground_name LIKE '%$search%'";
+    $sql="SELECT id, campground_name , phone, email, position FROM campground_info WHERE campground_owner_id=$owner_id AND campground_name LIKE '%$search%'";
     $pageTitle="$search 的搜尋結果";
 }else if(isset($_GET["page"]) && isset($_GET["order"])){
     $page=$_GET["page"];
@@ -30,11 +32,11 @@ if(isset($_GET["search"])){
             $orderClause= "ORDER BY campground_name DESC";
             break;
     }
-    $sql="SELECT * FROM campground_info $orderClause  LIMIT $firstItem, $perPage";
+    $sql="SELECT * FROM campground_info WHERE campground_owner_id=$owner_id $orderClause LIMIT $firstItem, $perPage";
 
     $pageTitle="營地列表，第 $page 頁";
 }else{
-    $sql="SELECT id, campground_name , phone, email, position FROM campground_info";
+    $sql="SELECT id, campground_name , phone, email, position FROM campground_info WHERE campground_owner_id=$owner_id";
     $pageTitle="營地列表";
     header("location: campground_list.php?page=1&order=1");
 }

@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 if(!isset($_GET["camp_id"])){
     $data=[
         "status" => 0,
@@ -87,7 +88,7 @@ $camp_id = $_GET["camp_id"];
 
 
                         <div class="col-md-12 d-flex justify-content-between">
-                            <a class=" btn btn-primary btn-lg" href="campground_list.php">返回營區列表</a>
+                            <a class=" btn btn-primary btn-lg" href="camp_area_list.php?camp_id=<?=$camp_id?>">返回營區列表</a>
                             <a class=" btn btn-primary btn-lg" id="send">送出</a>
                         </div>
 

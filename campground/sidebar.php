@@ -1,3 +1,4 @@
+
 <div class="sidebar p-3" style="width: 280px;">
     <a href="#" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
     <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
@@ -27,4 +28,5 @@
         </div>
     </li>
     </ul>
+    <a href="session-unset.php" class="btn btn-primary">Log Out</a>
 </div>

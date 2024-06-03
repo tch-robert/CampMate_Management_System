@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["camp_id"])){

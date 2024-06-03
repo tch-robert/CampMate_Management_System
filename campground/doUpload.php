@@ -1,8 +1,8 @@
 <?php
-
+include("session_check_login.php");
 require_once("../db_connect.php");
 
-if(!isset($_GET["camp_id"])){
+if(!isset($_POST["name"])){
     $data=[
         "status" => 0,
         "message"=> "請循正常管道進入"
@@ -17,10 +17,16 @@ if(!isset($_GET["camp_id"])){
 // }
 
 $camp_id = $_GET["camp_id"];
-$now = date('Y-m-d-H:i:s');
 
 // $name=$_POST["name"];
 $pic_name=$_FILES["file"]["name"];
+
+if(empty($pic_name)){
+    echo "請上傳圖片";
+    header("location: cg_img_upload.php?camp_id=$camp_id");
+    exit;
+}
+
 $path = "./upload/$pic_name";
 
 if($_FILES["file"]["error"]==0){
@@ -33,8 +39,8 @@ if($_FILES["file"]["error"]==0){
 
 
 
-$sql= "INSERT INTO images(id, campground_id, path) 
-VALUES ('$now','$camp_id', '$path')";
+$sql= "INSERT INTO images( campground_id, path) 
+VALUES ('$camp_id', '$path')";
 
 if ($conn->query($sql) === TRUE) {
     echo "id: $camp_id 營地的 $pic_name 輸入成功";

@@ -1,5 +1,5 @@
 <?php
-session_start();
+include("../session_check_login.php");
 require_once("../../db_connect.php");
 
 if(!isset($_POST["area_name"])){

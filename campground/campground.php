@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["id"])){
@@ -7,7 +8,7 @@ if(!isset($_GET["id"])){
     $id = $_GET["id"];
 }
 
-$sql = "SELECT * FROM campground_info WHERE id=$id";
+$sql = "SELECT * FROM campground_info WHERE id=$id AND campground_owner_id=$owner_id";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 

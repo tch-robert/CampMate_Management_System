@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["area_id"])){
@@ -70,7 +71,7 @@ $camp_name = $rowCamp["campground_name"];
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <a href="camp_area_delete.php?area_id=<?= $row["id"]?>" class="btn btn-danger">確認</a>
+                <a href="camp_area_delete.php?camp_id=<?=$camp_id?>&area_id=<?=$row["id"]?>" class="btn btn-danger">確認</a>
             </div>
             </div>
         </div>

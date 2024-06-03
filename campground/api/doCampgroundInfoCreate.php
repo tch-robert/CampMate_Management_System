@@ -1,5 +1,5 @@
 <?php
-session_start();
+include("../session_check_login.php");
 require_once("../../db_connect.php");
 
 if(!isset($_POST["email"])){
@@ -84,8 +84,8 @@ if(empty($introduction)){
 
 
 
-$sql="INSERT INTO campground_info (campground_name, email, address, phone, campground_introduction, altitude, position, geolocation ) 
-VALUES ('$campground_name', '$email', '$address', '$phone', '$introduction','$altitude', '$position', '$geolocation')";
+$sql="INSERT INTO campground_info (campground_name, email, address, phone, campground_introduction, altitude, position, geolocation, campground_owner_id ) 
+VALUES ('$campground_name', '$email', '$address', '$phone', '$introduction','$altitude', '$position', '$geolocation', '$owner_id')";
 
 // echo $sql;
 

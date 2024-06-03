@@ -1,5 +1,5 @@
 <?php
-session_start()
+include("session_check_login.php");
 ?>
 
 <!doctype html>
@@ -160,7 +160,7 @@ session_start()
 
 
             next_page.addEventListener("click", function(){
-                console.log("click");
+                // console.log("click");
                 let campground_name_value= campground_name.value;
                 let email_value = email.value;
                 let address_value = address.value;
@@ -200,8 +200,7 @@ session_start()
                             // alert(response.message);
                             infoMessage.textContent=response.message;
                             infoModal.show();
-                            window.location.assign(`http://localhost/campmate/campground/cg_img_upload.php?camp_id=${response.id}`);
-                    
+                            // window.location.assign(`http://localhost/campmate/campground/cg_img_upload.php?camp_id=${response.id}`);
                             break;
                         case 401:
                             error1.textContent = response.message;

@@ -10,7 +10,10 @@ $camp_id = $_GET["camp_id"];
 $area_id = $_GET["area_id"];
 $img_id=$_GET["img_id"];
 
-$sql="DELETE FROM images WHERE id = $img_id";
+$decode_id = str_replace("%20", " ", $img_id);
+// echo $decode_id;
+
+$sql="DELETE FROM images WHERE id = '$decode_id'";
 
 
 if ($conn->query($sql) === TRUE) {
@@ -19,4 +22,4 @@ if ($conn->query($sql) === TRUE) {
     echo "刪除資料錯誤: " . $conn->error;
 }
 
-header("location: cg_img_upload.php?camp_id=$camp_id&area_id=$area_id");
+header("location: area_img_upload.php?camp_id=$camp_id&area_id=$area_id");

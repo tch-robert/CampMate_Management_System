@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["camp_id"])){
@@ -84,6 +85,9 @@ $campCount = $result->num_rows;
             <?php include("sidebar.php") ?>
             <div class="container">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <div class="mb-3">
+                <a href="camp_area_search.php" class="btn btn-primary">返回營區列表</a>
+            </div>
             
             <div class="card">
             <div class="card-body">
@@ -93,17 +97,17 @@ $campCount = $result->num_rows;
             <?php if($result->num_rows > 0): ?>
             
             <?php if(isset($_GET["search"])): ?>
-                        <a href="campground_area_list.php" class="btn btn-primary">返回列表</a>
+                        <a href="camp_area_list.php?camp_id=<?=$camp_id?>" class="btn btn-primary">返回</a>
                         <?php endif; ?>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-center gap-3 mb-2">
                     <form action="">
                         <div class="input-group">
+                            <input type="hidden" value="<?=$camp_id?>" name="camp_id">
                             <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
                             <button class="btn btn-primary" type="submit">搜尋</button>
                         </div>
-                        <div>
-                    </div>
+                        
                     </form>
                 </div>
                 <hr>
