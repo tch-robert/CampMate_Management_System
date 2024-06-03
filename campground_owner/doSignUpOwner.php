@@ -6,7 +6,7 @@ if(!isset($_POST["name"])){
     exit;
 }
 
-$id=$_POST["id"];
+
 $name=$_POST["name"];
 $email=$_POST["email"];
 $phone=$_POST["phone"];
