@@ -87,7 +87,9 @@ $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
                                 <?php foreach ($L1Rows as $level1) : ?>
                                     <optgroup label="<?= $level1["category_name"] ?>">
                                         <?php foreach ($L2Rows as $level2) : ?>
-                                            <option value="<?= $level2["category_name"] ?>"><?= $level2["category_name"] ?></option>
+                                            <option value="<?= $level2["category_name"] ?>">
+                                                <?= $level2["category_name"] ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                 <?php endforeach; ?>

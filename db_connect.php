@@ -13,5 +13,5 @@ if ($conn->connect_error) {
     //如果顯示這個麻煩檢查一下前面有沒有設定錯誤的地方
     die("連線失敗: " . $conn->connect_error);
 } else {
-    //echo "水啦!!!連線成功~~";
+    // echo "水啦!!!連線成功~~";
 };
