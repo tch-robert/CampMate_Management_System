@@ -1,25 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 
 <head>
     <title>Dashboard</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
     <!-- css -->
-    <?php include ("css.php") ?>
+    <?php include("css_neumorphic.php") ?>
     <style>
+        :root {
+            --aside-width: 250px;
+            --header-height: 186px;
+        }
+
         .main-header {
             width: var(--aside-width);
-            background: var(--primary-color);
+            background: var(--secondary-color);
 
             .logo,
             .text {
                 margin-left: 30px;
                 margin-right: 30px;
                 margin-top: 20px;
-                border-radius: 16px;
+                border-radius: 24px;
             }
 
             .logo {
@@ -38,12 +42,12 @@
                 margin-bottom: 20px;
                 text-align: center;
                 padding: 9px;
-                color: var(--secondary-color);
+                font-size: 14px;
+                color: var(--primary-color);
                 background: #9ba45c;
                 box-shadow: inset 6px 6px 10px #798048,
                     inset -6px -6px 10px #bdc870;
             }
-
         }
 
         .aside-left {
@@ -51,10 +55,10 @@
             width: var(--aside-width);
             top: 0;
             overflow: auto;
-            background: var(--primary-color);
+            background: var(--secondary-color);
 
             li {
-                margin-bottom: 30px;
+                margin-bottom: 18px;
 
                 a {
                     transition: 0.3s ease;
@@ -87,20 +91,21 @@
                 }
 
                 span {
-                    font-size: 15px;
+                    font-size: 12px;
                 }
 
                 .line {
                     margin: 0 16px;
                     border: none;
                     height: 1px;
-                    background: var(--secondary-color);
+                    background: var(--primary-color);
                 }
             }
         }
 
         .main-content {
-            margin: var(--header-height) 0 0 var(--aside-width);
+            margin-left: var(--aside-width);
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -108,7 +113,7 @@
 <body>
     <header class="main-header d-flex flex-column fixed-top justify-content-center">
         <a href="" class="text-decoration-none logo">
-            <img src="images/logo.svg" alt="">
+            <img src="/campmate/images/logo.svg" alt="">
         </a>
         <div class="text">
             Hi, Admin
@@ -117,37 +122,37 @@
     <aside class="aside-left position-fixed vh-100">
         <ul class="list-unstyled mt-3">
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="landowner-system.php">
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="campground-management.php">
                     <i class="fa-solid fa-campground"></i> <span>營地訂位管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="equipment-rental.php">
                     <i class="fa-solid fa-person-hiking"></i> <span>露營用品租用管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="group-system.php">
                     <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="coupons/coupons-list.php">
                     <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -155,15 +160,17 @@
                 <div class="line"></div>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="">
+                <a class="d-block px-3 text-decoration-none" href="logout.php">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>登出</span>
                 </a>
             </li>
         </ul>
     </aside>
-    <main class="main-content p-3">
-
+    <main class="main-content">
+        <!-- 這裡將顯示動態加載的內容 -->
     </main>
+    <!-- js -->
+    <?php include("../js.php") ?>
 </body>
 
 </html>
