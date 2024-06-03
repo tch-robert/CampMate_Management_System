@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 
 <head>
-    <title>Dashboard</title>
+    <title>Create Owner</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- css -->
-    <?php include("css_neumorphic.php") ?>
+    <?php include("../css.php") ?>
+    <?php include("../css_neumorphic.php") ?>
     <style>
         :root {
             --aside-width: 250px;
@@ -107,6 +107,50 @@
             margin-left: var(--aside-width);
             margin-top: 10px;
         }
+
+        .profile-container {
+            margin-top: 50px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            padding: 30px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .profile-info table {
+            width: 100%;
+        }
+
+        .profile-info th,
+        .profile-info td {
+            padding: 10px 15px;
+        }
+
+        .profile-info th {
+            background-color: #f8f9fa;
+            text-align: left;
+            width: 30%;
+        }
+
+        .profile-info td {
+            background-color: #ffffff;
+            text-align: left;
+        }
     </style>
 </head>
 
@@ -152,7 +196,7 @@
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php">
+                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -168,9 +212,40 @@
     </aside>
     <main class="main-content">
         <!-- 這裡將顯示動態加載的內容 -->
-
+        <div class="container profile-container">
+            <div class="py-4 d-flex justify-content-center">
+                <div class="col-lg-6">
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="text-center">
+                                <h2>新增客訴單</h2>
+                            </div>
+                            <form action="doCreateTicket.php" method="post">
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*標題</label>
+                                    <input type="text" class="form-control" name="title">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*描述</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*使用者id</label>
+                                    <input type="text" class="form-control" name="user_id">
+                                </div>
+                                <button class="btn btn-warning" type="submit">送出</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <!-- js -->
     <?php include("../js.php") ?>
 </body>
 

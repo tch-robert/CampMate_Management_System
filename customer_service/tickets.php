@@ -1,19 +1,19 @@
 <?php
 require_once("../db_connect.php");
 
-$sqlAll = "SELECT * FROM campground_owner WHERE valid = 1";
+$sqlAll = "SELECT * FROM ticket WHERE valid = 1";
 $resultAll = $conn->query($sqlAll);
-$allOwnerCount = $resultAll->num_rows;
+$allTicketCount = $resultAll->num_rows;
 
-if (isset($_GET["search"])) {
+if(isset($_GET["search"])){
     $search = $_GET["search"];
-    $sql = "SELECT id, name, email, phone FROM campground_owner WHERE name LIKE '%$search%' AND valid = 1";
+    $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE title LIKE '%$search%' AND valid = 1";
     $pageTitle = "$search 的搜尋結果";
-} else if (isset($_GET["page"]) && isset($_GET["order"])) {
+} else if (isset($_GET["page"]) && isset($_GET["order"])){
     $page = $_GET["page"];
     $perPage = 5;
     $firstItem = ($page - 1) * $perPage;
-    $pageCount = ceil($allOwnerCount / $perPage);
+    $pageCount = ceil($allTicketCount / $perPage);
 
     $order = $_GET["order"];
 
@@ -25,38 +25,38 @@ if (isset($_GET["search"])) {
             $orderClause = "ORDER BY id DESC";
             break;
         case 3:
-            $orderClause = "ORDER BY name ASC";
+            $orderClause = "ORDER BY status ASC";
             break;
         case 4:
-            $orderClause = "ORDER BY name DESC";
+            $orderClause = "ORDER BY status DESC";
             break;
     }
-    $sql = "SELECT * FROM campground_owner WHERE valid=1
+    $sql = "SELECT * FROM ticket WHERE valid=1
     $orderClause LIMIT $firstItem, $perPage";
-    $pageTitle = "營地主列表 第 $page 頁";
+    $pageTitle = "客訴單列表 第 $page 頁";
 } else {
-    $sql = "SELECT id, name, email, phone FROM campground_owner WHERE valid = 1";
-    $pageTitle = "營地主列表";
-    header("location: owners.php?page=1&order=1");
+    $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE valid = 1";
+    $pageTitle = "客訴單列表";
+    header("location: tickets.php?page=1&order=1");
 }
 
 $result = $conn->query($sql);
 $rows = $result->fetch_all(MYSQLI_ASSOC);
-$ownerCount = $result->num_rows;
+$ticketCount = $result->num_rows;
 if (isset($_GET["page"])) {
-    $ownerCount = $allOwnerCount;
+    $ticketCount = $allTicketCount;
 }
 
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 
 <head>
-    <title><?= $pageTitle ?></title>
+    <title><?=$pageTitle ?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    <!-- css -->
     <?php include("../css.php") ?>
     <?php include("../css_neumorphic.php") ?>
     <style>
@@ -156,9 +156,8 @@ if (isset($_GET["page"])) {
 
         .main-content {
             margin-left: var(--aside-width);
-            margin-top: 20px;
+            margin-top: 10px;
         }
-
         .aside-a-active {
             transform: translate(-3px, -3px);
         }
@@ -222,13 +221,12 @@ if (isset($_GET["page"])) {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
-
 </head>
 
 <body>
     <header class="main-header d-flex flex-column fixed-top justify-content-center">
-        <a href="http://localhost/campmate/index.php" class="text-decoration-none logo">
-            <img src="" alt="" class="">
+        <a href="" class="text-decoration-none logo">
+            <img src="/campmate/images/logo.svg" alt="">
         </a>
         <div class="text">
             Hi, Admin
@@ -237,37 +235,37 @@ if (isset($_GET["page"])) {
     <aside class="aside-left position-fixed vh-100">
         <ul class="list-unstyled mt-3">
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
+                <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
+                <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php">
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link3">
+                <a class="d-block px-3 text-decoration-none" href="campground-management.php">
                     <i class="fa-solid fa-campground"></i> <span>營地訂位管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link4">
+                <a class="d-block px-3 text-decoration-none" href="equipment-rental.php">
                     <i class="fa-solid fa-person-hiking"></i> <span>露營用品租用管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
+                <a class="d-block px-3 text-decoration-none" href="group-system.php">
                     <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
+                <a class="d-block px-3 text-decoration-none" href="coupons/coupons-list.php">
                     <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="../customer_service/tickets.php" data-id="link7">
+                <a class="d-block px-3 text-decoration-none" href="tickets.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -275,21 +273,21 @@ if (isset($_GET["page"])) {
                 <div class="line"></div>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link8">
+                <a class="d-block px-3 text-decoration-none" href="logout.php">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>登出</span>
                 </a>
             </li>
         </ul>
     </aside>
     <main class="main-content">
-        <!-- 這裡將顯示其他頁面的內容 -->
+        <!-- 這裡將顯示動態加載的內容 -->
         <div class="container">
             <h1><?= $pageTitle ?></h1>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between">
                     <div>
                         <?php if (isset($_GET["search"])) : ?>
-                            <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-3">
@@ -299,13 +297,13 @@ if (isset($_GET["page"])) {
                                 <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
-                        <a class="btn btn-warning" href="create-owner.php"><i class="fa-solid fa-user-plus"></i></a>
+                        <a class="btn btn-warning" href="create_ticket.php"><i class="fa-solid fa-plus"></i></a>
                     </div>
                 </div>
             </div>
             <div class="pb-2 d-flex justify-content-between">
                 <div>
-                    共 <?= $ownerCount ?> 人
+                    共 <?= $ticketCount ?> 單
                 </div>
                 <?php if (isset($_GET["page"])) : ?>
                     <div>
@@ -315,9 +313,9 @@ if (isset($_GET["page"])) {
 
                             <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">姓名<i class="fa-solid fa-arrow-down-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-down-a-z"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">姓名<i class="fa-solid fa-arrow-up-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-up-a-z"></i></a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -327,9 +325,12 @@ if (isset($_GET["page"])) {
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>姓名</th>
-                            <th>email</th>
-                            <th>電話</th>
+                            <th>標題</th>
+                            <th>描述</th>
+                            <th>使用者id</th>
+                            <th>回覆</th>
+                            <th>狀態</th>
+                            <th>建立時間</th>
                             <th>檢視</th>
                         </tr>
                     </thead>
@@ -337,10 +338,13 @@ if (isset($_GET["page"])) {
                         <?php foreach ($rows as $user) : ?>
                             <tr>
                                 <td scope="row"><?= $user["id"] ?></td>
-                                <td><?= $user["name"] ?></td>
-                                <td><?= $user["email"] ?></td>
-                                <td><?= $user["phone"] ?></td>
-                                <td><a class="btn btn-warning" href="owner.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                <td><?= $user["title"] ?></td>
+                                <td><?= $user["description"] ?></td>
+                                <td><?= $user["user_id"] ?></td>
+                                <td><?= $user["reply"] ?></td>
+                                <td><?= $user["status"] ?></td>
+                                <td><?= $user["createtime"] ?></td>
+                                <td><a class="btn btn-warning" href="ticket.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -355,15 +359,13 @@ if (isset($_GET["page"])) {
                     </nav>
                 <?php endif; ?>
             <?php else : ?>
-                沒有營地主
+                沒有客訴單
             <?php endif; ?>
 
         </div>
     </main>
     <!-- js -->
     <?php include("../js.php") ?>
-
-
 </body>
 
 </html>

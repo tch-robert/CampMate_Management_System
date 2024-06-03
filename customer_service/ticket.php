@@ -7,18 +7,17 @@ if (!isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-$sql = "SELECT * FROM campground_owner WHERE id = $id AND valid=1";
+$sql = "SELECT * FROM ticket WHERE id = $id AND valid=1";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
 if ($result->num_rows > 0) {
-    $ownerExit = true;
-    $title = $row["name"];
+    $ticketExit = true;
+    $title = $row["id"];
 } else {
-    $ownerExit = false;
-    $title = "營地主不存在";
+    $ticketExit = false;
+    $title = "客訴單不存在";
 }
-
 
 ?>
 <!doctype html>
@@ -245,11 +244,11 @@ if ($result->num_rows > 0) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        確認刪除營地主?
+                        確認刪除客訴單?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                        <a href="owner-delete.php?id=<?= $row["id"] ?>" class="btn btn-danger">確認</a>
+                        <a href="ticket_delete.php?id=<?= $row["id"] ?>" class="btn btn-danger">確認</a>
                     </div>
                 </div>
             </div>
@@ -258,7 +257,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -266,46 +265,50 @@ if ($result->num_rows > 0) {
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>營地主資料</h2>
+                                <h2>客訴單資料</h2>
                             </div>
-                            <?php if ($ownerExit) : ?>
+                            <?php if ($ticketExit) : ?>
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>id</th>
                                         <td><?= $row["id"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>name</th>
-                                        <td><?= $row["name"] ?></td>
+                                        <th>標題</th>
+                                        <td><?= $row["title"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>email</th>
-                                        <td><?= $row["email"] ?></td>
+                                        <th>描述</th>
+                                        <td><?= $row["description"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>phone</th>
-                                        <td><?= $row["phone"] ?></td>
+                                        <th>使用者id</th>
+                                        <td><?= $row["user_id"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>pay_account</th>
-                                        <td><?= $row["pay_account"] ?></td>
+                                        <th>回覆</th>
+                                        <td><?= $row["reply"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>address</th>
-                                        <td><?= $row["address"] ?></td>
+                                        <th>狀態</th>
+                                        <td><?= $row["status"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>create time</th>
-                                        <td><?= $row["created_at"] ?></td>
+                                        <th>建立時間</th>
+                                        <td><?= $row["createtime"] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>回覆時間</th>
+                                        <td><?= $row["closetime"] ?></td>
                                     </tr>
                                 </table>
                                 <div class="py-2 d-flex justify-content-between">
-                                    <a class="btn btn-warning" href="owner-edit.php?id=<?= $row["id"] ?>" title="編輯營地主">編輯 <i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-warning" href="ticket-edit.php?id=<?= $row["id"] ?>" title="回覆客訴單">回覆 <i class="fa-solid fa-pen-to-square"></i></a>
 
-                                    <button class="btn btn-danger" title="刪除營地主" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除 <i class="fa-solid fa-trash-can"></i></button>
+                                    <button class="btn btn-danger" title="刪除客訴單" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除 <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             <?php else : ?>
-                                <h1>營地主不存在</h1>
+                                <h1>客訴單不存在</h1>
                             <?php endif; ?>
                         </div>
                     </div>
