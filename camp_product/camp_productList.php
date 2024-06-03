@@ -1,57 +1,19 @@
 <?php
 require_once("../db_connect.php");
 
-// 上架下架 更改資料庫的product_status
-if (isset($_POST["productId"]) && isset($_POST["changeSta"])) {
-    $productId = $_POST["productId"];
-    $changeSta = $_POST["changeSta"];
-    $changeStaSql = "UPDATE product SET product_status='$changeSta' WHERE product_id=$productId";
-    if ($conn->query($changeStaSql) === TRUE) {
-    } else {
-        echo "更新錯誤" . $conn->error;
-    }
-    $sameUrl = "";
-    if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"])) {
-        $sameUrl = $sameUrl . "?";
-    }
-    if (isset($_GET["viewMode"])) {
-        $sameUrl = $sameUrl . "viewMode=" . $_GET["viewMode"];
-    }
-    if (isset($_GET["statusPage"])) {
-        $sameUrl = $sameUrl . "&statusPage=" . $_GET["statusPage"];
-    }
-    if (isset($_GET["search"])) {
-        $sameUrl = $sameUrl . "&search=" . $_GET["search"];
-    }
-    // echo $sameUrl;
-    header("location: ./camp_productList.php$sameUrl");
+// 抓取相同的$_GET value避免頁面的檢視方式或者上下架區塊跑掉
+$sameUrl = "";
+if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"])) {
+    $sameUrl = $sameUrl . "?";
 }
-
-//軟刪除商品 更改product的valid
-if (isset($_POST["productId"]) && isset($_POST["softDelete"])) {
-    $productId = $_POST["productId"];
-    $softDelete = $_POST["softDelete"];
-
-    $softDelSql = "UPDATE product SET product_valid='$softDelete' WHERE product_id=$productId";
-    if ($conn->query($softDelSql) === TRUE) {
-    } else {
-        echo "刪除失敗" . $conn->error;
-    }
-    $sameUrl = "";
-    if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"])) {
-        $sameUrl = $sameUrl . "?";
-    }
-    if (isset($_GET["viewMode"])) {
-        $sameUrl = $sameUrl . "viewMode=" . $_GET["viewMode"];
-    }
-    if (isset($_GET["statusPage"])) {
-        $sameUrl = $sameUrl . "&statusPage=" . $_GET["statusPage"];
-    }
-    if (isset($_GET["search"])) {
-        $sameUrl = $sameUrl . "&search=" . $_GET["search"];
-    }
-    // echo $sameUrl;
-    header("location: ./camp_productList.php$sameUrl");
+if (isset($_GET["viewMode"])) {
+    $sameUrl = $sameUrl . "viewMode=" . $_GET["viewMode"];
+}
+if (isset($_GET["statusPage"])) {
+    $sameUrl = $sameUrl . "&statusPage=" . $_GET["statusPage"];
+}
+if (isset($_GET["search"])) {
+    $sameUrl = $sameUrl . "&search=" . $_GET["search"];
 }
 
 //確認有沒有收到viewMode的參數 沒有就賦予 有就抓下來
@@ -343,7 +305,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                             <i class="fa-solid fa-pen-to-square"></i> 編輯
                                         </a>
 
-                                        <form action="" method="post">
+                                        <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
                                             <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
                                             <?php if ($product["product_status"] == 0) : ?>
                                                 <input class="d-none" type="number" name="changeSta" value="1">
@@ -358,7 +320,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                             <?php endif; ?>
                                         </form>
 
-                                        <form action="" method="post">
+                                        <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
                                             <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
                                             <input class="d-none" type="number" name="softDelete" value="0">
                                             <button type="submit" class="btn btn-danger w-100">
@@ -426,7 +388,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                         <i class="fa-solid fa-pen-to-square"></i> 編輯
                                     </a>
 
-                                    <form action="" method="post">
+                                    <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
                                         <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
                                         <?php if ($product["product_status"] == 0) : ?>
                                             <input class="d-none" type="number" name="changeSta" value="1">
@@ -441,7 +403,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                         <?php endif; ?>
                                     </form>
 
-                                    <form action="" method="post">
+                                    <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
                                         <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
                                         <input class="d-none" type="number" name="softDelete" value="0">
                                         <button type="submit" class="btn btn-outline-danger w-100">
