@@ -301,7 +301,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                 <td>
 
                                     <div class="d-flex flex-column gap-2">
-                                        <a href="" class="btn btn-primary">
+                                        <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-primary">
                                             <i class="fa-solid fa-pen-to-square"></i> 編輯
                                         </a>
 
@@ -384,7 +384,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                 <!-- 商品編輯、上架or下架、刪除 -->
 
                                 <div class="d-flex justify-content-between">
-                                    <a href="" class="btn btn-outline-primary">
+                                    <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-outline-primary">
                                         <i class="fa-solid fa-pen-to-square"></i> 編輯
                                     </a>
 
