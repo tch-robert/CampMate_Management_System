@@ -11,7 +11,7 @@
         <div class="collapse show" id="home-collapse" >
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="campground_list.php" class="link-body-emphasis d-inline-flex text-decoration-none rounded">營地列表</a></li>
-            <li><a href="camp_area.php" class="link-body-emphasis d-inline-flex text-decoration-none rounded">營區列表</a></li>
+            <li><a href="camp_area_search.php" class="link-body-emphasis d-inline-flex text-decoration-none rounded">營區列表</a></li>
         </ul>
         </div>
     </li>

@@ -2,7 +2,7 @@
 
 require_once("../db_connect.php");
 
-if(!isset($_GET["camp_id"])){
+if(!isset($_GET["area_id"])){
     $data=[
         "status" => 0,
         "message"=> "請循正常管道進入"
@@ -11,12 +11,10 @@ if(!isset($_GET["camp_id"])){
     exit;
 }
 
-// if(!isset($_POST["name"])){
-//     echo "請循正常管道進入";
-//     exit;
-// }
+
 
 $camp_id = $_GET["camp_id"];
+$area_id = $_GET["area_id"];
 $now = date('Y-m-d-H:i:s');
 
 // $name=$_POST["name"];
@@ -33,11 +31,11 @@ if($_FILES["file"]["error"]==0){
 
 
 
-$sql= "INSERT INTO images(id, campground_id, path) 
-VALUES ('$now','$camp_id', '$path')";
+$sql= "INSERT INTO images(id, camp_area_id, path) 
+VALUES ('$now','$area_id', '$path')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "id: $camp_id 營地的 $pic_name 輸入成功";
+    echo "id: $area_id 營區 $pic_name 輸入成功";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
@@ -45,4 +43,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 
-header("location: cg_img_upload.php?camp_id=$camp_id");
+header("location: area_img_upload.php?camp_id=$camp_id&area_id=$area_id");

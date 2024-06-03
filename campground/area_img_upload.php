@@ -1,7 +1,7 @@
 <?php
 require_once("../db_connect.php");
 
-if(!isset($_GET["camp_id"])){
+if(!isset($_GET["area_id"])){
     $data=[
         "status" => 0,
         "message"=> "請循正常管道進入"
@@ -11,8 +11,9 @@ if(!isset($_GET["camp_id"])){
 }
 
 $camp_id = $_GET["camp_id"];
+$area_id = $_GET["area_id"];
 
-$sql="SELECT * FROM images WHERE campground_id=$camp_id ORDER BY id DESC";
+$sql="SELECT * FROM images WHERE camp_area_id=$area_id ORDER BY id DESC";
 $result = $conn->query($sql);
 $rows=$result->fetch_all(MYSQLI_ASSOC);
 
@@ -20,9 +21,12 @@ $sqlCamp= "SELECT * FROM campground_info WHERE id=$camp_id ";
 $resultCamp=$conn->query($sqlCamp);
 $rowCamp=$resultCamp->fetch_assoc();
 
+$sqlArea= "SELECT * FROM camp_area WHERE id=$area_id ";
+$resultArea=$conn->query($sqlArea);
+$rowArea=$resultArea->fetch_assoc();
 
 
-$pageTitle=$rowCamp["campground_name"];
+$pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片";
 
 ?>
 
@@ -58,14 +62,14 @@ $pageTitle=$rowCamp["campground_name"];
             <div class="container">
                 <h4 class="mb-3"><?=$pageTitle?></h4>
                 <div class="row">
-                    <form action="doUpload.php?camp_id=<?=$camp_id?>" method="post" id="first_page" enctype="multipart/form-data">
+                    <form action="doUploadArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post"  enctype="multipart/form-data">
 
                     <div class="col-12 mb-3">
                         <input type="hidden" class="form-control" name="name">
                     </div>
 
                     <div class="col-12 mb-3">
-                        <label for="form-label" class="form-label">上傳營地照片</label>
+                        <label for="form-label" class="form-label">上傳營區照片</label>
                         <input class="form-control" type="file" name="file">
                     </div>
                     <div class="mb-3">
@@ -81,6 +85,7 @@ $pageTitle=$rowCamp["campground_name"];
                                     <img class="object-fit-cover c_img" src="<?=$image['path']?>" alt="">
                                 </div>
                                 <div class="d-flex justify-content-center">
+                                    <p><?=$image["id"]?></p>
                                     <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
                     >Delete <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
@@ -99,7 +104,7 @@ $pageTitle=$rowCamp["campground_name"];
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                    <a href="cg_img_delete.php?camp_id=<?=$camp_id?>&img_id=<?= $image["id"]?>" class="btn btn-danger">確認</a>
+                                    <a href="area_img_delete.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&img_id=<?=$image["id"]?>" class="btn btn-danger">確認</a>
                                 </div>
                                 </div>
                             </div>
