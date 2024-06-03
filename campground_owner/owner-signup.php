@@ -68,9 +68,9 @@
                         <input type="text" class="form-control" name="address">
                     </div>
                     <div class="mb-2 d-flex justify-content-between">
-                        <button href="owner-signin.php" class="btn btn-secondary">
+                        <a href="owner-signin.php" class="btn btn-secondary">
                             回登入頁面
-                        </button>
+                        </a>
                         <button type="submit" class="btn btn-warning">
                             送出
                         </button>
