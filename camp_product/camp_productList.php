@@ -24,7 +24,7 @@ if (isset($_POST["productId"]) && isset($_POST["changeSta"])) {
         $sameUrl = $sameUrl . "&search=" . $_GET["search"];
     }
     // echo $sameUrl;
-    header("location: ./camp_product.php$sameUrl");
+    header("location: ./camp_productList.php$sameUrl");
 }
 
 //軟刪除商品 更改product的valid
@@ -51,7 +51,7 @@ if (isset($_POST["productId"]) && isset($_POST["softDelete"])) {
         $sameUrl = $sameUrl . "&search=" . $_GET["search"];
     }
     // echo $sameUrl;
-    header("location: ./camp_product.php$sameUrl");
+    header("location: ./camp_productList.php$sameUrl");
 }
 
 //確認有沒有收到viewMode的參數 沒有就賦予 有就抓下來
@@ -162,7 +162,7 @@ for ($i = 0; $i < count($rows); $i++) {
         <!-- 頁面大標題＆新增商品 -->
         <div class="d-flex justify-content-between align-items-center my-4">
             <h1>我的商品</h1>
-            <a class="addP btn btn-primary">
+            <a href="./addProduct.php" class="addP btn btn-primary">
                 <i class="fa-solid fa-plus"></i> 新增商品
             </a>
         </div>
@@ -185,7 +185,7 @@ for ($i = 0; $i < count($rows); $i++) {
                 <li class="nav-item">
                     <a class="nav-link 
                     <?php if (!isset($_GET["statusPage"]) || $_GET["statusPage"] == 2) echo "active" ?>
-                    " href="./camp_product.php?statusPage=2&<?= $viewNum ?>">所有商品</a>
+                    " href="./camp_productList.php?statusPage=2&<?= $viewNum ?>">所有商品</a>
                 </li>
 
                 <!-- 用for迴圈讓status可以倒序地跑出來 -->
@@ -193,7 +193,7 @@ for ($i = 0; $i < count($rows); $i++) {
                     <li class="nav-item">
                         <a class="nav-link 
                         <?php if (isset($_GET["statusPage"]) && $_GET["statusPage"] == $staRows[$i]["p_status_id"]) echo "active"; ?>
-                        " href="./camp_product.php?statusPage=<?= $staRows[$i]["p_status_id"] ?>&<?= $viewNum ?>">
+                        " href="./camp_productList.php?statusPage=<?= $staRows[$i]["p_status_id"] ?>&<?= $viewNum ?>">
                             <?= $staRows[$i]["p_status_name"] ?>
                         </a>
                     </li>
@@ -241,7 +241,7 @@ for ($i = 0; $i < count($rows); $i++) {
                 } ?>
 
                 <div class="btn-group">
-                    <a href="./camp_product.php?
+                    <a href="./camp_productList.php?
                 <?php if (isset($_GET["search"])) {
                 } else {
                     echo "$statusNum&";
@@ -254,7 +254,7 @@ for ($i = 0; $i < count($rows); $i++) {
                         <i class="fa-solid fa-bars"></i>
                     </a>
 
-                    <a href="./camp_product.php?
+                    <a href="./camp_productList.php?
                 <?php if (isset($_GET["search"])) {
                 } else {
                     echo "$statusNum&";
