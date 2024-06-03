@@ -127,7 +127,7 @@
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="landowner-system.php">
+                <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php">
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
