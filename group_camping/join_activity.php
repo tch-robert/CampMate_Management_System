@@ -33,8 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1 class="mt-4">參加揪團</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+            </div>
+            <a href="activity_information.php?id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
+                <i class="fa-solid fa-door-open"></i>返回揪團
+            </a>
+        </div>
+
         <form action="join_activity.php" method="post">
-            <input type="hidden" name="activity_id" value="<?php echo $activity_id; ?>">
+            <input type="hidden" name="activity_id" value="<?= $activity_id; ?>">
             <div class="form-group mb-3">
                 <label for="user_id">使用者 ID:</label>
                 <input type="number" class="form-control" id="user_id" name="user_id" required>
@@ -42,9 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-calendar-check"></i> 提交資料
             </button>
-            <a href="activity_information.php?id=<?php echo $activity_id; ?>" class="btn btn-secondary ms-2">
-                <i class="fa-solid fa-door-open"></i> 返回揪團
-            </a>
         </form>
 
     </div>

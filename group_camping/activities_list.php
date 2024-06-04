@@ -1,34 +1,19 @@
 <?php
 require_once("../db_connect.php");
 
-// $sqlAll = "SELECT * FROM activities";
-// $result = $conn->query($sqlAll);
-
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%'";
+    $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
-    $sql = "SELECT * FROM activities";
+    $sql = "SELECT * FROM activities WHERE valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "揪團列表";
 endif;
 $result = $conn->query($sql);
-
-// $sql = "SELECT * FROM activities";
-
-// if (isset($_GET["search"])) {
-//     $search = $_GET["search"];
-//     // 使用預備語句來防止SQL注入攻擊
-//     $stmt = $conn->prepare("SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE ?");
-//     $search_param = "%$search%";
-//     $stmt->bind_param("s", $search_param);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-// } else {
-//     $result = $conn->query($sql);
-// }
+// $rows = $result->fetch_all(MYSQLI_ASSOC); // 將資料轉為關聯式陣列
+$userCount = $result->num_rows;
 
 ?>
 
@@ -45,9 +30,9 @@ $result = $conn->query($sql);
 
 <body>
     <div class="container">
-        <h1 class="mt-4"><?php echo $pageTitle ?></h1>
+        <h1 class="mt-4"><?= $pageTitle ?></h1>
         <div class="d-flex justify-content-between">
-            <div class="d-flex justify-content-start gap-3">
+            <div class="d-flex justify-content-start gap-3 mb-3">
                 <form action="" class="m-0">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search" name="search">
@@ -56,17 +41,23 @@ $result = $conn->query($sql);
                 </form>
 
                 <?php if (isset($_GET["search"])) : ?>
-                    <a href="activities_list.php" class="btn btn-primary mb-3"><i class="fa-solid fa-right-from-bracket"></i> 返回列表</a>
+                    <a href="activities_list.php" class="btn btn-primary"><i class="fa-solid fa-right-from-bracket"></i> 返回列表</a>
                 <?php else : ?>
-                    <a href="create_activity.php" class="btn btn-primary mb-3">
+                    <a href="create_activity.php" class="btn btn-primary">
                         <i class="fa-solid fa-hand"></i> 我要揪團
                     </a>
                 <?php endif; ?>
             </div>
             <div>
-                <a href="my_activities.php" class="btn btn-primary">
-                    <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                </a>
+                <div class="p-2">
+                    共 <?= $userCount ?> 個揪團
+                </div>
+                <?php if (!isset($_GET["search"])) : ?>
+                    <a href="my_activities.php" class="btn btn-primary d-none">
+                        <i class="fa-solid fa-calendar-check"></i> 我的揪團
+                    </a>
+                <?php else : ?>
+                <?php endif; ?>
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->
@@ -86,13 +77,13 @@ $result = $conn->query($sql);
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()) : ?>
                         <tr>
-                            <td><?php echo $row["activity_name"]  ?></td>
-                            <td><?php echo $row["description"] ?></td>
-                            <td><?php echo $row["location"] ?></td>
-                            <td><?php echo $row["start_date"] ?></td>
-                            <td><?php echo $row["end_date"] ?></td>
-                            <td>
-                                <a href='activity_information.php?id=<?php echo $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
+                            <td><?= $row["activity_name"]  ?></td>
+                            <td><?= $row["description"] ?></td>
+                            <td><?= $row["location"] ?></td>
+                            <td><?= $row["start_date"] ?></td>
+                            <td><?= $row["end_date"] ?></td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <a href='activity_information.php?id=<?= $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
                                     <i class='fa-solid fa-circle-info'></i>
                                 </a>
                             </td>
@@ -100,7 +91,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 </tbody>
             <?php else : ?>
-                沒有關於<?php echo $search; ?>的活動
+                沒有關於<?= $search; ?>的活動
             <?php endif; ?>
 
             <?php $conn->close(); ?>
