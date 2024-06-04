@@ -2,7 +2,13 @@
 require_once("../db_connect.php");
 
 $activity_id = $_GET['id'];
+
 $sql = "SELECT * FROM activities WHERE activity_id=$activity_id";
+$sql = "SELECT a.*, u.username, u.email 
+        FROM activities a 
+        JOIN users u ON a.organizer_id = u.id 
+        WHERE a.activity_id=$activity_id";
+
 $result = $conn->query($sql);
 
 if ($result->num_rows == 1) {
@@ -28,10 +34,40 @@ $conn->close();
 <body>
     <div class="container">
         <h1 class="mt-4">揪團資訊</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+
+            </div>
+            <a href="activities_list.php" class="btn btn-primary">
+                <i class="fa-solid fa-door-open"></i>返回列表
+            </a>
+
+        </div>
+
         <table class='table table-bordered'>
             <tbody>
                 <tr>
-                    <th class="text-nowrap">活動名稱</th>
+                    <th class="text-nowrap">揪團 ID</th>
+                    <td><?php echo $row['activity_id']; ?></td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap">建立時間</th>
+                    <td><?php echo $row['created_at']; ?></td>
+                </tr>
+                <!-- <tr>
+                    <th class="text-nowrap">團主</th>
+                    <td><?php echo $row['organizer_id']; ?></td>
+                </tr> -->
+                <tr>
+                    <th class="text-nowrap">團主</th>
+                    <td><?php echo $row['username']; ?></td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap">團主 Email</th>
+                    <td><?php echo $row['email']; ?></td>
+                </tr>
+                <tr>
+                    <th class="text-nowrap">揪團名稱</th>
                     <td><?php echo $row['activity_name']; ?></td>
                 </tr>
                 <tr>
@@ -50,14 +86,24 @@ $conn->close();
                     <th>結束日期</th>
                     <td><?php echo $row['start_date']; ?></td>
                 </tr>
+
             </tbody>
         </table>
-        <a href="join_activity.php?id=<?php echo $row['activity_id']; ?>" class="btn btn-primary">
-            <i class="fa-solid fa-user-plus"></i> 參加揪團
-        </a>
-        <a href="activities_list.php" class="btn btn-secondary ms-2">
-            <i class="fa-solid fa-door-open"></i> 返回列表
-        </a>
+        <div class="d-flex justify-content-between">
+            <div>
+                <a href="join_activity.php?id=<?php echo $row['activity_id']; ?>" class="btn btn-primary">
+                    <i class="fa-solid fa-user-plus"></i> 參加揪團
+                </a>
+                <a href="activities_list.php" class="btn btn-secondary ms-2">
+                    <i class="fa-solid fa-door-open"></i> 編輯揪團
+                </a>
+            </div>
+            <div>
+                <a href="delete_activity.php" class="btn btn-danger">
+                    <i class="fa-solid fa-door-open"></i> 刪除揪團
+                </a>
+            </div>
+        </div>
     </div>
     <?php include("../js.php") ?>
 </body>

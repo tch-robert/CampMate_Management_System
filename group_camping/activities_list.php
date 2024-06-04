@@ -47,7 +47,7 @@ $result = $conn->query($sql);
     <div class="container">
         <h1 class="mt-4"><?php echo $pageTitle ?></h1>
         <div class="d-flex justify-content-between">
-            <div class="d-flex justify-content-start gap-3">
+            <div class="d-flex justify-content-start gap-3 mb-3">
                 <form action="" class="m-0">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search" name="search">
@@ -56,17 +56,20 @@ $result = $conn->query($sql);
                 </form>
 
                 <?php if (isset($_GET["search"])) : ?>
-                    <a href="activities_list.php" class="btn btn-primary mb-3"><i class="fa-solid fa-right-from-bracket"></i> 返回列表</a>
+                    <a href="activities_list.php" class="btn btn-primary"><i class="fa-solid fa-right-from-bracket"></i> 返回列表</a>
                 <?php else : ?>
-                    <a href="create_activity.php" class="btn btn-primary mb-3">
+                    <a href="create_activity.php" class="btn btn-primary">
                         <i class="fa-solid fa-hand"></i> 我要揪團
                     </a>
                 <?php endif; ?>
             </div>
             <div>
-                <a href="my_activities.php" class="btn btn-primary">
-                    <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                </a>
+                <?php if (!isset($_GET["search"])) : ?>
+                    <a href="my_activities.php" class="btn btn-primary">
+                        <i class="fa-solid fa-calendar-check"></i> 我的揪團
+                    </a>
+                <?php else : ?>
+                <?php endif; ?>
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->
@@ -91,7 +94,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row["location"] ?></td>
                             <td><?php echo $row["start_date"] ?></td>
                             <td><?php echo $row["end_date"] ?></td>
-                            <td>
+                            <td class="d-flex justify-content-center align-items-center">
                                 <a href='activity_information.php?id=<?php echo $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
                                     <i class='fa-solid fa-circle-info'></i>
                                 </a>
