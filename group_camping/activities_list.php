@@ -45,7 +45,7 @@ $result = $conn->query($sql);
 
 <body>
     <div class="container">
-        <h1 class="mt-4"><?php echo $pageTitle ?></h1>
+        <h1 class="mt-4"><?= $pageTitle ?></h1>
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start gap-3 mb-3">
                 <form action="" class="m-0">
@@ -89,13 +89,13 @@ $result = $conn->query($sql);
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()) : ?>
                         <tr>
-                            <td><?php echo $row["activity_name"]  ?></td>
-                            <td><?php echo $row["description"] ?></td>
-                            <td><?php echo $row["location"] ?></td>
-                            <td><?php echo $row["start_date"] ?></td>
-                            <td><?php echo $row["end_date"] ?></td>
+                            <td><?= $row["activity_name"]  ?></td>
+                            <td><?= $row["description"] ?></td>
+                            <td><?= $row["location"] ?></td>
+                            <td><?= $row["start_date"] ?></td>
+                            <td><?= $row["end_date"] ?></td>
                             <td class="d-flex justify-content-center align-items-center">
-                                <a href='activity_information.php?id=<?php echo $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
+                                <a href='activity_information.php?id=<?= $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
                                     <i class='fa-solid fa-circle-info'></i>
                                 </a>
                             </td>
@@ -103,7 +103,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 </tbody>
             <?php else : ?>
-                沒有關於<?php echo $search; ?>的活動
+                沒有關於<?= $search; ?>的活動
             <?php endif; ?>
 
             <?php $conn->close(); ?>
