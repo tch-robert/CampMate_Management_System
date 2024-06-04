@@ -3,7 +3,7 @@ require_once("../db_connect.php");
 
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
+    $sql = "SELECT activity_id, activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
@@ -53,9 +53,9 @@ $userCount = $result->num_rows;
                     共 <?= $userCount ?> 個揪團
                 </div>
                 <?php if (!isset($_GET["search"])) : ?>
-                    <a href="my_activities.php" class="btn btn-primary d-none">
+                    <!-- <a href="my_activities.php" class="btn btn-primary">
                         <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                    </a>
+                    </a> -->
                 <?php else : ?>
                 <?php endif; ?>
             </div>
@@ -65,7 +65,8 @@ $userCount = $result->num_rows;
         <?php if ($result->num_rows > 0) : ?>
             <table class='table table-bordered'>
                 <thead class='thead-light text-nowrap'>
-                    <tr>
+                    <tr class="text-center">
+                        <th>揪團 ID</th>
                         <th>活動名稱</th>
                         <th>描述</th>
                         <th>地點</th>
@@ -77,6 +78,7 @@ $userCount = $result->num_rows;
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()) : ?>
                         <tr>
+                            <td class="text-center"><?= $row["activity_id"] ?></td>
                             <td><?= $row["activity_name"]  ?></td>
                             <td><?= $row["description"] ?></td>
                             <td><?= $row["location"] ?></td>
