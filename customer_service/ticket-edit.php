@@ -16,7 +16,7 @@ if ($result->num_rows > 0) {
     $title = $row["id"];
 } else {
     $ticketExit = false;
-    $title = "客訴單不存在";
+    $title = "客服單不存在";
 }
 
 ?>
@@ -248,7 +248,7 @@ if ($result->num_rows > 0) {
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>回覆客訴單</h2>
+                                <h2>回覆客服單</h2>
                             </div>
                             <form action="doUpdateTicket.php" method="post">
                                 <table class="table table-bordered">

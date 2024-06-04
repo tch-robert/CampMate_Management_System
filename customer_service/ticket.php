@@ -257,7 +257,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客服單列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -265,12 +265,12 @@ if ($result->num_rows > 0) {
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>客訴單資料</h2>
+                                <h2>客服單資料</h2>
                             </div>
                             <?php if ($ticketExit) : ?>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>id</th>
+                                        <th>編號</th>
                                         <td><?= $row["id"] ?></td>
                                     </tr>
                                     <tr>
