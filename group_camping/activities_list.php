@@ -1,9 +1,6 @@
 <?php
 require_once("../db_connect.php");
 
-// $sqlAll = "SELECT * FROM activities";
-// $result = $conn->query($sqlAll);
-
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
     $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
@@ -15,20 +12,8 @@ else :
     $pageTitle = "揪團列表";
 endif;
 $result = $conn->query($sql);
-
-// $sql = "SELECT * FROM activities";
-
-// if (isset($_GET["search"])) {
-//     $search = $_GET["search"];
-//     // 使用預備語句來防止SQL注入攻擊
-//     $stmt = $conn->prepare("SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE ?");
-//     $search_param = "%$search%";
-//     $stmt->bind_param("s", $search_param);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-// } else {
-//     $result = $conn->query($sql);
-// }
+// $rows = $result->fetch_all(MYSQLI_ASSOC); // 將資料轉為關聯式陣列
+$userCount = $result->num_rows;
 
 ?>
 
@@ -64,8 +49,11 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </div>
             <div>
+                <div class="p-2">
+                    共 <?= $userCount ?> 個揪團
+                </div>
                 <?php if (!isset($_GET["search"])) : ?>
-                    <a href="my_activities.php" class="btn btn-primary">
+                    <a href="my_activities.php" class="btn btn-primary d-none">
                         <i class="fa-solid fa-calendar-check"></i> 我的揪團
                     </a>
                 <?php else : ?>
