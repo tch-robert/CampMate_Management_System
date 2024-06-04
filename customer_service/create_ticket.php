@@ -215,7 +215,7 @@
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客服單列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -223,12 +223,18 @@
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>新增客訴單</h2>
+                                <h2>新增客服單</h2>
                             </div>
                             <form action="doCreateTicket.php" method="post">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">*標題</label>
-                                    <input type="text" class="form-control" name="title">
+                                    <label for="customer_servce" class="form-label">*標題</label>
+                                    <select id="customer_servce" name="title" class="w-100">
+                                        <option value="營地相關">營地相關</option>
+                                        <option value="用品租借相關">用品租借相關</option>
+                                        <option value="網站操作相關">網站操作相關</option>
+                                        <option value="費用相關">費用相關</option>
+                                        <option value="其他">其他</option>
+                                    </select>
                                 </div>
                                 <div class="mb-2">
                                     <label for="" class="form-label">*描述</label>

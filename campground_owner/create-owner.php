@@ -164,7 +164,7 @@
         </div>
     </header>
     <aside class="aside-left position-fixed vh-100">
-        <ul class="list-unstyled mt-3">
+        <ul class="list-unstyled mt-3 text-truncate">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>

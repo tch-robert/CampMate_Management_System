@@ -5,11 +5,11 @@ $sqlAll = "SELECT * FROM ticket WHERE valid = 1";
 $resultAll = $conn->query($sqlAll);
 $allTicketCount = $resultAll->num_rows;
 
-if(isset($_GET["search"])){
+if (isset($_GET["search"])) {
     $search = $_GET["search"];
     $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE title LIKE '%$search%' AND valid = 1";
     $pageTitle = "$search 的搜尋結果";
-} else if (isset($_GET["page"]) && isset($_GET["order"])){
+} else if (isset($_GET["page"]) && isset($_GET["order"])) {
     $page = $_GET["page"];
     $perPage = 5;
     $firstItem = ($page - 1) * $perPage;
@@ -33,10 +33,10 @@ if(isset($_GET["search"])){
     }
     $sql = "SELECT * FROM ticket WHERE valid=1
     $orderClause LIMIT $firstItem, $perPage";
-    $pageTitle = "客訴單列表 第 $page 頁";
+    $pageTitle = "客服單列表 第 $page 頁";
 } else {
     $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE valid = 1";
-    $pageTitle = "客訴單列表";
+    $pageTitle = "客服單列表";
     header("location: tickets.php?page=1&order=1");
 }
 
@@ -52,7 +52,7 @@ if (isset($_GET["page"])) {
 <html lang="zh-Hant">
 
 <head>
-    <title><?=$pageTitle ?></title>
+    <title><?= $pageTitle ?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -158,6 +158,7 @@ if (isset($_GET["page"])) {
             margin-left: var(--aside-width);
             margin-top: 10px;
         }
+
         .aside-a-active {
             transform: translate(-3px, -3px);
         }
@@ -233,7 +234,7 @@ if (isset($_GET["page"])) {
         </div>
     </header>
     <aside class="aside-left position-fixed vh-100">
-        <ul class="list-unstyled mt-3">
+        <ul class="list-unstyled mt-3 text-truncate">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
@@ -309,13 +310,13 @@ if (isset($_GET["page"])) {
                     <div>
                         排序:
                         <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">編號<i class="fa-solid fa-arrow-down-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">編號<i class="fa-solid fa-arrow-up-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-down-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">尚未回覆</a>
 
-                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-up-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">已回覆</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -323,8 +324,8 @@ if (isset($_GET["page"])) {
             <?php if ($result->num_rows > 0) : ?>
                 <table class="table table-custom table-hover">
                     <thead>
-                        <tr>
-                            <th>id</th>
+                        <tr class="text-truncate">
+                            <th>編號</th>
                             <th>標題</th>
                             <th>描述</th>
                             <th>使用者id</th>
@@ -337,12 +338,12 @@ if (isset($_GET["page"])) {
                     <tbody>
                         <?php foreach ($rows as $user) : ?>
                             <tr>
-                                <td scope="row"><?= $user["id"] ?></td>
-                                <td><?= $user["title"] ?></td>
+                                <td scope="row" class="text-center"><?= $user["id"] ?></td>
+                                <td class="text-truncate"><?= $user["title"] ?></td>
                                 <td><?= $user["description"] ?></td>
-                                <td><?= $user["user_id"] ?></td>
+                                <td class="text-center"><?= $user["user_id"] ?></td>
                                 <td><?= $user["reply"] ?></td>
-                                <td><?= $user["status"] ?></td>
+                                <td class="text-truncate"><?= $user["status"] ?></td>
                                 <td><?= $user["createtime"] ?></td>
                                 <td><a class="btn btn-warning" href="ticket.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
                             </tr>
