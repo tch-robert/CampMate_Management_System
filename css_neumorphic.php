@@ -26,7 +26,7 @@
     body {
         font-family: "Montserrat", "Noto Sans TC";
         background: var(--primary-color);
-        color: var(--secondary-color);
+        color: var(--font-color);
     }
 
     /* 表單 */
@@ -102,7 +102,6 @@
 
     .neumorphic-table {
         table-layout: fixed;
-        /* border-collapse: separate; */
     }
 
     .neumorphic-table th,
@@ -144,8 +143,6 @@
         align-items: center;
         justify-content: center;
         margin: 30px 5px;
-
-
     }
 
     .pagination .page-item.active .page-link {
@@ -178,6 +175,7 @@
     }
 
     .flatpickr-day.selected {
+        color: var(--font-color);
         background: var(--highlight-color);
         box-shadow: inset 5px 5px 10px var(--shadow-color), inset -5px -5px 10px var(--highlight-color);
     }

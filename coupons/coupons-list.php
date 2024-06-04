@@ -3,7 +3,7 @@ require_once("../db_connect.php");
 $pageTitle = "優惠券管理";
 
 // 獲取當前頁數，如果沒有指定則默認為第1頁
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $couponsPerPage = 12; // 每頁顯示的優惠券數量
 $offset = ($page - 1) * $couponsPerPage;
 
@@ -72,6 +72,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
+        .container {
+            color: var(--secondary-color);
+        }
+
         table {
 
             th.id-col,
@@ -88,6 +92,22 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 
         }
 
+        .breadcrumb {
+
+            .breadcrumb-item,
+            span {
+                color: var(--secondary-color);
+                font-size: 14px;
+                letter-spacing: 1px;
+                font-weight: 600;
+            }
+
+            a {
+                color: var(--secondary-color);
+                text-decoration: none;
+            }
+        }
+
         .filter-font {
             font-size: 12px;
             letter-spacing: 1px;
@@ -99,10 +119,30 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 <body>
     <?php include("../index.php") ?>
     <main class="main-content">
-        <!-- 篩選器 -->
         <div class="container">
+            <!-- 索引 -->
+            <div class="px-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="http://localhost/campmate/index.php" class="text-decoration-none">
+                                首頁
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="http://localhost/campmate/coupons/coupons-list.php" class="text-decoration-none">
+                                <?= $pageTitle ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <span>第 <?= $page ?> 頁</span>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
             <h1 class="d-none"><?= $pageTitle ?></h1>
-            <div class="d-flex justify-content-between align-items-center py-3">
+            <!-- 篩選器 -->
+            <div class="d-flex justify-content-between align-items-center pb-3">
                 <div>
                     <?php if ($search || $order || $categoryFilter || ($startDate && $endDate) || $statusFilter) : ?>
                         <a class="btn btn-neumorphic btn-circle me-2" href="coupons-list.php">
@@ -132,10 +172,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             ID :
                         </div>
                         <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_asc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            <i class="fa-solid fa-arrow-down-1-9"></i>
                         </a>
                         <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_desc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                            <i class="fa-solid fa-arrow-up-9-1"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -143,10 +183,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             名稱 :
                         </div>
                         <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_asc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-wide-short"></i>
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
                         </a>
                         <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_desc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                            <i class="fa-solid fa-arrow-up-z-a"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -487,22 +527,6 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             });
         });
 
-        function addCoupon() {
-            let formData = $('#addCouponForm').serialize();
-            $.ajax({
-                url: 'add-coupon.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    // alert('新增成功');
-                    location.reload();
-                },
-                error: function() {
-                    alert('新增失敗');
-                }
-            });
-        }
-
         function showCouponDetails(couponId) {
             $.ajax({
                 url: 'get-coupon-details.php',
@@ -542,22 +566,6 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             });
         }
 
-        function updateCoupon() {
-            let formData = $('#editCouponForm').serialize();
-            $.ajax({
-                url: 'update-coupon.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    // alert('更新成功');
-                    location.reload();
-                },
-                error: function() {
-                    alert('更新失敗');
-                }
-            });
-        }
-
         function showDeleteModal(couponId) {
             $.ajax({
                 url: 'get-coupon-details.php',
@@ -589,6 +597,87 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     alert('刪除失敗');
                 }
             });
+        }
+
+        // 輸入驗證
+        function validateCouponForm(form) {
+            const discount = form.discount;
+            const minCost = form.min_cost;
+            const maxDiscountAmount = form.max_discount_amount;
+            const couponNum = form.coupon_num;
+
+            let isValid = true;
+
+            // 重置所有自定義錯誤訊息
+            discount.setCustomValidity("");
+            minCost.setCustomValidity("");
+            maxDiscountAmount.setCustomValidity("");
+            couponNum.setCustomValidity("");
+
+            // 檢查折扣是否為數字且最多兩位小數
+            if (!/^\d+(\.\d{1,2})?$/.test(discount.value)) {
+                discount.setCustomValidity('折扣必須是數字且最多兩位小數');
+                isValid = false;
+            }
+
+            // 檢查使用低消金額、最高折抵金額、數量是否為正整數
+            if (!/^\d+$/.test(minCost.value) || minCost.value <= 0) {
+                minCost.setCustomValidity('使用低消金額必須是正整數');
+                isValid = false;
+            }
+            if (!/^\d+$/.test(maxDiscountAmount.value) || maxDiscountAmount.value <= 0) {
+                maxDiscountAmount.setCustomValidity('最高折抵金額必須是正整數');
+                isValid = false;
+            }
+            if (!/^\d+$/.test(couponNum.value) || couponNum.value <= 0) {
+                couponNum.setCustomValidity('數量必須是正整數');
+                isValid = false;
+            }
+
+            // 如果有任何一個欄位無效，則回傳 false
+            return isValid;
+        }
+
+        function addCoupon() {
+            const form = document.getElementById('addCouponForm');
+            if (validateCouponForm(form)) {
+                let formData = $('#addCouponForm').serialize();
+                $.ajax({
+                    url: 'add-coupon.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // alert('新增成功');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('新增失敗');
+                    }
+                });
+            } else {
+                form.reportValidity(); // 顯示錯誤訊息
+            }
+        }
+
+        function updateCoupon() {
+            const form = document.getElementById('editCouponForm');
+            if (validateCouponForm(form)) {
+                let formData = $('#editCouponForm').serialize();
+                $.ajax({
+                    url: 'update-coupon.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // alert('更新成功');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('更新失敗');
+                    }
+                });
+            } else {
+                form.reportValidity(); // 顯示錯誤訊息
+            }
         }
     </script>
 </body>
