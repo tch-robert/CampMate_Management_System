@@ -32,7 +32,6 @@ $conn->close();
 </head>
 
 <body>
-    <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -44,26 +43,23 @@ $conn->close();
                     確認要刪除揪團資訊嗎?
                 </div>
                 <div class="modal-footer">
-
-
                     <a href="delete_activity.php?id=<?= $row["activity_id"] ?>" class="btn btn-danger">確認</a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+
     <div class="container">
         <h1 class="mt-4">揪團資訊</h1>
         <div class="d-flex justify-content-between mb-3">
             <div>
-
             </div>
             <a href="activities_list.php" class="btn btn-primary">
                 <i class="fa-solid fa-door-open"></i>返回列表
             </a>
-
         </div>
-
         <table class='table table-bordered'>
             <tbody>
                 <tr>
@@ -74,10 +70,6 @@ $conn->close();
                     <th class="text-nowrap">建立時間</th>
                     <td><?php echo $row['created_at']; ?></td>
                 </tr>
-                <!-- <tr>
-                    <th class="text-nowrap">團主</th>
-                    <td><?php echo $row['organizer_id']; ?></td>
-                </tr> -->
                 <tr>
                     <th class="text-nowrap">團主</th>
                     <td><?php echo $row['username']; ?></td>
@@ -106,7 +98,6 @@ $conn->close();
                     <th>結束日期</th>
                     <td><?php echo $row['start_date']; ?></td>
                 </tr>
-
             </tbody>
         </table>
         <div class="d-flex justify-content-between">

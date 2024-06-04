@@ -6,11 +6,11 @@ require_once("../db_connect.php");
 
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%'";
+    $sql = "SELECT activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
-    $sql = "SELECT * FROM activities";
+    $sql = "SELECT * FROM activities WHERE valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "揪團列表";
 endif;
