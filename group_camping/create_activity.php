@@ -8,10 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
     $organizer_id = $_POST['organizer_id'];
+    // $organizer_id = $_POST['organizer_id'];
 
     if (empty($activity_name) || empty($location) || empty($start_date) || empty($end_date) || empty($organizer_id)) {
-        echo "請填入必要欄位";
-        exit;
+        exit("請填入必要欄位");
     }
 
     $sql = "INSERT INTO activities (activity_name, description, location, start_date, end_date, organizer_id)
@@ -41,14 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1 class="mt-4">我要揪團</h1>
-        <!-- <div class="d-flex justify-content-between mb-3">
-            <div>
-            </div>
-            <a href="activities_list.php" class="btn btn-primary">
-                <i class="fa-solid fa-door-open"></i>返回列表
-            </a>
-        </div> -->
-
         <form action="create_activity.php" method="post" class="mb-3">
             <div class="row row-cols-1 mb-1">
                 <div class="form-group col-7 mb-2">
@@ -72,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
                 </div>
                 <div class="form-group col-7 mb-2">
-                    <label for="organizer_id" class="form-label">主辦者 ID</label>
+                    <label for="organizer_id" class="form-label">團主 Email</label>
                     <input type="number" class="form-control" id="organizer_id" name="organizer_id" required>
                 </div>
             </div>
