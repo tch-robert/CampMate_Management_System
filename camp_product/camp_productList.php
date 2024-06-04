@@ -1,5 +1,14 @@
 <?php
 require_once("../db_connect.php");
+$eachPageCount = 12;
+if (!isset($_GET["page"])) {
+    $page = 1;
+    $start = ($page - 1) * $eachPageCount;
+} else {
+    $page = $_GET["page"];
+    $start = ($page - 1) * $eachPageCount;
+}
+// echo $page, $start, $eachPageCount;
 
 // 抓取相同的$_GET value避免頁面的檢視方式或者上下架區塊跑掉
 $sameUrl = "";
@@ -30,28 +39,48 @@ if (!isset($_GET["statusPage"])) {
     $status_page_id = $_GET["statusPage"];
 }
 
+
 if (isset($_GET["statusPage"])) {
-    //依據page篩選不同的內容
+    //依據status page篩選不同的內容
     switch ($status_page_id) {
         case 0:
-            $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC";
+            $AllSql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC";
+            $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC 
+            LIMIT $start,$eachPageCount";
             break;
         case 1:
-            $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC";
+            $AllSql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC";
+            $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC 
+            LIMIT $start,$eachPageCount";
             break;
         case 2:
             //抓取product資料表的資料 限制在valid是1列
-            $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
+            $AllSql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
+            $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC 
+            LIMIT $start,$eachPageCount";
             break;
     }
 } else if (isset($_GET["search"])) {
     $search = $_GET["search"];
-    $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1";
+    $AllSql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1";
+    $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1 LIMIT $start,$eachPageCount";
 } else {
-    $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
+    $AllSql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
+    $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC
+    LIMIT $start,$eachPageCount";
 }
+$allResult = $conn->query($AllSql);
+$allRows = $allResult->fetch_all(MYSQLI_ASSOC);
+$countRows = count($allRows);
+$pageNum = ceil($countRows / $eachPageCount);
+
 $result = $conn->query($sql);
 $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+
+
+
+
 
 //抓取iamges資料表的特定資料 限制在mainPic為1的列
 $sqlImg = "SELECT id,product_id,product_mainPic,path FROM images WHERE product_mainPic=1";
@@ -115,6 +144,12 @@ for ($i = 0; $i < count($rows); $i++) {
             font-size: 12px;
             /* background: #DBDBDB; */
             border-radius: 10%;
+        }
+
+        .productImg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -182,7 +217,10 @@ for ($i = 0; $i < count($rows); $i++) {
             <div class="d-flex justify-content-between mb-3">
                 <h4>
                     <?php if (isset($_GET["search"]) && !empty($search)) echo "<span class=\"fs-3\">$search</span> 的搜尋結果，" ?>
-                    共 <?= count($rows) ?> 件商品
+                    共 <?= count($allRows) ?> 件商品
+                    <span class="fs-5">
+                        <?php if (isset($_GET["page"])) echo ", 每頁" . $eachPageCount . "件"; ?>
+                    </span>
                 </h4>
 
                 <!-- 檢視方式切換 -->
@@ -254,7 +292,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                 <!-- 圖片 -->
                                 <td>
                                     <div class="imgBox ratio ratio-1x1">
-                                        <img class="productImg object-fit-cover" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                        <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
                                     </div>
                                 </td>
 
@@ -345,7 +383,7 @@ for ($i = 0; $i < count($rows); $i++) {
                             <div class="bg-white p-3 shadow-sm">
                                 <!-- 圖片 -->
                                 <div class="ratio ratio-1x1">
-                                    <img class="object-fit-cover" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                    <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
                                 </div>
                                 <!-- 商品狀態 -->
                                 <div class="d-flex mb-2">
@@ -418,6 +456,30 @@ for ($i = 0; $i < count($rows); $i++) {
                 </div>
             <?php endif; ?>
         </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination my-4">
+                <li class="page-item">
+                    <a class="page-link" href="
+                    <?= $page > 1 ? "./camp_productList.php$sameUrl&page=" . ($page - 1) : '#' ?>
+                    " aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
+                    <li class="page-item"><a class="page-link" href="./camp_productList.php<?= $sameUrl ?>&page=<?= $i ?>">
+                            <?= $i ?>
+                        </a></li>
+                <?php endfor; ?>
+                <li class="page-item">
+                    <a class="page-link" href="
+                    <?= $page < $pageNum ? "./camp_productList.php$sameUrl&page=" . ($page + 1) : '#' ?>
+                    " aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <!-- 把共通的js叫入 -->
