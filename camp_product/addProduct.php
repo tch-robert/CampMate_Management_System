@@ -57,23 +57,6 @@ foreach ($L2Rows as $row) {
 
 <body>
     <div class="container">
-        <!-- 新增商品的流程標籤列
-        <div>
-            <ul class="nav nav-underline my-3">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">基本資訊</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">規格</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">租賃資訊</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">取貨點 or 運送方式</a>
-                </li>
-            </ul>
-        </div> -->
 
         <h1 class="my-5">新增商品</h1>
         <form class="mb-5" action="doAddProduct.php" method="post" enctype="multipart/form-data">
@@ -82,20 +65,20 @@ foreach ($L2Rows as $row) {
                 <div class="row justify-content-end mb-4">
                     <h3>基本資訊</h3>
                     <div class="col-11">
-                        <div class="mb-2">
+                        <div class="mb-3">
                             <label for="mainPic" class="h6 form-label">商品主要行銷圖片</label>
                             <input id="mainPic" name="mainPic" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp" required>
                             <div id="mainPicPre"></div>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-3">
                             <label for="normalPic" class="h6 form-label">商品圖片</label>
                             <input id="normalPic" name="normalPic[]" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp" multiple>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-3">
                             <label for="productName" class="h6 form-label">商品名稱</label>
                             <input id="productName" name="productName" class="form-control" type="text" required>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-3">
                             <label for="productCate" class="h6 form-label">商品分類</label>
                             <select class="form-control" name="productCate" id="productCate" required>
                                 <option value="" selected disabled hidden>請選擇分類</option>
@@ -114,7 +97,22 @@ foreach ($L2Rows as $row) {
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="mb-2">
+
+                        <div class="mb-3">
+                            <label class="h6" for="">商品款式</label>
+                            <div id="stylesContainer">
+                                <div class="form-text"></div>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
+                                    <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary add-style-btn" type="button">新增款式</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="productDes" class="h6 form-label">商品描述</label>
                             <textarea id="productDes" name="productDes" class="textAreaDis form-control" required></textarea>
                         </div>
@@ -142,7 +140,7 @@ foreach ($L2Rows as $row) {
                 </div>
 
                 <div class="d-flex justify-content-end gap-3">
-                    <button type="submit" class="btn btn-primary" name="action" value="0">取消</button>
+                    <a href="./camp_productList.php" class="btn btn-primary">取消</a>
                     <button type="submit" class="btn btn-primary" name="action" value="1">儲存並下架</button>
                     <button type="submit" class="btn btn-primary" name="action" value="2">儲存並上架</button>
                 </div>
@@ -154,20 +152,22 @@ foreach ($L2Rows as $row) {
     <?php include("../js.php") ?>
 
     <script>
-        // 顯示圖片的縮圖 有空再弄
-        // const mainPic = document.querySelector("#mainPic");
-        // const normalPic = document.querySelector("#normalPic");
+        $(document).ready(function() {
+            $(document).on('click', '.add-style-btn', function() {
+                var newStyleInput = `
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
+                    <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
+                </div>`;
+                $('#stylesContainer').append(newStyleInput);
+            });
 
-        // mainPic.addEventListener("change", function(event) {
-        //     let mainPicPre = document.querySelector("#mainPicPre");
-        //     mainPicPre.innerHTML = "";
-
-        //     let files = event.target.files;
-
-        //     console.log(files);
-        //     console.log(Array.from(files));
-        // })
+            $(document).on('click', '.deleteInput', function() {
+                $(this).closest('.input-group').remove();
+            });
+        });
     </script>
+
 </body>
 
 </html>
