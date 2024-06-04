@@ -66,7 +66,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>優惠券管理</title>
+    <title><?= $pageTitle ?> - 第 <?= $page ?> 頁</title>
     <!-- css -->
     <?php include ("../css_neumorphic.php") ?>
     <!-- Flatpickr CSS -->
@@ -230,7 +230,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                                     value="<?= htmlspecialchars($endDate) ?>">
                             </div>
                             <button type="submit" class="btn btn-neumorphic btn-circle">
-                                <i class="fa-solid fa-calendar-check"></i>
+                                <i class="bi bi-calendar3-range-fill"></i>
                             </button>
                         </form>
                     </div>
@@ -264,7 +264,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <th>起始日期</th>
                             <th>結束日期</th>
                             <th>狀態</th>
-                            <th class="func-col">功能</th>
+                            <th class="func-col">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -289,7 +289,17 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                                 <td><?= number_format($coupon["coupon_num"]) ?></td>
                                 <td><?= htmlspecialchars($coupon["start_date"]) ?></td>
                                 <td><?= htmlspecialchars($coupon["end_date"]) ?></td>
-                                <td><?= htmlspecialchars($coupon["status"]) ?></td>
+                                <td>
+                                    <?php
+                                    if ($coupon["status"] === '可使用') {
+                                        echo '<i class="bi bi-check-circle me-2"></i>' . htmlspecialchars($coupon["status"]);
+                                    } else if ($coupon["status"] === '已停用') {
+                                        echo '<i class="bi bi-ban me-2"></i>' . htmlspecialchars($coupon["status"]);
+                                    } else {
+                                        echo 'Invalid status type';
+                                    }
+                                    ?>
+                                </td>
                                 <td class="func-col">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
                                         <button type="button" class="btn btn-neumorphic btn-circle"
@@ -318,10 +328,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
                         <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>"
                             aria-label="First">
-                            <span aria-hidden="true">&laquo;</span>
+                            <span aria-hidden="true" class="fw-semibold">&laquo;</span>
                         </a>
                     </li>
 
+                    <!-- 維持5個按鈕 -->
                     <?php
                     $startPage = max(1, $page - 2);
                     $endPage = min($totalPages, $page + 2);
@@ -347,7 +358,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <a class="page-link"
                             href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>"
                             aria-label="Last">
-                            <span aria-hidden="true">&raquo;</span>
+                            <span aria-hidden="true" class="fw-semibold">&raquo;</span>
                         </a>
                     </li>
                 </ul>
@@ -360,7 +371,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addCouponModalLabel">新增優惠券</h5>
+                    <h5 class="modal-title" id="addCouponModalLabel"><i class="fa-solid fa-circle-plus me-2"></i>新增優惠券
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -438,7 +450,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-neumorphic" onclick="addCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認新增</span>
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認新增</span>
                     </button>
                 </div>
             </div>
@@ -450,7 +462,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="couponModalLabel">優惠券詳情</h5>
+                    <h5 class="modal-title" id="couponModalLabel"><i class="fa-solid fa-eye me-2"></i>優惠券詳情</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -469,7 +481,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">編輯優惠券</h5>
+                    <h5 class="modal-title" id="editModalLabel"><i class="fa-solid fa-pen-to-square me-2"></i>編輯優惠券</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -552,7 +564,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-neumorphic" onclick="updateCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認修改</span>
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認修改</span>
                     </button>
                 </div>
             </div>
@@ -564,7 +576,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">刪除優惠券</h5>
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fa-solid fa-trash me-2"></i>刪除優惠券</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -576,7 +588,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-neumorphic" id="confirmDeleteButton" onclick="deleteCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
                     </button>
                 </div>
             </div>
@@ -705,6 +717,22 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             // 如果有任何一個欄位無效，則回傳 false
             return isValid;
         }
+
+        // 監聽折扣輸入變化
+        document.getElementById('addCouponDiscount').addEventListener('input', function () {
+            const discountValue = parseFloat(this.value);
+            const categorySelect = document.getElementById('addCouponCategory');
+            const maxDiscountAmountInput = document.getElementById('addCouponMaxDiscountAmount');
+
+            if (!isNaN(discountValue)) {
+                if (discountValue > 1) {
+                    categorySelect.value = '金額折抵';
+                    maxDiscountAmountInput.value = discountValue;
+                } else if (discountValue >= 0 && discountValue <= 1) {
+                    categorySelect.value = '%數折扣';
+                }
+            }
+        });
 
         function addCoupon() {
             const form = document.getElementById('addCouponForm');
