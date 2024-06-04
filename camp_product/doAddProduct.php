@@ -1,6 +1,9 @@
 <?php
 require_once("../db_connect.php");
 
+// $normalPic = $_FILES["normalPic"];
+// print_r($normalPic);
+// exit;
 //抓取button的value判斷要怎麼作動
 $buttonAct = $_POST["action"];
 //如果是0 就代表是取消按鈕 所以取消並且exit
@@ -16,9 +19,9 @@ $product_status = ($buttonAct == 1) ? 0 : 1;
 $product_name = $_POST["productName"];
 $product_category = $_POST["productCate"];
 $product_description = $_POST["productDes"];
-$product_brief = $_POST["productBrief"];
+// $product_brief = $_POST["productBrief"];
 $product_price = $_POST["productPrice"];
-$product_specifications = $_POST["productBrief"];
+$product_specifications = $_POST["productSpec"];
 $product_style = $_POST["productStyles"];
 //因為儲存就是新增了 所以會讓他顯示
 $product_valid = 1;
@@ -27,6 +30,7 @@ $now = date('Y-m-d H:i:s');
 
 // 輸出表單數據進行調試
 // print_r($product_style);
+// exit;
 // foreach ($product_style as $style) {
 //     echo $style;
 // }
@@ -41,7 +45,7 @@ $now = date('Y-m-d H:i:s');
 // echo "Now: $now<br>";
 
 
-$productSql = "INSERT INTO product (product_name, product_description, product_brief, product_price, product_specifications, product_status, create_date, product_valid) VALUES ('$product_name', '$product_description', '$product_brief', '$product_price', '$product_specifications', '$product_status', '$now', '$product_valid')";
+$productSql = "INSERT INTO product (product_name, product_description, product_price, product_specifications, product_status, create_date, product_valid) VALUES ('$product_name', '$product_description', '$product_price', '$product_specifications', '$product_status', '$now', '$product_valid')";
 // echo "SQL Query: $$productSql<br>";
 
 if ($conn->query($productSql) === TRUE) {
@@ -110,28 +114,32 @@ foreach ($normalPic["error"] as $value) {
     $normalPicArr[] = "$value";
 }
 if (!in_array(1, $normalPic)) {
-    $mainPic_num = 0;
-    foreach ($normalPic["name"] as $key => $value) {
-        if (move_uploaded_file($normalPic["tmp_name"][$key], "product_image/" . $value)) {
-            echo "upload normalPic 成功 <br>";
-        } else {
-            echo "upload normalPic 失敗 <br>";
-        }
-        // echo $product_id, $mainPic_num, $value;
+    if (isset($normalPic["error"])) {
+        echo "沒有商品圖片";
+    } else {
+        $mainPic_num = 0;
+        foreach ($normalPic["name"] as $key => $value) {
+            if (move_uploaded_file($normalPic["tmp_name"][$key], "product_image/" . $value)) {
+                echo "upload normalPic 成功 <br>";
+            } else {
+                echo "upload normalPic 失敗 <br>";
+            }
+            // echo $product_id, $mainPic_num, $value;
 
-        $normalPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
+            $normalPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
         VALUES ('$product_id', '$mainPic_num', '$value')";
 
-        if ($conn->query($normalPicSql) === TRUE) {
-            echo $value . "normalPic 資訊寫入 images資料表 成功 <br>";
-        } else {
-            echo $value . "normalPic 資訊寫入 images資料表 失敗 <br>";
+            if ($conn->query($normalPicSql) === TRUE) {
+                echo $value . "normalPic 資訊寫入 images資料表 成功 <br>";
+            } else {
+                echo $value . "normalPic 資訊寫入 images資料表 失敗 <br>";
+            }
         }
     }
 } else {
     echo "取得上傳 multifile 錯誤 <br>";
 }
 
-// header("location: ./camp_productList.php");
+header("location: ./camp_productList.php");
 
 $conn->close();
