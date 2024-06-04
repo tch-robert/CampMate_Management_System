@@ -1,5 +1,5 @@
 <?php
-
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["area_id"])){
@@ -54,31 +54,34 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
 
     <body>
 
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
 
 
             <div class="container">
-                <h4 class="mb-3"><?=$pageTitle?></h4>
+                
                 <div class="row">
+                <div class="col-12 mb-3">
+                <div class="card">
+                <div class="card-body">
+                <h4 class="mb-3"><?=$pageTitle?></h4>
                     <form action="doUploadArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post"  enctype="multipart/form-data">
 
-                    <div class="col-12 mb-3">
+                    
                         <input type="hidden" class="form-control" name="name">
-                    </div>
+                    
 
-                    <div class="col-12 mb-3">
+                        <div class="mb-3">
                         <label for="form-label" class="form-label">上傳營區照片</label>
                         <input class="form-control" type="file" name="file">
-                    </div>
+                        </div>
+                    
                     <div class="mb-3">
                         <button class="btn btn-primary" type="submit">送出</button>
                     </div>
                     </form>
-                
-                    <div class="col-lg-12">
+                    
                         <div class="row g-4">
                         <?php foreach($rows as $image): ?>
                             <div class="col-lg-2 col-md-3">
@@ -86,7 +89,6 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
                                     <img class="object-fit-cover c_img" src="<?=$image['path']?>" alt="">
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <p><?=$image["id"]?></p>
                                     <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
                     >Delete <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
@@ -112,8 +114,10 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
                             </div>
                         <?php endforeach ?>
                         </div>
-                    </div>
-
+                  
+                </div>
+                </div>
+                </div>
                 </div>
             </div>
             

@@ -82,70 +82,71 @@ $campCount = $result->num_rows;
     </head>
 
     <body>
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
             <!-- 列表 -->
             
             <div class="container">
-            <h4 class="mb-3"><?=$pageTitle?></h4>
             <div class="row">
-                <div class="col-lg-8">
-            <div class="card">
-            <div class="card-body">
-            <?php if($result->num_rows > 0): ?>
-            <?php if(isset($_GET["search"])): ?>
-                <a href="camp_area_search.php" class="btn btn-primary">返回列表</a>
-            <?php endif; ?>
-            <div class="py-2 mb-3">
-                <div class="d-flex justify-content-center gap-3 mb-2">
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
-                            <button class="btn btn-primary" type="submit">搜尋</button>
-                        </div>
-                        <div>
-                    </div>
-                    </form>
-                </div>
-            </div>
-            <table class="table table-hover mb-3" >
-                <thead>
-                    <tr>
-                        <th class="text-center">營地編號 <a href="?page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
-                        <th >營地名稱 <a href="?page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
-                        <th class="text-center">我的營區</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($rows as $camp): ?>
-                    <tr>
-                        <td class="text-center"><?=$camp["id"]?></td>
-                        <td><?=$camp["campground_name"]?></td>
-                        <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-campground"></i> 進入</a></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <?php else: echo "沒有結果";  ?>
-            <?php endif; ?>
-
-            <?php if(isset($_GET["page"])):?>
                 <div class="d-flex justify-content-center">
-                <nav aria-label="...">
-                    <ul class="pagination">
-                        <?php for($i=1; $i<=$pageCount; $i++):?>
-                        <li class="page-item"><a class="page-link 
-                        <?php if($i==$page)echo 'active'?>" href="?page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
-                        </li>
-                        <?php endfor; ?>
-                    </ul>
-                </nav>
+                <div class="col-lg-8 ">
+                <div class="card">
+                <div class="card-body">
+                <h4 class="mb-3"><?=$pageTitle?></h4>
+                <?php if($result->num_rows > 0): ?>
+                <?php if(isset($_GET["search"])): ?>
+                    <a href="camp_area_search.php" class="btn btn-primary">返回列表</a>
+                <?php endif; ?>
+                <div class="py-2 mb-3">
+                    <div class="d-flex justify-content-center gap-3 mb-2">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
+                                <button class="btn btn-primary" type="submit">搜尋</button>
+                            </div>
+                            <div>
+                        </div>
+                        </form>
+                    </div>
                 </div>
-            <?php endif; ?>
+                <table class="table table-hover mb-3" >
+                    <thead>
+                        <tr>
+                            <th class="text-center">營地編號 <a href="?page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
+                            <th >營地名稱 <a href="?page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
+                            <th class="text-center">我的營區</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($rows as $camp): ?>
+                        <tr>
+                            <td class="text-center"><?=$camp["id"]?></td>
+                            <td><?=$camp["campground_name"]?></td>
+                            <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-campground"></i> 進入</a></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php else: echo "沒有結果";  ?>
+                <?php endif; ?>
+
+                <?php if(isset($_GET["page"])):?>
+                    <div class="d-flex justify-content-center">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <?php for($i=1; $i<=$pageCount; $i++):?>
+                            <li class="page-item"><a class="page-link 
+                            <?php if($i==$page)echo 'active'?>" href="?page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
+                            </li>
+                            <?php endfor; ?>
+                        </ul>
+                    </nav>
+                    </div>
+                <?php endif; ?>
+            </div>
+            </div> 
         </div>
-        </div> 
         </div>
         </div>
         </div>  

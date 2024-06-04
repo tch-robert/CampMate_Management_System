@@ -1,56 +1,72 @@
 <?php
 include("session_check_login.php");
-
 require_once("../db_connect.php");
 
-$sqlAll="SELECT * FROM campground_info WHERE campground_owner_id=$owner_id";
+$camp_id = $_GET["camp_id"];
+$area_id = $_GET["area_id"];
+
+$sqlAll="SELECT camp_area_item.*, area_item.item_name AS itemName, camp_area.area_name AS areaName FROM camp_area_item 
+JOIN area_item ON camp_area_item.item_id = area_item.id 
+JOIN camp_area ON camp_area_item.area_id = camp_area.id
+WHERE camp_area_item.area_id = $area_id AND area_item.valid=1
+";
 $resultAll = $conn->query($sqlAll);
-$allCampgroundCount = $resultAll->num_rows;
+// $rowsAll = $resultAll->fetch_all(MYSQLI_ASSOC);
+$allItemCount = $resultAll->num_rows;
 
 if(isset($_GET["search"])){
     $search=$_GET["search"];
-    $sql="SELECT id, campground_name , phone, email, position FROM campground_info WHERE campground_owner_id=$owner_id AND campground_name LIKE '%$search%'";
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item 
+    JOIN area_item ON camp_area_item.item_id = area_item.id 
+    JOIN camp_area ON camp_area_item.area_id = camp_area.id
+    WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 AND itemName LIKE '%$search%'
+    ";
     $pageTitle="$search 的搜尋結果";
 }else if(isset($_GET["page"]) && isset($_GET["order"])){
     $page=$_GET["page"];
     $perPage=5;
     $firstItem=($page-1)*$perPage;
-    $pageCount = ceil($allCampgroundCount/$perPage);
+    $pageCount = ceil($allItemCount/$perPage);
 
     $order=$_GET["order"];
     switch($order){
         case 1:// id ASC
-            $orderClause= "ORDER BY id ASC";
+            $orderClause= "ORDER BY itemPrice ASC";
             break;
         case 2:// id DESC
-            $orderClause= "ORDER BY id DESC";
+            $orderClause= "ORDER BY itemPrice DESC";
             break;
         case 3:// 名字 ASC
-            $orderClause= "ORDER BY campground_name ASC";
+            $orderClause= "ORDER BY itemName ASC";
             break;
          case 4:// 名字 DESC
-            $orderClause= "ORDER BY campground_name DESC";
+            $orderClause= "ORDER BY itemName DESC";
             break;
     }
-    $sql="SELECT * FROM campground_info WHERE campground_owner_id=$owner_id $orderClause LIMIT $firstItem, $perPage";
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item 
+    JOIN area_item ON camp_area_item.item_id = area_item.id 
+    JOIN camp_area ON camp_area_item.area_id = camp_area.id
+    WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 
+    $orderClause 
+    LIMIT $firstItem, $perPage";
 
-    $pageTitle="營地列表，第 $page 頁";
+    $pageTitle="營地商品列表，第 $page 頁";
 }else{
-    $sql="SELECT id, campground_name , phone, email, position FROM campground_info WHERE campground_owner_id=$owner_id";
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item
+    JOIN area_item ON camp_area_item.item_id = area_item.id 
+    JOIN camp_area ON camp_area_item.area_id = camp_area.id
+    WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 ";
     $pageTitle="營地列表";
-    header("location: campground_list.php?page=1&order=1");
+    header("location: area_item_list.php?camp_id=$camp_id&area_id=$area_id&page=1&order=1");
 }
 
 $result = $conn->query($sql);
 $rows=$result->fetch_all(MYSQLI_ASSOC);
-$campCount = $result->num_rows;
-
-// if(isset($_GET["page"])){
-//     $campCount= $allCampCount;
-// }
+$itemCount = $result->num_rows;
 
 
 ?>
+
 
 
 <!doctype html>
@@ -96,7 +112,7 @@ $campCount = $result->num_rows;
             <?php if($result->num_rows > 0): ?>
             
             <?php if(isset($_GET["search"])): ?>
-                        <a href="campground_list.php" class="btn btn-primary">返回列表</a>
+                        <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
                         <?php endif; ?>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-center gap-3 mb-2">
@@ -115,23 +131,22 @@ $campCount = $result->num_rows;
             <table class="table table-hover mb-3" >
                 <thead>
                     <tr>
-                        <th class="text-center">營地編號 <a href="?page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
-                        <th >營地名稱 <a href="?page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
-                        <th>電話</th>
-                        <th>email</th>
-                        <th>地區</th>
-                        <th class="text-center">營區</th>
-                        <th class="text-center">詳細</th>
+                        <th class="text-center"></th>
+                        <th >商品名稱 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
+                        <th>商品價格 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
+                        <th>商品狀態</th>
+                        <th class="text-center">編輯</th>
+                        <th class="text-center">圖片</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($rows as $camp): ?>
+                    <?php $index=0; ?>
+                    <?php foreach($rows as $item): ?>
                     <tr>
-                        <td class="text-center"><?=$camp["id"]?></td>
-                        <td><?=$camp["campground_name"]?></td>
-                        <td><?=$camp["phone"]?></td>
-                        <td><?=$camp["email"]?></td>
-                        <td><?=$camp["position"]?></td>
+                        <td class="text-center"><?php $index+=1; echo $index; ?></td>
+                        <td><?=$item["itemName"]?></td>
+                        <td><?=$item["itemPrice"]?></td>
+                        <td><?=$item["status"]?></td>
                         <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-campground"></i></a></td>
                         <td class="text-center"><a class="btn btn-primary" href="campground.php?id=<?=$camp["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
                     </tr>
@@ -162,3 +177,4 @@ $campCount = $result->num_rows;
         
     </body>
 </html>
+

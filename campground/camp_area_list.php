@@ -79,18 +79,17 @@ $campCount = $result->num_rows;
 
     <body>
 
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
             <div class="container">
-            <h4 class="mb-3"><?=$pageTitle?></h4>
-            <div class="mb-3">
-                <a href="camp_area_search.php" class="btn btn-primary">返回營區列表</a>
-            </div>
             
             <div class="card">
             <div class="card-body">
+            <h4 class="mb-3"><?=$pageTitle?></h4>
+                <div class="mb-3">
+                    <a href="camp_area_search.php" class="btn btn-primary">返回營區列表</a>
+                </div>
                 <div class="mb-3">
                 <a class="btn btn-primary" href="create_camp_area.php?camp_id=<?=$camp_id?>">新增 <i class="fa-solid fa-plus"></i></a>
                 </div>
@@ -119,6 +118,7 @@ $campCount = $result->num_rows;
                         <th >營區名稱 <a href="?camp_id=<?=$camp_id?>&page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
                         <th>營區種類</th>
                         <th>價格/日</th>
+                        <th class="text-center">商品</th>
                         <th class="text-center">詳細</th>
                     </tr>
                 </thead>
@@ -130,6 +130,7 @@ $campCount = $result->num_rows;
                         <td><?=$area["area_name"]?></td>
                         <td><?=$area["area_category"]?></td>
                         <td><?=$area["price_per_day"]?></td>
+                        <td class="text-center"><a class="btn btn-primary" href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area["id"]?>"><i class="fa-solid fa-shop"></i></a></td>
                         <td class="text-center"><a class="btn btn-primary" href="camp_area.php?camp_id=<?=$camp_id?>&area_id=<?=$area["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
                     </tr>
                     <?php endforeach; ?>

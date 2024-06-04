@@ -80,23 +80,23 @@ if(!empty($geoloaction)){
             </div>
         </div>
         </div>
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
 
             <div class="container">
-            <div class="py-2">
-                <a href="campground_list.php" class="btn btn-primary">
-                <i class="fa-solid fa-backward"></i>
-                    回營地列表
-                </a>
-            </div>
+
             <div class="row justified-content-center">
                 <div class="col-lg-12">
                     <?php if($campExist):?>
                         <div class="card">
                         <div class="card-body">
+                        <div class="mb-2">
+                            <a href="campground_list.php" class="btn btn-primary">
+                            <i class="fa-solid fa-backward"></i>
+                                回營地列表
+                            </a>
+                        </div>
                             <div class="d-flex justify-content-end">
                             <a class="btn btn-primary" title="編輯營地" href="cg_img_upload.php?camp_id=<?=$row['id']?>">營地圖片 <i class="fa-regular fa-image"></i></a>
                             </div>
@@ -143,18 +143,19 @@ if(!empty($geoloaction)){
                             <h5>營地介紹</h5>
                             <hr>
                             <?php echo $row["campground_introduction"] ?>
+                            <div class="py-3 d-flex justify-content-around">
+                                <div class="d-flex justify-content-start gap-3">
+                                    
+                                    <a class="btn btn-warning" title="編輯營地" href="edit_campground.php?id=<?=$row['id']?>">Edit <i class="fa-solid fa-pen-to-square"></i></a>
+                                    
+                                </div>
+                                <button href="" title="刪除營地" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                >刪除營地 <i class="fa-solid fa-trash-can"></i></button>
+                            </div>
                         </div>
                         </div>
                 
-                <div class="py-3 d-flex justify-content-around">
-                    <div class="d-flex justify-content-start gap-3">
-                        
-                        <a class="btn btn-warning" title="編輯營地" href="edit_campground.php?id=<?=$row['id']?>">Edit <i class="fa-solid fa-pen-to-square"></i></a>
-                        
-                    </div>
-                    <button href="" title="刪除營地" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                    >刪除營地 <i class="fa-solid fa-trash-can"></i></button>
-                </div>
+                
                 <?php else : ?>
                     <h1>營地不存在</h1>
                 <?php endif ?>

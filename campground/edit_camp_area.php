@@ -99,36 +99,42 @@ if($result->num_rows > 0){
                             <div class="d-flex justify-content-end">
                             <a class="btn btn-primary" title="營區圖片" href="area_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$row['id']?>">營區圖片 <i class="fa-regular fa-image"></i></a>
                             </div>
-                        
+
+                            <form action="doUpdateArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post">
                             <table class="table table-hover mb-3">
                                 <tr>
                                     <th>所屬營地</th>
-                                    <td><?=$camp_name ?></td>
+                                    <td><?=$camp_name ?><input type="hidden" name="area_id" value="<?=$row["id"]; ?>"></td>
+                                    
                                 </tr>
                                 <tr>
                                     <th>營區名稱</th>
-                                    <td><?=$row["area_name"]; ?></td>
+                                    <td><input type="text" class="form-control"  name="area_name" value="<?=$row["area_name"]; ?>"></td>
                                 </tr>
                                 <tr>
                                     <th>營地類型</th>
-                                    <td><?=$row["area_category"]; ?></td>
+                                    <td>
+                                    <select class="form-select" name="area_category">
+                                        <option selected>*請選擇營地類型</option>
+                                        <option value="草地型地面" <?php if($row["area_category"]=="草地型地面"){echo "selected";} ?>>草地型地面</option>
+                                        <option value="碎石型地面" <?php if($row["area_category"]=="碎石型地面"){echo "selected";} ?>>碎石型地面</option>
+                                        <option value="棧板型地面" <?php if($row["area_category"]=="棧板型地面"){echo "selected";} ?>>棧板型地面</option>
+                                        <option value="水泥型地面" <?php if($row["area_category"]=="水泥型地面"){echo "selected";} ?>>水泥型地面</option>
+                                        <option value="雨棚區" <?php if($row["area_category"]=="雨棚區"){echo "selected";} ?>>雨棚區</option>
+                                        <option value="森林區" <?php if($row["area_category"]=="森林區"){echo "selected";} ?>>森林區</option>
+                                        <option value="泥土區" <?php if($row["area_category"]=="泥土區"){echo "selected";} ?>>泥土區</option>
+                                    </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>價格/日</th>
-                                    <td><?=$row["price_per_day"]; ?></td>
+                                    <td><input type="text" class="form-control" name="price_per_day" value="<?=$row["price_per_day"]; ?>"></td>
                                 </tr>
-                        
-                            </table>
 
-                            <div class="py-3 d-flex justify-content-around">
-                            <div class="d-flex justify-content-start gap-3">
-                                
-                                <a class="btn btn-warning" title="編輯營地" href="edit_camp_area.php?camp_id=<?=$camp_id?>&area_id=<?= $row["id"]?>">Edit <i class="fa-solid fa-pen-to-square"></i></a>
-                                
-                            </div>
-                                <button href="" title="刪除營區" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                >刪除營區 <i class="fa-solid fa-trash-can"></i></button>
-                            </div>
+                            </table>
+                            <button class="btn btn-primary" type="submit">修改完成</button>
+                            </form>
+                           
                             <?php else : ?>
                                 <h1>營區不存在</h1>
                             <?php endif ?>

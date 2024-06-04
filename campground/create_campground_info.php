@@ -1,4 +1,5 @@
 <?php
+require_once("../db_connect.php");
 include("session_check_login.php");
 ?>
 
@@ -39,8 +40,7 @@ include("session_check_login.php");
         </div>
         
 
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
             <div class="container">

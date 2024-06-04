@@ -1,4 +1,6 @@
 <?php
 session_start();
 
-session_destroy();
+unset($_SESSION["owner"]);
+
+header("location: ../campground_owner/owner-signin.php");

@@ -1,5 +1,7 @@
 <?php
+require_once("../db_connect.php");
 include("session_check_login.php");
+
 if(!isset($_GET["camp_id"])){
     $data=[
         "status" => 0,
@@ -11,6 +13,7 @@ if(!isset($_GET["camp_id"])){
 
 $camp_id = $_GET["camp_id"];
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -49,8 +52,7 @@ $camp_id = $_GET["camp_id"];
         </div>
         
 
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
             <div class="container">
