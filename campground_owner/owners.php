@@ -228,14 +228,14 @@ if (isset($_GET["page"])) {
 <body>
     <header class="main-header d-flex flex-column fixed-top justify-content-center">
         <a href="http://localhost/campmate/index.php" class="text-decoration-none logo">
-            <img src="" alt="" class="">
+            <img src="/campmate/images/logo.svg" alt="" class="">
         </a>
         <div class="text">
             Hi, Admin
         </div>
     </header>
     <aside class="aside-left position-fixed vh-100">
-        <ul class="list-unstyled mt-3">
+        <ul class="list-unstyled mt-3 text-truncate">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
