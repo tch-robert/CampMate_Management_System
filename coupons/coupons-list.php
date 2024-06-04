@@ -246,6 +246,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             class="btn btn-neumorphic btn-circle <?= ($statusFilter == '已停用') ? 'active' : '' ?>">
                             <i class="fa-solid fa-ban"></i>
                         </a>
+                        <!-- 更新優惠券狀態按鈕 -->
+                        <button class="btn btn-neumorphic btn-circle" onclick="showUpdateModal()">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -365,6 +369,52 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             </nav>
         </div>
     </main>
+
+    <!--Show Details Modal -->
+    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel"><i class="fa-solid fa-eye me-2"></i>優惠券詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="couponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fa-solid fa-trash me-2"></i>刪除優惠券</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="deleteCouponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-neumorphic" id="confirmDeleteButton" onclick="deleteCoupon()">
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Coupon Modal -->
     <div class="modal fade coupon-modal" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
@@ -456,25 +506,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             </div>
         </div>
     </div>
-    <!--Show Details Modal -->
-    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
-        aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="couponModalLabel"><i class="fa-solid fa-eye me-2"></i>優惠券詳情</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody id="couponDetails">
-                            <!-- 優惠券詳情將在這裡顯示 -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- Edit Modal -->
     <div class="modal fade coupon-modal" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="editModalLabel" aria-hidden="true">
@@ -570,41 +602,108 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             </div>
         </div>
     </div>
-    <!-- Delete Modal -->
-    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+    <!-- Update all Status Modal -->
+    <div class="modal fade coupon-modal" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel"><i class="fa-solid fa-trash me-2"></i>刪除優惠券</h5>
+                    <h5 class="modal-title" id="updateStatusModalLabel"><i class="fa-solid fa-rotate me-2"></i>更新優惠券狀態
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody id="deleteCouponDetails">
-                            <!-- 優惠券詳情將在這裡顯示 -->
-                        </tbody>
-                    </table>
+                    是否確認更新全部優惠券狀態
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-neumorphic" id="confirmDeleteButton" onclick="deleteCoupon()">
-                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
+                    <button type="button" class="btn btn-neumorphic" onclick="updateAllCouponStatuses()">
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認更新</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- js -->
+    <!-- 共用 JS -->
     <?php include ("../js.php") ?>
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- js -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             flatpickr(".flatpickr", {
                 dateFormat: "Y-m-d"
             });
+        });
+
+        // 新增優惠券模態框
+        const addCouponStartDate = document.getElementById('addCouponStartDate');
+        const addCouponEndDate = document.getElementById('addCouponEndDate');
+        const addCouponStatus = document.getElementById('addCouponStatus');
+
+        function updateCouponStatus() {
+            const today = new Date().toISOString().split('T')[0];
+            const startDate = addCouponStartDate.value;
+            const endDate = addCouponEndDate.value;
+
+            if (startDate <= today && endDate >= today) {
+                addCouponStatus.value = '可使用';
+            } else {
+                addCouponStatus.value = '已停用';
+            }
+        }
+
+        addCouponStartDate.addEventListener('change', updateCouponStatus);
+        addCouponEndDate.addEventListener('change', updateCouponStatus);
+
+        // 編輯優惠券模態框
+        const editCouponStartDate = document.getElementById('editCouponStartDate');
+        const editCouponEndDate = document.getElementById('editCouponEndDate');
+        const editCouponStatus = document.getElementById('editCouponStatus');
+
+        function updateEditCouponStatus() {
+            const today = new Date().toISOString().split('T')[0];
+            const startDate = editCouponStartDate.value;
+            const endDate = editCouponEndDate.value;
+
+            if (startDate <= today && endDate >= today) {
+                editCouponStatus.value = '可使用';
+            } else {
+                editCouponStatus.value = '已停用';
+            }
+        }
+
+        editCouponStartDate.addEventListener('change', updateEditCouponStatus);
+        editCouponEndDate.addEventListener('change', updateEditCouponStatus);
+
+        // 監聽折扣輸入變化
+        document.getElementById('addCouponDiscount').addEventListener('input', function () {
+            const discountValue = parseFloat(this.value);
+            const categorySelect = document.getElementById('addCouponCategory');
+            const maxDiscountAmountInput = document.getElementById('addCouponMaxDiscountAmount');
+            if (!isNaN(discountValue)) {
+                if (discountValue > 1) {
+                    categorySelect.value = '金額折抵';
+                    maxDiscountAmountInput.value = discountValue;
+                } else if (discountValue >= 0 && discountValue <= 1) {
+                    categorySelect.value = '%數折扣';
+                }
+            }
+        });
+
+        document.getElementById('editCouponDiscount').addEventListener('input', function () {
+            const discountValue = parseFloat(this.value);
+            const categorySelect = document.getElementById('editCouponCategory');
+            const maxDiscountAmountInput = document.getElementById('editCouponMaxDiscountAmount');
+            if (!isNaN(discountValue)) {
+                if (discountValue > 1) {
+                    categorySelect.value = '金額折抵';
+                    maxDiscountAmountInput.value = discountValue;
+                } else if (discountValue >= 0 && discountValue <= 1) {
+                    categorySelect.value = '%數折扣';
+                }
+            }
         });
 
         function showCouponDetails(couponId) {
@@ -685,21 +784,17 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             const minCost = form.min_cost;
             const maxDiscountAmount = form.max_discount_amount;
             const couponNum = form.coupon_num;
-
             let isValid = true;
-
             // 重置所有自定義錯誤訊息
             discount.setCustomValidity("");
             minCost.setCustomValidity("");
             maxDiscountAmount.setCustomValidity("");
             couponNum.setCustomValidity("");
-
             // 檢查折扣是否為數字且最多兩位小數
             if (!/^\d+(\.\d{1,2})?$/.test(discount.value)) {
                 discount.setCustomValidity('折扣必須是數字且最多兩位小數');
                 isValid = false;
             }
-
             // 檢查使用低消金額、最高折抵金額、數量是否為正整數
             if (!/^\d+$/.test(minCost.value) || minCost.value <= 0) {
                 minCost.setCustomValidity('使用低消金額必須是正整數');
@@ -713,26 +808,9 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 couponNum.setCustomValidity('數量必須是正整數');
                 isValid = false;
             }
-
             // 如果有任何一個欄位無效，則回傳 false
             return isValid;
         }
-
-        // 監聽折扣輸入變化
-        document.getElementById('addCouponDiscount').addEventListener('input', function () {
-            const discountValue = parseFloat(this.value);
-            const categorySelect = document.getElementById('addCouponCategory');
-            const maxDiscountAmountInput = document.getElementById('addCouponMaxDiscountAmount');
-
-            if (!isNaN(discountValue)) {
-                if (discountValue > 1) {
-                    categorySelect.value = '金額折抵';
-                    maxDiscountAmountInput.value = discountValue;
-                } else if (discountValue >= 0 && discountValue <= 1) {
-                    categorySelect.value = '%數折扣';
-                }
-            }
-        });
 
         function addCoupon() {
             const form = document.getElementById('addCouponForm');
@@ -774,6 +852,25 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             } else {
                 form.reportValidity(); // 顯示錯誤訊息
             }
+        }
+
+        // 一鍵更新優惠券狀態
+        function showUpdateModal() {
+            $('#updateStatusModal').modal('show');
+        }
+
+        function updateAllCouponStatuses() {
+            $.ajax({
+                url: 'update-all-coupons.php',
+                type: 'POST',
+                success: function (response) {
+                    // alert('所有優惠券狀態已更新');
+                    location.reload();
+                },
+                error: function () {
+                    alert('更新失敗');
+                }
+            });
         }
     </script>
 </body>
