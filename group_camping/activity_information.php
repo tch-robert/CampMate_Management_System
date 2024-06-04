@@ -32,6 +32,26 @@ $conn->close();
 </head>
 
 <body>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Warning!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    確認要刪除揪團資訊嗎?
+                </div>
+                <div class="modal-footer">
+
+
+                    <a href="delete_activity.php?id=<?= $row["activity_id"] ?>" class="btn btn-danger">確認</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <h1 class="mt-4">揪團資訊</h1>
         <div class="d-flex justify-content-between mb-3">
@@ -99,9 +119,9 @@ $conn->close();
                 </a>
             </div>
             <div>
-                <a href="delete_activity.php" class="btn btn-danger">
-                    <i class="fa-solid fa-door-open"></i> 刪除揪團
-                </a>
+                <button class="btn btn-danger" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="fa-solid fa-trash-can"></i> 刪除揪團
+                </button>
             </div>
         </div>
     </div>
