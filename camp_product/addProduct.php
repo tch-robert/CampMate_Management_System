@@ -10,12 +10,24 @@ $L1Result = $conn->query($L1Sql);
 $L1Rows = $L1Result->fetch_all(MYSQLI_ASSOC);
 
 //選取商品類別level2階層選取
+
 $L2Sql = "SELECT product_category.*, product_category_class.parent_id FROM product_category 
 JOIN product_category_class ON product_category.category_id = product_category_class.category_id 
-WHERE product_category_class.parent_id IS NOT NULL  
+WHERE product_category_class.parent_id IS NOT NULL 
 ORDER BY product_category.category_id ASC";
 $L2Result = $conn->query($L2Sql);
 $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
+
+// 將 L2Rows 依據 parent_id 分組
+$L2Grouped = [];
+foreach ($L2Rows as $row) {
+    $parentId = $row['parent_id'];
+    if (!isset($L2Grouped[$parentId])) {
+        $L2Grouped[$parentId] = [];
+    }
+    $L2Grouped[$parentId][] = $row;
+}
+
 ?>
 
 <!doctype html>
@@ -88,12 +100,16 @@ $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
                             <select class="form-control" name="productCate" id="productCate" required>
                                 <option value="" selected disabled hidden>請選擇分類</option>
                                 <?php foreach ($L1Rows as $level1) : ?>
-                                    <optgroup label="<?= $level1["category_name"] ?>">
-                                        <?php foreach ($L2Rows as $level2) : ?>
-                                            <option value="<?= $level2["category_name"] ?>">
-                                                <?= $level2["category_name"] ?>
-                                            </option>
-                                        <?php endforeach; ?>
+                                    <optgroup label="<?= $level1['category_name'] ?>">
+                                        <?php
+                                        $parentId = $level1['category_id'];
+                                        if (isset($L2Grouped[$parentId])) {
+                                            foreach ($L2Grouped[$parentId] as $level2) : ?>
+                                                <option value="<?= $level2['category_name'] ?>">
+                                                    <?= $level2['category_name'] ?>
+                                                </option>
+                                        <?php endforeach;
+                                        } ?>
                                     </optgroup>
                                 <?php endforeach; ?>
                             </select>
@@ -106,10 +122,10 @@ $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
                 </div>
 
                 <div class="row justify-content-end mb-4">
-                    <h3>規格</h3>
+                    <h3>重點規格</h3>
                     <div class="col-11">
                         <div class="mb-2">
-                            <label for="productBrief" class="h6 form-label">商品簡述</label>
+                            <label for="productBrief" class="h6 form-label">規格簡述</label>
                             <textarea class="textAreaBreif form-control" name="productBrief" id="productBrief" required></textarea>
                         </div>
                     </div>

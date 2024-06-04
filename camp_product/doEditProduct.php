@@ -1,120 +1,146 @@
 <?php
 require_once("../db_connect.php");
 
-if (isset($_POST["mainPicDelete"])) {
-}
-
 //抓取button的value判斷要怎麼作動
 $buttonAct = $_POST["action"];
+$productId = $_GET["product_id"];
+
 //如果是0 就代表是取消按鈕 所以取消並且exit
 if ($buttonAct == 0) {
     echo "取消新增商品";
     header("location: ./camp_productList.php");
     exit;
 }
-//判斷如果button回傳的值是1 那就將status設定為0 代表式儲存後下架
-$product_status = ($buttonAct == 1) ? 0 : 1;
-
-//抓取表單內容
-$product_name = $_POST["productName"];
-$product_category = $_POST["productCate"];
-$product_description = $_POST["productDes"];
-$product_brief = $_POST["productBrief"];
-$product_price = $_POST["productPrice"];
-$product_specifications = $_POST["productBrief"];
-//因為儲存就是新增了 所以會讓他顯示
-$product_valid = 1;
-//設定新增商品的時間點
-$now = date('Y-m-d H:i:s');
-
-// 輸出表單數據進行調試
-// echo "Product Name: $product_name<br>";
-// echo "Product Category: $product_category<br>";
-// echo "Product Description: $product_description<br>";
-// echo "Product Brief: $product_brief<br>";
-// echo "Product Price: $product_price<br>";
-// echo "Product Status: $product_status<br>";
-// echo "Now: $now<br>";
-
-$productSql = "INSERT INTO product (product_name, product_description, product_brief, product_price, product_specifications, product_status, create_date, product_valid) VALUES ('$product_name', '$product_description', '$product_brief', '$product_price', '$product_specifications', '$product_status', '$now', '$product_valid')";
-// echo "SQL Query: $$productSql<br>";
-
-if ($conn->query($productSql) === TRUE) {
-    echo "資料寫入product成功 <br>";
-} else {
-    echo "資料寫入product失敗: <br>" . $conn->error;
-}
-$product_id = $conn->insert_id;
-
-$searchCateSql = "SELECT * FROM product_category WHERE category_name='$product_category'";
-$searchCateResult = $conn->query($searchCateSql);
-$searchCateRow = $searchCateResult->fetch_assoc();
-print_r($searchCateRow);
-echo "<br>";
-$category_id = $searchCateRow["category_id"];
-echo $category_id . "<br>";
-
-$cateSql = "INSERT INTO product_category_relate (product_id, category_id) VALUES ('$product_id', '$category_id')";
-
-if ($conn->query($cateSql) === TRUE) {
-    echo "category關聯表寫入成功 <br>";
-} else {
-    echo "category關聯表寫入失敗 <br>";
-}
-
-$mainPic = $_FILES["mainPic"];
-$normalPic = $_FILES["normalPic"];
-
-if ($mainPic["error"] == 0) {
-    $mainPic_num = 1;
-    $mainPic_name = $mainPic["name"];
-    if (move_uploaded_file($mainPic["tmp_name"], "product_image/" . $mainPic["name"])) {
-        echo "upload mainPic success <br>";
-    } else {
-        echo "upload mainPic failed <br>";
-    }
-
-    // echo $product_id, $pic_num, $mainPic_name;
-    // exit;
-    $mainPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
-    VALUES ('$product_id', '$mainPic_num', '$mainPic_name')";
-    if ($conn->query($mainPicSql) === TRUE) {
-        echo "mainPic資訊寫入成功 <br>";
-    } else {
-        echo "mainPic資訊寫入失敗 <br>";
-    }
-} else {
-    echo "取得上傳 mainPic 錯誤 <br>";
-}
-
-
-$normalPicArr = [];
-foreach ($normalPic["error"] as $value) {
-    $normalPicArr[] = "$value";
-}
-if (!in_array(1, $normalPic)) {
-    $mainPic_num = 0;
-    foreach ($normalPic["name"] as $key => $value) {
-        if (move_uploaded_file($normalPic["tmp_name"][$key], "product_image/" . $value)) {
-            echo "upload normalPic success <br>";
+if ($buttonAct == 1) {
+    if (isset($_POST["productName"])) {
+        $product_name = $_POST["productName"];
+        // echo $product_name, $productId;
+        $editNameSql = "UPDATE product SET product_name='$product_name' WHERE product_id='$productId'";
+        if ($conn->query($editNameSql) === TRUE) {
+            echo "商品名稱更新成功 <br>";
         } else {
-            echo "upload normalPic failed <br>";
-        }
-        // echo $product_id, $mainPic_num, $value;
-
-        $normalPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
-        VALUES ('$product_id', '$mainPic_num', '$value')";
-
-        if ($conn->query($normalPicSql) === TRUE) {
-            echo $value . "normalPic資訊寫入成功 <br>";
-        } else {
-            echo $value . "normalPic資訊寫入失敗 <br>";
+            echo "商品名稱更新失敗" . $conn->error . "<br>";
         }
     }
-} else {
-    echo "取得上傳 multifile 錯誤 <br>";
+
+    if (isset($_POST["productCate"])) {
+        $product_category = $_POST["productCate"];
+        $findCateIdSql = "SELECT category_id FROM product_category WHERE category_name='$product_category'";
+        $findCateIdResult = $conn->query($findCateIdSql);
+        $findCateIdRow = $findCateIdResult->fetch_assoc();
+        $category_id = $findCateIdRow["category_id"];
+
+        $editCateRelateSql = "UPDATE product_category_relate SET category_id='$category_id' WHERE product_id='$productId'";
+        if ($conn->query($editCateRelateSql) === TRUE) {
+            echo "類別名稱更新成功 <br>";
+        } else {
+            echo "類別名稱更新失敗 <br>";
+        }
+    }
+
+    if (isset($_POST["productDes"])) {
+        $product_description = $_POST["productDes"];
+        $editDesSql = "UPDATE product SET product_description='$product_description' WHERE product_id='$productId'";
+        if ($conn->query($editDesSql) === TRUE) {
+            echo "商品描述更新完成 <br>";
+        } else {
+            echo "商品描述更新失敗 <br>";
+        }
+    }
+
+    if (isset($_POST["productBrief"])) {
+        $product_brief = $_POST["productBrief"];
+        $product_specifications = $_POST["productBrief"];
+        $editBriefSql = "UPDATE product SET product_brief='$product_brief',product_specifications='$product_specifications' WHERE product_id='$productId'";
+        if ($conn->query($editBriefSql) === TRUE) {
+            echo "規格&簡述更新完成 <br>";
+        } else {
+            echo "規格&簡述更新失敗 <br>";
+        }
+    }
+
+    if (isset($_POST["productPrice"])) {
+        $product_price = $_POST["productPrice"];
+        $editPriceSql = "UPDATE product SET product_price='$product_price' WHERE product_id='$productId'";
+        if ($conn->query($editPriceSql) === TRUE) {
+            echo "租賃價格更新成功 <br>";
+        } else {
+            echo "租賃價格更新失敗 <br>";
+        }
+    }
+
+    //抓取圖片檔案
+    $mainPic = $_FILES["mainPic"];
+    $normalPic = $_FILES["normalPic"];
+
+    //判斷主圖片有沒有進來
+    if ($mainPic["error"] == 0) {
+        $mainPic = $_FILES["mainPic"];
+        $mainPic_num = 1;
+        $mainPic_name = $mainPic["name"];
+        if (move_uploaded_file($mainPic["tmp_name"], "product_image/" . $mainPic["name"])) {
+            echo "upload mainPic success <br>";
+        } else {
+            echo "upload mainPic failed <br>";
+        }
+
+        $delMainPicSql = "DELETE FROM images WHERE product_id='$productId' AND product_mainPic='$mainPic_num'";
+        if ($conn->query($delMainPicSql) === TRUE) {
+            echo "舊mainPic資訊刪除成功 <br>";
+        } else {
+            echo "舊mainPic資訊刪除失敗 <br>";
+        }
+
+        $mainPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
+    VALUES ('$productId', '$mainPic_num', '$mainPic_name')";
+        if ($conn->query($mainPicSql) === TRUE) {
+            echo "新mainPic資訊寫入成功 <br>";
+        } else {
+            echo "新mainPic資訊寫入失敗 <br>";
+        }
+    } else {
+        echo "沒有要更新mainPic <br>";
+    }
+
+    //判斷檔案是否有進來前的陣列製作
+    $normalPicArr = [];
+    foreach ($normalPic["error"] as $value) {
+        $normalPicArr[] = "$value";
+    }
+
+    //先判斷陣列中是不是沒有1
+    if (!in_array(1, $normalPic)) {
+        //刪除舊的 normalPic 資訊
+        $delNormalPicSql = "DELETE FROM images WHERE product_id='$productId' AND product_mainPic=0";
+        if ($conn->query($delNormalPicSql) === TRUE) {
+            echo "舊normalPic資訊刪除成功 <br>";
+        } else {
+            echo "舊normalPic資訊刪除失敗 <br>";
+        }
+
+        $mainPic_num = 0;
+        foreach ($normalPic["name"] as $key => $value) {
+            if (move_uploaded_file($normalPic["tmp_name"][$key], "product_image/" . $value)) {
+                echo "upload normalPic success <br>";
+            } else {
+                echo "upload normalPic failed <br>";
+            }
+            // echo $product_id, $mainPic_num, $value;
+
+            $normalPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
+        VALUES ('$productId', '$mainPic_num', '$value')";
+
+            if ($conn->query($normalPicSql) === TRUE) {
+                echo $value . "normalPic資訊寫入成功 <br>";
+            } else {
+                echo $value . "normalPic資訊寫入失敗 <br>";
+            }
+        }
+    } else {
+        echo "取得上傳 multifile 錯誤 <br>";
+    }
+
+    header("location: ./camp_productList.php");
+
+    $conn->close();
 }
-
-header("location: ./camp_productList.php");
-
-$conn->close();
