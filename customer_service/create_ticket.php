@@ -223,17 +223,17 @@
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>新增客訴單</h2>
+                                <h2>新增客服單</h2>
                             </div>
                             <form action="doCreateTicket.php" method="post">
                                 <div class="mb-2">
                                     <label for="customer_servce" class="form-label">*標題</label>
                                     <select id="customer_servce" name="title" class="w-100">
-                                        <option value="campground">營地相關</option>
-                                        <option value="product">用品租借相關</option>
-                                        <option value="web">網站操作相關</option>
-                                        <option value="expense">費用相關</option>
-                                        <option value="other">其他</option>
+                                        <option value="營地相關">營地相關</option>
+                                        <option value="用品租借相關">用品租借相關</option>
+                                        <option value="網站操作相關">網站操作相關</option>
+                                        <option value="費用相關">費用相關</option>
+                                        <option value="其他">其他</option>
                                     </select>
                                 </div>
                                 <div class="mb-2">

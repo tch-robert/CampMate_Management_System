@@ -33,10 +33,10 @@ if (isset($_GET["search"])) {
     }
     $sql = "SELECT * FROM ticket WHERE valid=1
     $orderClause LIMIT $firstItem, $perPage";
-    $pageTitle = "客訴單列表 第 $page 頁";
+    $pageTitle = "客服單列表 第 $page 頁";
 } else {
     $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE valid = 1";
-    $pageTitle = "客訴單列表";
+    $pageTitle = "客服單列表";
     header("location: tickets.php?page=1&order=1");
 }
 
@@ -234,7 +234,7 @@ if (isset($_GET["page"])) {
         </div>
     </header>
     <aside class="aside-left position-fixed vh-100">
-        <ul class="list-unstyled mt-3">
+        <ul class="list-unstyled mt-3 text-truncate">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
@@ -310,13 +310,13 @@ if (isset($_GET["page"])) {
                     <div>
                         排序:
                         <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">編號<i class="fa-solid fa-arrow-down-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">編號<i class="fa-solid fa-arrow-up-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-down-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">尚未回覆</a>
 
-                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">狀態<i class="fa-solid fa-arrow-up-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">已回覆</a>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -339,22 +339,7 @@ if (isset($_GET["page"])) {
                         <?php foreach ($rows as $user) : ?>
                             <tr>
                                 <td scope="row" class="text-center"><?= $user["id"] ?></td>
-                                <td class="text-truncate"><?php
-                                    $title = $user["title"];
-                                    $displayText = "";
-                                    if ($title == "campground") {
-                                        $displayText = "營地相關";
-                                    }if ($title == "product") {
-                                        $displayText = "用品租借相關";
-                                    }if ($title == "web") {
-                                        $displayText = "網站操作相關";
-                                    }if ($title == "expense") {
-                                        $displayText = "費用相關";
-                                    }if ($title == "other") {
-                                        $displayText = "其他";
-                                    } 
-                                    echo $displayText;
-                                    ?></td>
+                                <td class="text-truncate"><?= $user["title"] ?></td>
                                 <td><?= $user["description"] ?></td>
                                 <td class="text-center"><?= $user["user_id"] ?></td>
                                 <td><?= $user["reply"] ?></td>
