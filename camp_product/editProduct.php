@@ -137,6 +137,19 @@ foreach ($L2Rows as $row) {
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label class="h6" for="">商品款式</label>
+                            <div id="stylesContainer">
+                                <div class="form-text"></div>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
+                                    <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary add-style-btn" type="button">新增款式</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
                             <label for="productDes" class="h6 form-label">商品描述</label>
                             <textarea id="productDes" name="productDes" class="textAreaDis form-control"><?= $productRow["product_description"] ?></textarea>
                         </div>
@@ -164,7 +177,7 @@ foreach ($L2Rows as $row) {
                 </div>
 
                 <div class="d-flex justify-content-end gap-3">
-                    <button type="submit" class="btn btn-primary" name="action" value="0">取消</button>
+                    <a href="./camp_productList.php" class="btn btn-primary">取消</a>
                     <button type="submit" class="btn btn-primary" name="action" value="1">儲存編輯</button>
                 </div>
             </div>
@@ -173,6 +186,23 @@ foreach ($L2Rows as $row) {
 
     <!-- 把共通的js叫入 -->
     <?php include("../js.php") ?>
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.add-style-btn', function() {
+                var newStyleInput = `
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
+                    <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
+                </div>`;
+                $('#stylesContainer').append(newStyleInput);
+            });
+
+            $(document).on('click', '.deleteInput', function() {
+                $(this).closest('.input-group').remove();
+            });
+        });
+    </script>
 
 </body>
 
