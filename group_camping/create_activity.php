@@ -7,15 +7,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST['location'];
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
-    $organizer_id = $_POST['organizer_id'];
+    $organizer_email = $_POST['organizer_email'];
     // $organizer_id = $_POST['organizer_id'];
 
-    if (empty($activity_name) || empty($location) || empty($start_date) || empty($end_date) || empty($organizer_id)) {
+    if (empty($activity_name) || empty($location) || empty($start_date) || empty($end_date) || empty($organizer_email)) {
         exit("請填入必要欄位");
     }
 
-    $sql = "INSERT INTO activities (activity_name, description, location, start_date, end_date, organizer_id)
-            VALUES ('$activity_name', '$description', '$location', '$start_date', '$end_date', '$organizer_id')";
+    $sql = "INSERT INTO activities (activity_name, description, location, start_date, end_date, organizer_email)
+            VALUES ('$activity_name', '$description', '$location', '$start_date', '$end_date', '$organizer_email')";
 
     if ($conn->query($sql) === TRUE) {
         echo "成功建立揪團";
@@ -64,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
                 </div>
                 <div class="form-group col-7 mb-2">
-                    <label for="organizer_id" class="form-label">團主 Email</label>
-                    <input type="number" class="form-control" id="organizer_id" name="organizer_id" required>
+                    <label for="organizer_email" class="form-label">團主 Email</label>
+                    <input type="text" class="form-control" id="organizer_email" name="organizer_email" required>
                 </div>
             </div>
 
