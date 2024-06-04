@@ -227,8 +227,14 @@
                             </div>
                             <form action="doCreateTicket.php" method="post">
                                 <div class="mb-2">
-                                    <label for="" class="form-label">*標題</label>
-                                    <input type="text" class="form-control" name="title">
+                                    <label for="customer_servce" class="form-label">*標題</label>
+                                    <select id="customer_servce" name="title" class="w-100">
+                                        <option value="campground">營地相關</option>
+                                        <option value="product">用品租借相關</option>
+                                        <option value="web">網站操作相關</option>
+                                        <option value="expense">費用相關</option>
+                                        <option value="other">其他</option>
+                                    </select>
                                 </div>
                                 <div class="mb-2">
                                     <label for="" class="form-label">*描述</label>

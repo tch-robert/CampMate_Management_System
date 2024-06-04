@@ -5,11 +5,11 @@ $sqlAll = "SELECT * FROM ticket WHERE valid = 1";
 $resultAll = $conn->query($sqlAll);
 $allTicketCount = $resultAll->num_rows;
 
-if(isset($_GET["search"])){
+if (isset($_GET["search"])) {
     $search = $_GET["search"];
     $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE title LIKE '%$search%' AND valid = 1";
     $pageTitle = "$search 的搜尋結果";
-} else if (isset($_GET["page"]) && isset($_GET["order"])){
+} else if (isset($_GET["page"]) && isset($_GET["order"])) {
     $page = $_GET["page"];
     $perPage = 5;
     $firstItem = ($page - 1) * $perPage;
@@ -52,7 +52,7 @@ if (isset($_GET["page"])) {
 <html lang="zh-Hant">
 
 <head>
-    <title><?=$pageTitle ?></title>
+    <title><?= $pageTitle ?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -158,6 +158,7 @@ if (isset($_GET["page"])) {
             margin-left: var(--aside-width);
             margin-top: 10px;
         }
+
         .aside-a-active {
             transform: translate(-3px, -3px);
         }
@@ -323,8 +324,8 @@ if (isset($_GET["page"])) {
             <?php if ($result->num_rows > 0) : ?>
                 <table class="table table-custom table-hover">
                     <thead>
-                        <tr>
-                            <th>id</th>
+                        <tr class="text-truncate">
+                            <th>編號</th>
                             <th>標題</th>
                             <th>描述</th>
                             <th>使用者id</th>
@@ -337,12 +338,27 @@ if (isset($_GET["page"])) {
                     <tbody>
                         <?php foreach ($rows as $user) : ?>
                             <tr>
-                                <td scope="row"><?= $user["id"] ?></td>
-                                <td><?= $user["title"] ?></td>
+                                <td scope="row" class="text-center"><?= $user["id"] ?></td>
+                                <td class="text-truncate"><?php
+                                    $title = $user["title"];
+                                    $displayText = "";
+                                    if ($title == "campground") {
+                                        $displayText = "營地相關";
+                                    }if ($title == "product") {
+                                        $displayText = "用品租借相關";
+                                    }if ($title == "web") {
+                                        $displayText = "網站操作相關";
+                                    }if ($title == "expense") {
+                                        $displayText = "費用相關";
+                                    }if ($title == "other") {
+                                        $displayText = "其他";
+                                    } 
+                                    echo $displayText;
+                                    ?></td>
                                 <td><?= $user["description"] ?></td>
-                                <td><?= $user["user_id"] ?></td>
+                                <td class="text-center"><?= $user["user_id"] ?></td>
                                 <td><?= $user["reply"] ?></td>
-                                <td><?= $user["status"] ?></td>
+                                <td class="text-truncate"><?= $user["status"] ?></td>
                                 <td><?= $user["createtime"] ?></td>
                                 <td><a class="btn btn-warning" href="ticket.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
                             </tr>

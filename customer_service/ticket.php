@@ -270,12 +270,27 @@ if ($result->num_rows > 0) {
                             <?php if ($ticketExit) : ?>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>id</th>
+                                        <th>編號</th>
                                         <td><?= $row["id"] ?></td>
                                     </tr>
                                     <tr>
                                         <th>標題</th>
-                                        <td><?= $row["title"] ?></td>
+                                        <td><?php
+                                    $title = $row["title"];
+                                    $displayText = "";
+                                    if ($title == "campground") {
+                                        $displayText = "營地相關";
+                                    }if ($title == "product") {
+                                        $displayText = "用品租借相關";
+                                    }if ($title == "web") {
+                                        $displayText = "網站操作相關";
+                                    }if ($title == "expense") {
+                                        $displayText = "費用相關";
+                                    }if ($title == "other") {
+                                        $displayText = "其他";
+                                    } 
+                                    echo $displayText;
+                                    ?></td>
                                     </tr>
                                     <tr>
                                         <th>描述</th>
