@@ -63,13 +63,18 @@
                         <label for="" class="form-label">*收款帳號</label>
                         <input type="text" class="form-control" name="pay_account">
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-4">
                         <label for="" class="form-label">*地址</label>
                         <input type="text" class="form-control" name="address">
                     </div>
-                    <button type="submit" class="btn btn-warning mt-2">
-                        送出
-                    </button>
+                    <div class="mb-2 d-flex justify-content-between">
+                        <a href="owner-signin.php" class="btn btn-secondary">
+                            回登入頁面
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            送出
+                        </button>
+                    </div>
 
                 </form>
             </div>

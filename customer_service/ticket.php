@@ -7,16 +7,16 @@ if (!isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-$sql = "SELECT * FROM campground_owner WHERE id = $id AND valid=1";
+$sql = "SELECT * FROM ticket WHERE id = $id AND valid=1";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
 if ($result->num_rows > 0) {
-    $ownerExit = true;
-    $title = $row["name"];
+    $ticketExit = true;
+    $title = $row["id"];
 } else {
-    $ownerExit = false;
-    $title = "營地主不存在";
+    $ticketExit = false;
+    $title = "客訴單不存在";
 }
 
 ?>
@@ -24,7 +24,7 @@ if ($result->num_rows > 0) {
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title><?= $title ?></title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -175,6 +175,7 @@ if ($result->num_rows > 0) {
             text-align: left;
         }
     </style>
+
 </head>
 
 <body>
@@ -219,7 +220,7 @@ if ($result->num_rows > 0) {
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="../customer_service/tickets.php">
+                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -233,14 +234,30 @@ if ($result->num_rows > 0) {
             </li>
         </ul>
     </aside>
-    <main class="main-content ">
+    <main class="main-content">
         <!-- 這裡將顯示動態加載的內容 -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLable">確認刪除</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        確認刪除客訴單?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <a href="ticket_delete.php?id=<?= $row["id"] ?>" class="btn btn-danger">確認</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="owner.php?id=<?= $id ?>" class="btn btn-warning">
-                        <i class="fa-solid fa-arrow-left"></i> 返回
-                    </a>
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -248,50 +265,51 @@ if ($result->num_rows > 0) {
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>編輯資料</h2>
+                                <h2>客訴單資料</h2>
                             </div>
-                            <form action="doUpdateOwner.php" method="post">
+                            <?php if ($ticketExit) : ?>
                                 <table class="table table-bordered">
-                                    <input type="hidden" name="id" value="<?= $row["id"] ?>">
                                     <tr>
                                         <th>id</th>
-                                        <td>
-                                            <?= $row["id"] ?>
-                                        </td>
+                                        <td><?= $row["id"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>*姓名</th>
-                                        <td>
-                                            <input type="text" class="form-control" name="name" value="<?= $row["name"] ?>">
-                                        </td>
+                                        <th>標題</th>
+                                        <td><?= $row["title"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>email</th>
-                                        <td>
-                                            <?= $row["email"] ?>
-                                        </td>
+                                        <th>描述</th>
+                                        <td><?= $row["description"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>*電話</th>
-                                        <td>
-                                            <input type="text" class="form-control" name="phone" value="<?= $row["phone"] ?>">
-                                        </td>
+                                        <th>使用者id</th>
+                                        <td><?= $row["user_id"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>*收款帳號</th>
-                                        <td>
-                                            <input type="text" class="form-control" name="pay_account" value="<?= $row["pay_account"] ?>">
-                                        </td>
+                                        <th>回覆</th>
+                                        <td><?= $row["reply"] ?></td>
                                     </tr>
                                     <tr>
-                                        <th>*地址</th>
-                                        <td>
-                                            <input type="text" class="form-control" name="address" value="<?= $row["address"] ?>">
-                                        </td>
+                                        <th>狀態</th>
+                                        <td><?= $row["status"] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>建立時間</th>
+                                        <td><?= $row["createtime"] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>回覆時間</th>
+                                        <td><?= $row["closetime"] ?></td>
                                     </tr>
                                 </table>
-                                <button class="btn btn-warning" type="submit">送出</button>
-                            </form>
+                                <div class="py-2 d-flex justify-content-between">
+                                    <a class="btn btn-warning" href="ticket-edit.php?id=<?= $row["id"] ?>" title="回覆客訴單">回覆 <i class="fa-solid fa-pen-to-square"></i></a>
+
+                                    <button class="btn btn-danger" title="刪除客訴單" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除 <i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            <?php else : ?>
+                                <h1>客訴單不存在</h1>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -299,10 +317,6 @@ if ($result->num_rows > 0) {
         </div>
     </main>
 
-
-
-
-    <!-- Bootstrap JavaScript Libraries -->
     <?php include("../js.php") ?>
 </body>
 

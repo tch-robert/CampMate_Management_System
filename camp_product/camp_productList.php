@@ -116,6 +116,12 @@ for ($i = 0; $i < count($rows); $i++) {
             /* background: #DBDBDB; */
             border-radius: 10%;
         }
+
+        .productImg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -254,7 +260,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                 <!-- 圖片 -->
                                 <td>
                                     <div class="imgBox ratio ratio-1x1">
-                                        <img class="productImg object-fit-cover" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                        <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
                                     </div>
                                 </td>
 
@@ -345,7 +351,7 @@ for ($i = 0; $i < count($rows); $i++) {
                             <div class="bg-white p-3 shadow-sm">
                                 <!-- 圖片 -->
                                 <div class="ratio ratio-1x1">
-                                    <img class="object-fit-cover" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                    <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
                                 </div>
                                 <!-- 商品狀態 -->
                                 <div class="d-flex mb-2">

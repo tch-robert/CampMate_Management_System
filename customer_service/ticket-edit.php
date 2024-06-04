@@ -7,16 +7,16 @@ if (!isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 
-$sql = "SELECT * FROM campground_owner WHERE id = $id AND valid=1";
+$sql = "SELECT * FROM ticket WHERE id = $id AND valid=1";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
 if ($result->num_rows > 0) {
-    $ownerExit = true;
-    $title = $row["name"];
+    $ticketExit = true;
+    $title = $row["id"];
 } else {
-    $ownerExit = false;
-    $title = "營地主不存在";
+    $ticketExit = false;
+    $title = "客訴單不存在";
 }
 
 ?>
@@ -219,7 +219,7 @@ if ($result->num_rows > 0) {
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="../customer_service/tickets.php">
+                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -238,7 +238,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="owner.php?id=<?= $id ?>" class="btn btn-warning">
+                    <a href="ticket.php?id=<?= $id ?>" class="btn btn-warning">
                         <i class="fa-solid fa-arrow-left"></i> 返回
                     </a>
                 </div>
@@ -248,9 +248,9 @@ if ($result->num_rows > 0) {
                     <div class="profile-card">
                         <div class="profile-info">
                             <div class="text-center">
-                                <h2>編輯資料</h2>
+                                <h2>回覆客訴單</h2>
                             </div>
-                            <form action="doUpdateOwner.php" method="post">
+                            <form action="doUpdateTicket.php" method="post">
                                 <table class="table table-bordered">
                                     <input type="hidden" name="id" value="<?= $row["id"] ?>">
                                     <tr>
@@ -260,33 +260,46 @@ if ($result->num_rows > 0) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>*姓名</th>
+                                        <th>標題</th>
                                         <td>
-                                            <input type="text" class="form-control" name="name" value="<?= $row["name"] ?>">
+                                            <?= $row["title"] ?>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>email</th>
+                                        <th>描述</th>
                                         <td>
-                                            <?= $row["email"] ?>
+                                            <?= $row["description"] ?>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>*電話</th>
+                                        <th>使用者id</th>
                                         <td>
-                                            <input type="text" class="form-control" name="phone" value="<?= $row["phone"] ?>">
+                                            <?= $row["user_id"] ?>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>*收款帳號</th>
+                                        <th>*回覆</th>
                                         <td>
-                                            <input type="text" class="form-control" name="pay_account" value="<?= $row["pay_account"] ?>">
+                                            <input type="text" class="form-control" name="reply" value="<?= $row["reply"] ?>">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>*地址</th>
+                                        <th>*狀態</th>
                                         <td>
-                                            <input type="text" class="form-control" name="address" value="<?= $row["address"] ?>">
+                                            <form>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="status" id="已回覆" value="已回覆">
+                                                    <label class="form-check-label" for="已回覆">
+                                                        已回覆
+                                                    </label>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>建立時間</th>
+                                        <td>
+                                            <?= $row["createtime"] ?>">
                                         </td>
                                     </tr>
                                 </table>

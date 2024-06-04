@@ -20,7 +20,6 @@ $mainPicResult = $conn->query($mainPicSql);
 $mainPicRow = $mainPicResult->fetch_all(MYSQLI_ASSOC);
 
 
-
 //選取商品類別level1階層選取
 $L1Sql = "SELECT product_category.*, product_category_class.parent_id FROM product_category 
 JOIN product_category_class ON product_category.category_id = product_category_class.category_id 
@@ -36,16 +35,6 @@ WHERE product_category_class.parent_id IS NOT NULL
 ORDER BY product_category.category_id ASC";
 $L2Result = $conn->query($L2Sql);
 $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
-
-// 將 L2Rows 依據 parent_id 分組
-$L2Grouped = [];
-foreach ($L2Rows as $row) {
-    $parentId = $row['parent_id'];
-    if (!isset($L2Grouped[$parentId])) {
-        $L2Grouped[$parentId] = [];
-    }
-    $L2Grouped[$parentId][] = $row;
-}
 ?>
 
 <!doctype html>
@@ -93,50 +82,86 @@ foreach ($L2Rows as $row) {
 <body>
     <div class="container">
         <h1 class="my-5">編輯商品</h1>
-        <form class="mb-5" action="./doEditProduct.php?product_id=<?= $product_id ?>" method="post" enctype="multipart/form-data">
+        <form class="mb-5" action="" method="post" enctype="multipart/form-data">
             <div>
                 <!-- 新增商品的表單區域 -->
                 <div class="row justify-content-end mb-4">
                     <h3>基本資訊</h3>
                     <div class="col-11">
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="mainPic" class="h6 form-label">商品主要行銷圖片</label>
+                            <div class="row gap-3 my-3">
+
+                                <!-- 行銷圖片的顯示 -->
+                                <div class="col-2 position-relative border rounded">
+                                    <div class="ratio ratio-1x1">
+                                        <img src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
+                                    </div>
+                                    <input class="d-none" type="number" name="product_id" value="<?= $product_id ?>">
+                                    <button type="submit" name="mainPicDelete" class="deleteImg position-absolute top-0 end-0 d-flex justify-content-center align-items-center" value="<?= $mainPicRow[0]["path"] ?>">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+
+                                <!-- 要加一個判定決定是否要顯示按鈕 -->
+                                <!-- 增加圖片的按鈕 -->
+                                <button type="button" class="btn btn-light addImg col-2 border rounded d-flex justify-content-center align-items-center">
+                                    <i class="fa-regular fa-plus"></i>
+                                </button>
+                            </div>
+
                             <!-- 輸入新檔案 -->
-                            <input id="mainPic" name="mainPic" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp">
-                            <div class="form-text">若要更改行銷圖片，請上傳要更新的圖片（單張）</div>
+                            <input id="mainPic" name="mainPic" class="d-none form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp">
+                            <div id="mainPicPre"></div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="normalPic" class="h6 form-label">商品圖片</label>
+                            <div class="row gap-3 my-3">
+
+                                <!-- 其餘圖片的顯示 -->
+                                <?php for ($i = 1; $i < count($mainPicRow); $i++) : ?>
+                                    <div class="col-2 position-relative border rounded">
+                                        <div class="ratio ratio-1x1">
+                                            <img src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
+                                        </div>
+                                        <button class="deleteImg position-absolute top-0 end-0 d-flex justify-content-center align-items-center">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                <?php endfor; ?>
+
+                                <!-- 要加一個判定決定是否要顯示按鈕 -->
+                                <!-- 增加圖片的按鈕 -->
+                                <button type="button" class="btn btn-light addImg col-2 border rounded d-flex justify-content-center align-items-center">
+                                    <i class="fa-regular fa-plus"></i>
+                                </button>
+                            </div>
+
                             <!-- 輸入新檔案 -->
                             <input id="normalPic" name="normalPic[]" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp" multiple>
-                            <div class="form-text">若要更改商品圖片，請上傳要更新的圖片（最多9張）</div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="productName" class="h6 form-label">商品名稱</label>
                             <input id="productName" name="productName" class="form-control" type="text" value="<?= $productRow["product_name"] ?>">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="productCate" class="h6 form-label">商品分類</label>
                             <select class="form-control" name="productCate" id="productCate">
                                 <option value="" selected disabled hidden><?= $productRow["category_name"] ?></option>
                                 <?php foreach ($L1Rows as $level1) : ?>
-                                    <optgroup label="<?= $level1['category_name'] ?>">
-                                        <?php
-                                        $parentId = $level1['category_id'];
-                                        if (isset($L2Grouped[$parentId])) {
-                                            foreach ($L2Grouped[$parentId] as $level2) : ?>
-                                                <option value="<?= $level2['category_name'] ?>">
-                                                    <?= $level2['category_name'] ?>
-                                                </option>
-                                        <?php endforeach;
-                                        } ?>
+                                    <optgroup label="<?= $level1["category_name"] ?>">
+                                        <?php foreach ($L2Rows as $level2) : ?>
+                                            <option value="<?= $level2["category_name"] ?>">
+                                                <?= $level2["category_name"] ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </optgroup>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="productDes" class="h6 form-label">商品描述</label>
                             <textarea id="productDes" name="productDes" class="textAreaDis form-control"><?= $productRow["product_description"] ?></textarea>
                         </div>
@@ -144,10 +169,10 @@ foreach ($L2Rows as $row) {
                 </div>
 
                 <div class="row justify-content-end mb-4">
-                    <h3>重點規格</h3>
+                    <h3>規格</h3>
                     <div class="col-11">
-                        <div class="mb-3">
-                            <label for="productBrief" class="h6 form-label">規格簡述</label>
+                        <div class="mb-2">
+                            <label for="productBrief" class="h6 form-label">商品簡述</label>
                             <textarea class="textAreaBreif form-control" name="productBrief" id="productBrief"><?= $productRow["product_brief"] ?></textarea>
                         </div>
                     </div>
@@ -156,7 +181,7 @@ foreach ($L2Rows as $row) {
                 <div class="row justify-content-end mb-4">
                     <h3>租賃資訊</h3>
                     <div class="col-11">
-                        <div class="mb-3">
+                        <div class="">
                             <label for="productPrice" class="h6 form-label">租賃單價（每日）</label>
                             <input id="productPrice" class="form-control" type="number" name="productPrice" value="<?= $productRow["product_price"] ?>">
                         </div>
