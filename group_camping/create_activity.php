@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $conn->close();
-    header("Location: activities_list.php"); // 重定向回列表頁面
+    header("location: activities_list.php"); // 重定向回列表頁面
 }
 ?>
 
@@ -41,6 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1 class="mt-4">我要揪團</h1>
+        <!-- <div class="d-flex justify-content-between mb-3">
+            <div>
+            </div>
+            <a href="activities_list.php" class="btn btn-primary">
+                <i class="fa-solid fa-door-open"></i>返回列表
+            </a>
+        </div> -->
+
         <form action="create_activity.php" method="post" class="mb-3">
             <div class="row row-cols-1 mb-1">
                 <div class="form-group col-7 mb-2">
@@ -49,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group col-7 mb-2">
                     <label for="description" class="form-label">簡述</label>
-                    <textarea class="form-control" id="description" name="description" required></textarea>
+                    <textarea rows="4" class="form-control" id="description" name="description" required></textarea>
                 </div>
                 <div class="form-group col-7 mb-2">
                     <label for="location" class="form-label">地點</label>

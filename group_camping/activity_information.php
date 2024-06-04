@@ -92,26 +92,26 @@ $conn->close();
                 </tr>
                 <tr>
                     <th>開始日期</th>
-                    <td><?php echo $row['end_date']; ?></td>
+                    <td><?php echo $row['start_date']; ?></td>
                 </tr>
                 <tr>
                     <th>結束日期</th>
-                    <td><?php echo $row['start_date']; ?></td>
+                    <td><?php echo $row['end_date']; ?></td>
                 </tr>
             </tbody>
         </table>
         <div class="d-flex justify-content-between">
             <div>
                 <a href="join_activity.php?id=<?php echo $row['activity_id']; ?>" class="btn btn-primary">
-                    <i class="fa-solid fa-user-plus"></i> 參加揪團
+                    <i class="fa-solid fa-user-plus"></i> 參加
                 </a>
-                <a href="activities_list.php" class="btn btn-secondary ms-2">
-                    <i class="fa-solid fa-door-open"></i> 編輯揪團
+                <a href="edit_activity.php?id=<?php echo $row['activity_id'] ?>" class="btn btn-secondary ms-2">
+                    <i class="fa-solid fa-pen-to-square"></i> 編輯
                 </a>
             </div>
             <div>
                 <button class="btn btn-danger" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="fa-solid fa-trash-can"></i> 刪除揪團
+                    <i class="fa-solid fa-trash-can"></i> 刪除
                 </button>
             </div>
         </div>
