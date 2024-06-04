@@ -221,7 +221,7 @@ if ($result->num_rows > 0) {
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
+                <a class="d-block px-3 text-decoration-none" href="../customer_service/tickets.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>

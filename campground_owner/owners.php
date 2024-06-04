@@ -242,7 +242,7 @@ if (isset($_GET["page"])) {
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
+                <a class="d-block px-3 text-decoration-none" href="owners.php" data-id="link2">
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
