@@ -138,9 +138,7 @@
                 </a>
             </li>
             <li>
-
-                <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php">
-
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
@@ -166,8 +164,7 @@
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php">
-
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link7">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -182,8 +179,7 @@
         </ul>
     </aside>
     <main class="main-content">
-
-        <!-- 這裡將顯示動態加載的內容 -->
+        <!-- 這裡將顯示其他頁面的內容 -->
     </main>
     <!-- js -->
     <?php include ("../js.php") ?>

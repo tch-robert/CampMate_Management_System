@@ -1,10 +1,10 @@
 <?php
-require_once("../db_connect.php");
+require_once ("../db_connect.php");
 $pageTitle = "優惠券管理";
 
 // 獲取當前頁數，如果沒有指定則默認為第1頁
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$couponsPerPage = 12; // 每頁顯示的優惠券數量
+$couponsPerPage = 10; // 每頁顯示的優惠券數量
 $offset = ($page - 1) * $couponsPerPage;
 
 // 獲取搜尋和篩選條件
@@ -68,7 +68,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>優惠券管理</title>
     <!-- css -->
-    <?php include("../css_neumorphic.php") ?>
+    <?php include ("../css_neumorphic.php") ?>
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
@@ -76,20 +76,23 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             color: var(--secondary-color);
         }
 
-        table {
+        .table-wrapper {
 
-            th.id-col,
-            td.id-col {
-                width: 5%;
-                font-weight: 700;
-                color: var(--secondary-color);
+            table {
+
+                th.id-col,
+                td.id-col {
+                    width: 5%;
+                    font-weight: 700;
+                    color: var(--secondary-color);
+                }
+
+                th.func-col,
+                td.func-col {
+                    width: 15%;
+                }
+
             }
-
-            th.func-col,
-            td.func-col {
-                width: 15%;
-            }
-
         }
 
         .breadcrumb {
@@ -117,7 +120,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
-    <?php include("../index.php") ?>
+    <?php include ("../index.php") ?>
     <main class="main-content">
         <div class="container">
             <!-- 索引 -->
@@ -144,7 +147,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             <!-- 篩選器 -->
             <div class="d-flex justify-content-between align-items-center pb-3">
                 <div>
-                    <?php if ($search || $order || $categoryFilter || ($startDate && $endDate) || $statusFilter) : ?>
+                    <?php if ($search || $order || $categoryFilter || ($startDate && $endDate) || $statusFilter): ?>
                         <a class="btn btn-neumorphic btn-circle me-2" href="coupons-list.php">
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
@@ -152,13 +155,15 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <form action="" class="flex-fill">
                     <div class="input-group-neumorphic">
-                        <input type="text" class="form-control-neumorphic" placeholder="搜尋..." name="search" value="<?= htmlspecialchars($search) ?>">
+                        <input type="text" class="form-control-neumorphic" placeholder="搜尋..." name="search"
+                            value="<?= htmlspecialchars($search) ?>">
                         <button class="btn btn-neumorphic btn-circle" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
                 </form>
-                <button type="button" class="btn btn-neumorphic btn-circle ms-2" data-bs-toggle="modal" data-bs-target="#addCouponModal">
+                <button type="button" class="btn btn-neumorphic btn-circle ms-2" data-bs-toggle="modal"
+                    data-bs-target="#addCouponModal">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
@@ -171,10 +176,12 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             ID :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_asc') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_asc'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($order == 'id_asc') ? 'active' : '' ?>">
                             <i class="fa-solid fa-arrow-down-1-9"></i>
                         </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_desc') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_desc'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($order == 'id_desc') ? 'active' : '' ?>">
                             <i class="fa-solid fa-arrow-up-9-1"></i>
                         </a>
                     </div>
@@ -182,10 +189,12 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             名稱 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_asc') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_asc'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($order == 'name_asc') ? 'active' : '' ?>">
                             <i class="fa-solid fa-arrow-down-a-z"></i>
                         </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_desc') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_desc'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($order == 'name_desc') ? 'active' : '' ?>">
                             <i class="fa-solid fa-arrow-up-z-a"></i>
                         </a>
                     </div>
@@ -193,10 +202,12 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             類別 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '%數折扣'])) ?>" class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '%數折扣') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '%數折扣'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '%數折扣') ? 'active' : '' ?>">
                             <i class="fa-solid fa-percent"></i>
                         </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '金額折抵'])) ?>" class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '金額折抵') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '金額折抵'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '金額折抵') ? 'active' : '' ?>">
                             <i class="fa-solid fa-dollar-sign"></i>
                         </a>
                     </div>
@@ -209,10 +220,14 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <input type="hidden" name="order" value="<?= htmlspecialchars($order) ?>">
                             <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
                             <div class="col-auto">
-                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="start-date" class="form-control-neumorphic form-control-sm flatpickr" name="start" value="<?= htmlspecialchars($startDate) ?>">
+                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="start-date"
+                                    class="form-control-neumorphic form-control-sm flatpickr" name="start"
+                                    value="<?= htmlspecialchars($startDate) ?>">
                             </div>
                             <div class="col-auto">
-                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="end-date" class="form-control-neumorphic form-control-sm flatpickr" name="end" value="<?= htmlspecialchars($endDate) ?>">
+                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="end-date"
+                                    class="form-control-neumorphic form-control-sm flatpickr" name="end"
+                                    value="<?= htmlspecialchars($endDate) ?>">
                             </div>
                             <button type="submit" class="btn btn-neumorphic btn-circle">
                                 <i class="fa-solid fa-calendar-check"></i>
@@ -223,10 +238,12 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             狀態 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '可使用'])) ?>" class="btn btn-neumorphic btn-circle <?= ($statusFilter == '可使用') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '可使用'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($statusFilter == '可使用') ? 'active' : '' ?>">
                             <i class="fa-solid fa-check"></i>
                         </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '已停用'])) ?>" class="btn btn-neumorphic btn-circle <?= ($statusFilter == '已停用') ? 'active' : '' ?>">
+                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '已停用'])) ?>"
+                            class="btn btn-neumorphic btn-circle <?= ($statusFilter == '已停用') ? 'active' : '' ?>">
                             <i class="fa-solid fa-ban"></i>
                         </a>
                     </div>
@@ -251,7 +268,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($rows as $coupon) : ?>
+                        <?php foreach ($rows as $coupon): ?>
                             <tr>
                                 <td class="id-col"><?= htmlspecialchars($coupon["id"]) ?></td>
                                 <td><?= htmlspecialchars($coupon["coupon_name"]) ?></td>
@@ -275,13 +292,16 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                                 <td><?= htmlspecialchars($coupon["status"]) ?></td>
                                 <td class="func-col">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <button type="button" class="btn btn-neumorphic btn-circle" onclick="showCouponDetails(<?= $coupon['id'] ?>)">
+                                        <button type="button" class="btn btn-neumorphic btn-circle"
+                                            onclick="showCouponDetails(<?= $coupon['id'] ?>)">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        <button type="button" class="btn btn-neumorphic btn-circle" onclick="showEditModal(<?= $coupon['id'] ?>)">
+                                        <button type="button" class="btn btn-neumorphic btn-circle"
+                                            onclick="showEditModal(<?= $coupon['id'] ?>)">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
-                                        <button type="button" class="btn btn-neumorphic btn-circle" onclick="showDeleteModal(<?= $coupon['id'] ?>)">
+                                        <button type="button" class="btn btn-neumorphic btn-circle"
+                                            onclick="showDeleteModal(<?= $coupon['id'] ?>)">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
@@ -291,21 +311,52 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     </tbody>
                 </table>
             </div>
+            <!-- 頁碼 -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <!-- 跳轉到最前頁的按鈕 -->
+                    <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>"
+                            aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <?php
+                    $startPage = max(1, $page - 2);
+                    $endPage = min($totalPages, $page + 2);
+
+                    if ($endPage - $startPage < 4) {
+                        if ($startPage == 1) {
+                            $endPage = min(5, $totalPages);
+                        } else {
+                            $startPage = max(1, $totalPages - 4);
+                        }
+                    }
+
+                    for ($i = $startPage; $i <= $endPage; $i++): ?>
                         <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
                             <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>">
                                 <?= $i ?>
                             </a>
                         </li>
                     <?php endfor; ?>
+
+                    <!-- 跳轉到最後頁的按鈕 -->
+                    <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
+                        <a class="page-link"
+                            href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>"
+                            aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
     </main>
     <!-- Add Coupon Modal -->
-    <div class="modal fade coupon-modal" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
+    <div class="modal fade coupon-modal" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -318,7 +369,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <tr>
                                 <th>名稱 : </th>
                                 <td>
-                                    <input type="text" class="form-control" id="addCouponName" name="coupon_name" required>
+                                    <input type="text" class="form-control" id="addCouponName" name="coupon_name"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
@@ -333,37 +385,43 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <tr>
                                 <th>折扣 : </th>
                                 <td>
-                                    <input type="text" class="form-control" id="addCouponDiscount" name="discount" required>
+                                    <input type="text" class="form-control" id="addCouponDiscount" name="discount"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>使用低消金額 : </th>
                                 <td>
-                                    <input type="text" class="form-control" id="addCouponMinCost" name="min_cost" required>
+                                    <input type="text" class="form-control" id="addCouponMinCost" name="min_cost"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>最高折抵金額 : </th>
                                 <td>
-                                    <input type="text" class="form-control" id="addCouponMaxDiscountAmount" name="max_discount_amount" required>
+                                    <input type="text" class="form-control" id="addCouponMaxDiscountAmount"
+                                        name="max_discount_amount" required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>數量 : </th>
                                 <td>
-                                    <input type="text" class="form-control" id="addCouponNum" name="coupon_num" required>
+                                    <input type="text" class="form-control" id="addCouponNum" name="coupon_num"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>起始日期 : </th>
                                 <td>
-                                    <input type="date" class="form-control flatpickr" id="addCouponStartDate" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" name="start_date" required>
+                                    <input type="date" class="form-control flatpickr" id="addCouponStartDate"
+                                        placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" name="start_date" required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>結束日期 : </th>
                                 <td>
-                                    <input type="date" class="form-control flatpickr" id="addCouponEndDate" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" name="end_date" required>
+                                    <input type="date" class="form-control flatpickr" id="addCouponEndDate"
+                                        placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" name="end_date" required>
                                 </td>
                             </tr>
                             <tr>
@@ -387,7 +445,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
     <!--Show Details Modal -->
-    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -405,7 +464,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
     <!-- Edit Modal -->
-    <div class="modal fade coupon-modal" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal fade coupon-modal" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -423,7 +483,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <tr>
                                 <th>名稱</th>
                                 <td>
-                                    <input type="text" class="form-control" id="editCouponName" name="coupon_name" required>
+                                    <input type="text" class="form-control" id="editCouponName" name="coupon_name"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
@@ -438,37 +499,43 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <tr>
                                 <th>折扣</th>
                                 <td>
-                                    <input type="text" class="form-control" id="editCouponDiscount" name="discount" required>
+                                    <input type="text" class="form-control" id="editCouponDiscount" name="discount"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>使用低消金額</th>
                                 <td>
-                                    <input type="text" class="form-control" id="editCouponMinCost" name="min_cost" required>
+                                    <input type="text" class="form-control" id="editCouponMinCost" name="min_cost"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>最高折抵金額</th>
                                 <td>
-                                    <input type="text" class="form-control" id="editCouponMaxDiscountAmount" name="max_discount_amount" required>
+                                    <input type="text" class="form-control" id="editCouponMaxDiscountAmount"
+                                        name="max_discount_amount" required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>數量</th>
                                 <td>
-                                    <input type="text" class="form-control" id="editCouponNum" name="coupon_num" required>
+                                    <input type="text" class="form-control" id="editCouponNum" name="coupon_num"
+                                        required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>起始日期</th>
                                 <td>
-                                    <input type="date" class="form-control flatpickr" id="editCouponStartDate" name="start_date" required>
+                                    <input type="date" class="form-control flatpickr" id="editCouponStartDate"
+                                        name="start_date" required>
                                 </td>
                             </tr>
                             <tr>
                                 <th>結束日期</th>
                                 <td>
-                                    <input type="date" class="form-control flatpickr" id="editCouponEndDate" name="end_date" required>
+                                    <input type="date" class="form-control flatpickr" id="editCouponEndDate"
+                                        name="end_date" required>
                                 </td>
                             </tr>
                             <tr>
@@ -492,7 +559,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
     <!-- Delete Modal -->
-    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -517,11 +585,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 
 
     <!-- js -->
-    <?php include("../js.php") ?>
+    <?php include ("../js.php") ?>
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             flatpickr(".flatpickr", {
                 dateFormat: "Y-m-d"
             });
@@ -534,7 +602,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 data: {
                     id: couponId
                 },
-                success: function(response) {
+                success: function (response) {
                     $('#couponDetails').html(response);
                     $('#couponModal').modal('show');
                 }
@@ -548,7 +616,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 data: {
                     id: couponId
                 },
-                success: function(response) {
+                success: function (response) {
                     let coupon = JSON.parse(response);
                     $('#editCouponId').val(coupon.id);
                     $('#displayCouponId').text(coupon.id);
@@ -573,7 +641,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 data: {
                     id: couponId
                 },
-                success: function(response) {
+                success: function (response) {
                     $('#deleteCouponDetails').html(response);
                     $('#confirmDeleteButton').attr('data-id', couponId);
                     $('#deleteModal').modal('show');
@@ -589,11 +657,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 data: {
                     id: couponId
                 },
-                success: function(response) {
+                success: function (response) {
                     // alert('刪除成功');
                     location.reload();
                 },
-                error: function() {
+                error: function () {
                     alert('刪除失敗');
                 }
             });
@@ -646,11 +714,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     url: 'add-coupon.php',
                     type: 'POST',
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
                         // alert('新增成功');
                         location.reload();
                     },
-                    error: function() {
+                    error: function () {
                         alert('新增失敗');
                     }
                 });
@@ -667,11 +735,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     url: 'update-coupon.php',
                     type: 'POST',
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
                         // alert('更新成功');
                         location.reload();
                     },
-                    error: function() {
+                    error: function () {
                         alert('更新失敗');
                     }
                 });
