@@ -10,7 +10,7 @@ if (isset($_SESSION["owner"])) {
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>CampMate</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -21,6 +21,7 @@ if (isset($_SESSION["owner"])) {
             background: url('https://via.placeholder.com/1920x1080') no-repeat center center fixed;
             background-size: cover;
         }
+
         .login-panel {
             width: 400px;
             margin: 50px auto;
@@ -29,11 +30,28 @@ if (isset($_SESSION["owner"])) {
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .logo {
             display: block;
             margin: 0 auto 20px;
             width: 200px;
             height: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
         }
     </style>
 </head>
@@ -44,9 +62,9 @@ if (isset($_SESSION["owner"])) {
             <img src="../images/logo-search-grid-1x.png" alt="" class="logo">
             <h1 class="h2 mt-2 text-center">營地主登入</h1>
             <form action="doLogin.php" method="post">
-                <div class="input-area">
+                <div class="input-area form-signin">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingEamil" placeholder="" name="email">
+                        <input type="email" class="form-control" id="floatingEamil" placeholder="" name="email">
                         <label for="floatingEamil">Email</label>
                     </div>
                     <div class="form-floating">
@@ -61,7 +79,7 @@ if (isset($_SESSION["owner"])) {
                 <?php unset($_SESSION["errorMsg"]);
                 endif; ?>
                 <div class="form-check my-3">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked >
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
                     <label class="form-check-label" for="flexCheckChecked">
                         記住我
                     </label>

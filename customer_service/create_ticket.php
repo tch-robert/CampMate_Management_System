@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 
 <head>
-    <title>Dashboard</title>
+    <title>Create Owner</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- css -->
-    <?php include ("css_neumorphic.php") ?>
+    <?php include("../css.php") ?>
+    <?php include("../css_neumorphic.php") ?>
     <style>
         :root {
             --aside-width: 250px;
@@ -105,25 +105,58 @@
 
         .main-content {
             margin-left: var(--aside-width);
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
-        .aside-a-active {
-            transform: translate(-3px, -3px);
+        .profile-container {
+            margin-top: 50px;
         }
 
-        .aside-i-active {
-            color: #9ba45c;
-            background: linear-gradient(145deg, #ffefda, #d7c9b8) !important;
-            box-shadow: 2px 2px 8px #baae9f,
-                -2px -2px 8px #fffff9 !important;
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            padding: 30px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .profile-info table {
+            width: 100%;
+        }
+
+        .profile-info th,
+        .profile-info td {
+            padding: 10px 15px;
+        }
+
+        .profile-info th {
+            background-color: #f8f9fa;
+            text-align: left;
+            width: 30%;
+        }
+
+        .profile-info td {
+            background-color: #ffffff;
+            text-align: left;
         }
     </style>
 </head>
 
 <body>
     <header class="main-header d-flex flex-column fixed-top justify-content-center">
-        <a href="http://localhost/campmate/index.php" class="text-decoration-none logo">
+        <a href="" class="text-decoration-none logo">
             <img src="/campmate/images/logo.svg" alt="">
         </a>
         <div class="text">
@@ -133,41 +166,37 @@
     <aside class="aside-left position-fixed vh-100">
         <ul class="list-unstyled mt-3">
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
+                <a class="d-block px-3 text-decoration-none" href="user-list.php">
                     <i class="fa-solid fa-user"></i> <span>一般會員</span>
                 </a>
             </li>
             <li>
-
                 <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php">
-
                     <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link3">
+                <a class="d-block px-3 text-decoration-none" href="campground-management.php">
                     <i class="fa-solid fa-campground"></i> <span>營地訂位管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link4">
+                <a class="d-block px-3 text-decoration-none" href="equipment-rental.php">
                     <i class="fa-solid fa-person-hiking"></i> <span>露營用品租用管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
+                <a class="d-block px-3 text-decoration-none" href="group-system.php">
                     <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php"
-                    data-id="link6">
+                <a class="d-block px-3 text-decoration-none" href="coupons/coupons-list.php">
                     <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php">
-
+                <a class="d-block px-3 text-decoration-none" href="customer-service.php">
                     <i class="fa-solid fa-headset"></i> <span>客服</span>
                 </a>
             </li>
@@ -175,64 +204,49 @@
                 <div class="line"></div>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link8">
+                <a class="d-block px-3 text-decoration-none" href="logout.php">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>登出</span>
                 </a>
             </li>
         </ul>
     </aside>
     <main class="main-content">
-
         <!-- 這裡將顯示動態加載的內容 -->
+        <div class="container profile-container">
+            <div class="py-4 d-flex justify-content-center">
+                <div class="col-lg-6">
+                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客訴單列表</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="text-center">
+                                <h2>新增客訴單</h2>
+                            </div>
+                            <form action="doCreateTicket.php" method="post">
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*標題</label>
+                                    <input type="text" class="form-control" name="title">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*描述</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="" class="form-label">*使用者id</label>
+                                    <input type="text" class="form-control" name="user_id">
+                                </div>
+                                <button class="btn btn-warning" type="submit">送出</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <!-- js -->
-    <?php include ("../js.php") ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // 檢查當前URL是否是首頁URL
-            if (window.location.href === "http://localhost/campmate/index.php") {
-                localStorage.removeItem("activeLinkId");
-            }
-
-            // 恢復上次點擊的active狀態
-            var activeLinkId = localStorage.getItem("activeLinkId");
-            if (activeLinkId) {
-                var activeLink = document.querySelector(`a[data-id="${activeLinkId}"]`);
-                if (activeLink) {
-                    activeLink.classList.add("aside-a-active");
-                    activeLink.querySelector("i").classList.add("aside-i-active");
-                }
-            }
-
-            var listItems = document.querySelectorAll(".aside-left li");
-
-            listItems.forEach(function (li) {
-                li.addEventListener("click", function (event) {
-                    // 移除所有鏈接和圖標的.active樣式
-                    listItems.forEach(function (item) {
-                        var link = item.querySelector("a");
-                        var icon = item.querySelector("i");
-                        if (link) {
-                            link.classList.remove("aside-a-active");
-                        }
-                        if (icon) {
-                            icon.classList.remove("aside-i-active");
-                        }
-                    });
-
-                    // 為被點擊的鏈接和圖標添加.active樣式
-                    var clickedLink = event.currentTarget.querySelector("a");
-                    var clickedIcon = event.currentTarget.querySelector("i");
-                    if (clickedLink) {
-                        clickedLink.classList.add("aside-a-active");
-                        clickedIcon.classList.add("aside-i-active");
-                        // 保存active狀態到localStorage
-                        localStorage.setItem("activeLinkId", clickedLink.getAttribute("data-id"));
-                    }
-                });
-            });
-        });
-    </script>
+    <?php include("../js.php") ?>
 </body>
 
 </html>

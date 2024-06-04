@@ -30,73 +30,120 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <?php include("../css.php") ?>
+    <style>
+        .profile-container {
+            margin-top: 50px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            padding: 30px;
+        }
+
+        .profile-info table {
+            width: 100%;
+        }
+
+        .profile-info th,
+        .profile-info td {
+            padding: 10px 15px;
+        }
+
+        .profile-info th {
+            background-color: #f8f9fa;
+            text-align: left;
+            width: 30%;
+        }
+
+        .profile-info td {
+            background-color: #ffffff;
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="py-2">
-            <a href="owner.php?id=<?= $id ?>" class="btn btn-warning">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-4">
-                <form action="ownerDoUpdate.php" method="post">
-                    <table class="table table-bordered">
-                        <input type="hidden" name="id" value="<?= $row["id"] ?>">
-                        <tr>
-                            <th>id</th>
-                            <td>
-                                <?= $row["id"] ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>姓名</th>
-                            <td>
-                                <?= $row["name"] ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>email</th>
-                            <td>
-                                <?= $row["email"] ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>*密碼</th>
-                            <td>
-                                <input type="text" class="form-control" name="password" value="<?= $row["password"] ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>*確認密碼</th>
-                            <td>
-                                <input type="text" class="form-control" name="repassword" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>*電話</th>
-                            <td>
-                                <input type="text" class="form-control" name="phone" value="<?= $row["phone"] ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>*收款帳號</th>
-                            <td>
-                                <input type="text" class="form-control" name="pay_account" value="<?= $row["pay_account"] ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>*地址</th>
-                            <td>
-                                <input type="text" class="form-control" name="address" value="<?= $row["address"] ?>">
-                            </td>
-                        </tr>
-                    </table>
-                    <button class="btn btn-warning" type="submit">送出</button>
-                </form>
+    <div class="container profile-container">
+        <div class="py-4 d-flex justify-content-center">
+            <div class="col-lg-6">
+                <a href="owner.php?id=<?= $id ?>" class="btn btn-warning">
+                    <i class="fa-solid fa-arrow-left"></i> 返回
+                </a>
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="profile-card">
+                    <div class="profile-info">
+                        <div class="text-center">
+                            <h2>資料修改</h2>
+                        </div>
+                        <form action="ownerDoUpdate.php" method="post">
+                            <table class="table table-bordered">
+                                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                <tr>
+                                    <th>id</th>
+                                    <td>
+                                        <?= $row["id"] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>姓名</th>
+                                    <td>
+                                        <?= $row["name"] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>email</th>
+                                    <td>
+                                        <?= $row["email"] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>*密碼</th>
+                                    <td>
+                                        <input type="password" class="form-control" name="password" value="<?= $row["password"] ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>*確認密碼</th>
+                                    <td>
+                                        <input type="password" class="form-control" name="repassword" value="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>*電話</th>
+                                    <td>
+                                        <input type="text" class="form-control" name="phone" value="<?= $row["phone"] ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>*收款帳號</th>
+                                    <td>
+                                        <input type="text" class="form-control" name="pay_account" value="<?= $row["pay_account"] ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>*地址</th>
+                                    <td>
+                                        <input type="text" class="form-control" name="address" value="<?= $row["address"] ?>">
+                                    </td>
+                                </tr>
+                            </table>
+                            <button class="btn btn-warning" type="submit">送出</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
 
