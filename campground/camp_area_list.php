@@ -103,7 +103,7 @@ $campCount = $result->num_rows;
                     <form action="">
                         <div class="input-group">
                             <input type="hidden" value="<?=$camp_id?>" name="camp_id">
-                            <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
+                            <input type="text" class="form-control" placeholder="輸入營區名稱..." name="search">
                             <button class="btn btn-primary" type="submit">搜尋</button>
                         </div>
                         
