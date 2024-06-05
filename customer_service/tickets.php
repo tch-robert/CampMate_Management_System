@@ -81,7 +81,6 @@ if (isset($_GET["page"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- css -->
     <?php include("../css.php") ?>
-    <?php include("../css_admin.php") ?>
     <style>
         .aside-a-active {
             transform: translate(-3px, -3px);
@@ -149,7 +148,7 @@ if (isset($_GET["page"])) {
 </head>
 
 <body>
-    <?php include("../html_admin.php") ?>
+    <?php include("../index.php") ?>
     <main class="main-content">
         <!-- 這裡將顯示動態加載的內容 -->
         <div class="container">
@@ -248,7 +247,6 @@ if (isset($_GET["page"])) {
     </main>
     <!-- js -->
     <?php include("../js.php") ?>
-    <?php include("../js_admin.php")?>
     <!-- <script>
         // 用於自動篩選
         function submitForm() {

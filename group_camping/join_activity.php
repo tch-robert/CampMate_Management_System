@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $activity_id = $_POST['activity_id'];
     $user_id = $_POST['user_id'];
 
-    $sql = "INSERT INTO participants (activity_id, user_id, status) VALUES ($activity_id, $user_id, 'pending')";
+    $sql = "INSERT INTO activity_participants (activity_id, user_id, status) VALUES ($activity_id, $user_id, 'joined')";
 
     if ($conn->query($sql) === TRUE) {
         echo "成功參加揪團";
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
     header("Location: activities_list.php"); // 重定向回列表頁面
 } else {
-    $activity_id = $_GET['id'];
+    $activity_id = $_GET['activity_id'];
 }
 ?>
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="d-flex justify-content-between mb-3">
             <div>
             </div>
-            <a href="activity_information.php?id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
+            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
                 <i class="fa-solid fa-door-open"></i> 返回揪團
             </a>
         </div>
