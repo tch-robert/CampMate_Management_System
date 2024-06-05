@@ -16,27 +16,20 @@ $result = $stmt->get_result();
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<title>參加名單</title>
+<?php include("../index.php") ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php include("../css.php") ?>
-    <title>參加名單</title>
-</head>
-
-<body>
+<main class="main-content">
     <div class="container">
         <h1 class="mt-4">參加名單</h1>
         <div class="d-flex justify-content-between mb-3">
             <div>
             </div>
-            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
+            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic ms-2">
                 <i class="fa-solid fa-door-open"></i> 返回揪團
             </a>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-wrapper">
             <thead>
                 <tr>
                     <th>團員名稱</th>
@@ -53,7 +46,7 @@ $result = $stmt->get_result();
                             <form action="delete_participant.php" method="post" class="d-flex justify-content-center align-items-center">
                                 <input type="hidden" name="activity_id" value="<?= $activity_id ?>">
                                 <input type="hidden" name="user_id" value="<?= $row['user_id'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">
+                                <button type="submit" class="btn btn-neumorphic">
                                     <i class="fa-solid fa-user-minus"></i>
                                 </button>
                             </form>
@@ -63,12 +56,6 @@ $result = $stmt->get_result();
             </tbody>
         </table>
     </div>
+</main>
 
-    <?php include("../js.php") ?>
-</body>
-
-</html>
-
-<?php
-$conn->close();
-?>
+<?php $conn->close() ?>
