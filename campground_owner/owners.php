@@ -1,5 +1,5 @@
 <?php
-require_once("../db_connect.php");
+require_once ("../db_connect.php");
 
 $sqlAll = "SELECT * FROM campground_owner WHERE valid = 1";
 $resultAll = $conn->query($sqlAll);
@@ -57,8 +57,8 @@ if (isset($_GET["page"])) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <?php include("../css.php") ?>
-    
+    <?php include ("../css.php") ?>
+
     <style>
         .aside-a-active {
             transform: translate(-3px, -3px);
@@ -127,13 +127,7 @@ if (isset($_GET["page"])) {
 </head>
 
 <body>
-<<<<<<< HEAD
-<?php include("../index.php") ?>
-=======
-
-<?php include("../html_admin.php") ?>
-
->>>>>>> e47231a3e6ccb485d6453d1ede57a8dc4c5a715e
+    <?php include ("../index.php") ?>
     <main class="main-content">
         <!-- 這裡將顯示其他頁面的內容 -->
         <div class="container">
@@ -141,7 +135,7 @@ if (isset($_GET["page"])) {
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <?php if (isset($_GET["search"])) : ?>
+                        <?php if (isset($_GET["search"])): ?>
                             <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
@@ -149,7 +143,8 @@ if (isset($_GET["page"])) {
                         <form action="">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search..." name="search">
-                                <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <button class="btn btn-warning" type="submit"><i
+                                        class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
                         <a class="btn btn-warning" href="create-owner.php"><i class="fa-solid fa-user-plus"></i></a>
@@ -160,22 +155,34 @@ if (isset($_GET["page"])) {
                 <div>
                     共 <?= $ownerCount ?> 人
                 </div>
-                <?php if (isset($_GET["page"])) : ?>
+                <?php if (isset($_GET["page"])): ?>
                     <div>
                         排序:
                         <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=1"
+                                class="btn btn-warning <?php if ($order == 1)
+                                    echo "active"; ?>">id<i
+                                    class="fa-solid fa-arrow-down-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=2"
+                                class="btn btn-warning <?php if ($order == 2)
+                                    echo "active"; ?>">id<i
+                                    class="fa-solid fa-arrow-up-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">姓名<i class="fa-solid fa-arrow-down-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=3"
+                                class="btn btn-warning <?php if ($order == 3)
+                                    echo "active"; ?>">姓名<i
+                                    class="fa-solid fa-arrow-down-a-z"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">姓名<i class="fa-solid fa-arrow-up-a-z"></i></a>
+                            <a href="?page=<?= $page ?>&order=4"
+                                class="btn btn-warning <?php if ($order == 4)
+                                    echo "active"; ?>">姓名<i
+                                    class="fa-solid fa-arrow-up-a-z"></i></a>
                         </div>
                     </div>
                 <?php endif; ?>
             </div>
-            <?php if ($result->num_rows > 0) : ?>
+            <?php if ($result->num_rows > 0): ?>
                 <table class="table table-custom table-hover">
                     <thead>
                         <tr>
@@ -187,34 +194,36 @@ if (isset($_GET["page"])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($rows as $user) : ?>
+                        <?php foreach ($rows as $user): ?>
                             <tr>
                                 <td scope="row"><?= $user["id"] ?></td>
                                 <td><?= $user["name"] ?></td>
                                 <td><?= $user["email"] ?></td>
                                 <td><?= $user["phone"] ?></td>
-                                <td><a class="btn btn-warning" href="owner.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                <td><a class="btn btn-warning" href="owner.php?id=<?= $user["id"] ?>"><i
+                                            class="fa-solid fa-eye"></i></a></td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
                 </table>
-                <?php if (isset($_GET["page"])) : ?>
+                <?php if (isset($_GET["page"])): ?>
                     <nav aria-label="Page ">
                         <ul class="pagination pagination-shadow">
-                            <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                                <li class="page-item"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a></li>
+                            <?php for ($i = 1; $i <= $pageCount; $i++): ?>
+                                <li class="page-item"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a>
+                                </li>
                             <?php endfor; ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
-            <?php else : ?>
+            <?php else: ?>
                 沒有營地主
             <?php endif; ?>
 
         </div>
     </main>
     <!-- js -->
-    <?php include("../js.php") ?>
+    <?php include ("../js.php") ?>
 
 
 </body>
