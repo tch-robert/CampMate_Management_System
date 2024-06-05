@@ -1,7 +1,7 @@
 <?php
 require_once("../db_connect.php");
 
-$activity_id = $_GET['id'];
+$activity_id = $_GET['activity_id'];
 
 $sql = "SELECT a.*, u.username, u.email 
         FROM activities a 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
     $conn->close();
 
-    header("location: activity_information.php?id=" . $activity_id);
+    header("location: activity_information.php?activity_id=" . $activity_id);
 endif;
 
 
@@ -111,7 +111,7 @@ endif;
             <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-pen-to-square"></i> 確認變更
             </button>
-            <a href="activity_information.php?id=<?= $activity_id ?>" class="btn btn-secondary ms-2">
+            <a href="activity_information.php?activity_id=<?= $activity_id ?>" class="btn btn-secondary ms-2">
                 <i class="fa-solid fa-xmark"></i> 取消變更
             </a>
         </form>

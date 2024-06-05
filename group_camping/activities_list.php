@@ -41,7 +41,9 @@ $userCount = $result->num_rows;
                 </form>
 
                 <?php if (isset($_GET["search"])) : ?>
-                    <a href="activities_list.php" class="btn btn-primary"><i class="fa-solid fa-right-from-bracket"></i> 返回列表</a>
+                    <a href="activities_list.php" class="btn btn-secondary">
+                        <i class="fa-solid fa-right-from-bracket"></i> 返回列表
+                    </a>
                 <?php else : ?>
                     <a href="create_activity.php" class="btn btn-primary">
                         <i class="fa-solid fa-hand"></i> 我要揪團
@@ -61,7 +63,7 @@ $userCount = $result->num_rows;
                     <?php endif; ?>
                     <div>
                     </div>
-                    <a href="../index.php" class="btn btn-primary">
+                    <a href="../index.php" class="btn btn-secondary">
                         <i class="fa-solid fa-house"></i> 返回首頁
                     </a>
 
@@ -95,7 +97,7 @@ $userCount = $result->num_rows;
                             <td><?= $row["start_date"] ?></td>
                             <td><?= $row["end_date"] ?></td>
                             <td class="d-flex justify-content-center align-items-center">
-                                <a href='activity_information.php?id=<?= $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
+                                <a href='activity_information.php?activity_id=<?= $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
                                     <i class='fa-solid fa-circle-info'></i>
                                 </a>
                             </td>
@@ -103,7 +105,7 @@ $userCount = $result->num_rows;
                     <?php endwhile; ?>
                 </tbody>
             <?php else : ?>
-                沒有關於<?= $search; ?>的活動
+                沒有關於<?= $search ?>的活動
             <?php endif; ?>
 
             <?php $conn->close(); ?>
