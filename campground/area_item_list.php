@@ -16,7 +16,7 @@ $allItemCount = $resultAll->num_rows;
 
 if(isset($_GET["search"])){
     $search=$_GET["search"];
-    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item 
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, area_item.path AS itemPath, camp_area.area_name AS areaName FROM camp_area_item 
     JOIN area_item ON camp_area_item.item_id = area_item.id 
     JOIN camp_area ON camp_area_item.area_id = camp_area.id
     WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 AND itemName LIKE '%$search%'
@@ -43,7 +43,7 @@ if(isset($_GET["search"])){
             $orderClause= "ORDER BY itemName DESC";
             break;
     }
-    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item 
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, area_item.path AS itemPath, camp_area.area_name AS areaName FROM camp_area_item 
     JOIN area_item ON camp_area_item.item_id = area_item.id 
     JOIN camp_area ON camp_area_item.area_id = camp_area.id
     WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 
@@ -52,7 +52,7 @@ if(isset($_GET["search"])){
 
     $pageTitle="營地商品列表，第 $page 頁";
 }else{
-    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, camp_area.area_name AS areaName FROM camp_area_item
+    $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, area_item.path AS itemPath, camp_area.area_name AS areaName FROM camp_area_item
     JOIN area_item ON camp_area_item.item_id = area_item.id 
     JOIN camp_area ON camp_area_item.area_id = camp_area.id
     WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 ";
@@ -95,6 +95,13 @@ $itemCount = $result->num_rows;
             .card {
             border-radius: .5rem;
             }
+
+            img {
+                max-width: 50px; /* Replace with desired width */
+                max-height: 50px; /* Replace with desired height */
+                display: block; /* Ensure the image takes up the full width and height of its container */
+                
+                }
         </style>
     </head>
 
@@ -109,6 +116,12 @@ $itemCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <div class="mb-3">
+                    <a href="camp_area_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回</a>
+                </div>
+                <div class="mb-3">
+                <a class="btn btn-primary" href="create_area_item.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>">新增 <i class="fa-solid fa-plus"></i></a>
+            </div>
             <?php if($result->num_rows > 0): ?>
             
             <?php if(isset($_GET["search"])): ?>
@@ -125,8 +138,7 @@ $itemCount = $result->num_rows;
                     </div>
                     </form>
                 </div>
-                <hr>
-                <a class="btn btn-primary" href="create_campground_info.php">新增 <i class="fa-solid fa-plus"></i></a>
+                
             </div>
             <table class="table table-hover mb-3" >
                 <thead>
@@ -134,9 +146,10 @@ $itemCount = $result->num_rows;
                         <th class="text-center"></th>
                         <th >商品名稱 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
                         <th>商品價格 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
+                        <th>商品圖</th>
                         <th>商品狀態</th>
                         <th class="text-center">編輯</th>
-                        <th class="text-center">圖片</th>
+                        <th class="text-center">其他圖片</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,8 +159,14 @@ $itemCount = $result->num_rows;
                         <td class="text-center"><?php $index+=1; echo $index; ?></td>
                         <td><?=$item["itemName"]?></td>
                         <td><?=$item["itemPrice"]?></td>
+                        <td>
+                            
+                                <img class="object-fit-cover" src="<?=$item['itemPath']?>" alt="">
+                            
+                        </td>
                         <td><?=$item["status"]?></td>
-                        <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-campground"></i></a></td>
+                        
+                        <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a></td>
                         <td class="text-center"><a class="btn btn-primary" href="campground.php?id=<?=$camp["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
                     </tr>
                     <?php endforeach; ?>

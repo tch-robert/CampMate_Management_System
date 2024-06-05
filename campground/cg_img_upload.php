@@ -86,6 +86,7 @@ $pageTitle=$rowCamp["campground_name"];
                                     <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             </div>
+                        <?php endforeach ?>
                         </div>
                     
                         </div>
@@ -112,7 +113,7 @@ $pageTitle=$rowCamp["campground_name"];
                                 </div>
                             </div>
                             </div>
-                        <?php endforeach ?>
+                        
                         </div>
                     </div>
 
