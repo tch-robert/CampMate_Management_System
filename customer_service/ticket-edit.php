@@ -30,7 +30,6 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <?php include("../css.php") ?>
-    <?php include("../css_admin.php") ?>
     <style>
         .profile-container {
             margin-top: 50px;
@@ -79,7 +78,7 @@ if ($result->num_rows > 0) {
 </head>
 
 <body>
-    <?php include("../html_admin.php") ?>
+    <?php include("../index.php") ?>
     <main class="main-content ">
         <!-- 這裡將顯示動態加載的內容 -->
         <div class="container profile-container">
@@ -164,7 +163,6 @@ if ($result->num_rows > 0) {
 
     <!-- Bootstrap JavaScript Libraries -->
     <?php include("../js.php") ?>
-    <?php include("../js_admin.php")?>
 </body>
 
 </html>
