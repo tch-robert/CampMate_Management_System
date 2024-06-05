@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- css -->
-    <?php include("css_neumorphic.php") ?>
+    <?php include ("css_neumorphic.php") ?>
     <style>
         :root {
             --aside-width: 250px;
@@ -123,7 +123,7 @@
 
 <body>
     <header class="main-header d-flex flex-column fixed-top justify-content-center">
-        <a href="http://localhost/campmate/index.php" class="text-decoration-none logo">
+        <a href="http://localhost/campmate/chart/chart.php" class="text-decoration-none logo">
             <img src="/campmate/images/logo.svg" alt="">
         </a>
         <div class="text">
@@ -134,40 +134,38 @@
         <ul class="list-unstyled mt-3">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
-                    <i class="fa-solid fa-user"></i> <span>一般會員</span>
+                    <i class="fa-solid fa-user me-3"></i><span>一般會員管理</span>
                 </a>
             </li>
             <li>
-
-                <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php">
-
-                    <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
+                    <i class="fa-solid fa-user-tie me-3"></i><span>營地主管理</span>
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link3">
-                    <i class="fa-solid fa-campground"></i> <span>營地訂位管理</span>
+                    <i class="fa-solid fa-campground me-3"></i><span>營地訂位管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/camp_product/camp_productList.php" data-id="link4">
-                    <i class="fa-solid fa-person-hiking"></i> <span>露營用品租用管理</span>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link4">
+                    <i class="fa-solid fa-fire-burner me-3"></i><span>露營用品租用管理</span>
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
-                    <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
+                    <i class="fa-solid fa-people-roof me-3"></i><span>揪團管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
-                    <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php"
+                    data-id="link6">
+                    <i class="fa-solid fa-ticket me-3"></i><span>優惠券管理</span>
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php">
-
-                    <i class="fa-solid fa-headset"></i> <span>客服</span>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link7">
+                    <i class="fa-solid fa-headset me-3"></i><span>客服管理</span>
                 </a>
             </li>
             <li>
@@ -175,19 +173,27 @@
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link8">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>登出</span>
+                    <i class="fa-solid fa-arrow-right-from-bracket me-3"></i><span>登出</span>
                 </a>
             </li>
         </ul>
     </aside>
     <main class="main-content">
-
-        <!-- 這裡將顯示動態加載的內容 -->
+        <!-- 這裡將顯示其他頁面的內容 -->
     </main>
     <!-- js -->
-    <?php include("../js.php") ?>
+    <?php include ("../js.php") ?>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        // 獲取當前網址
+        const currentUrl = window.location.href;
+
+        // 檢查當前網址是否為指定的網址之一
+        if (currentUrl === "http://localhost/campmate/" || currentUrl === "http://localhost/campmate/index.php") {
+            // 重新導向到新的網址
+            window.location.href = "http://localhost/campmate/chart/chart.php";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
             // 檢查當前URL是否是首頁URL
             if (window.location.href === "http://localhost/campmate/index.php") {
                 localStorage.removeItem("activeLinkId");
@@ -205,10 +211,10 @@
 
             var listItems = document.querySelectorAll(".aside-left li");
 
-            listItems.forEach(function(li) {
-                li.addEventListener("click", function(event) {
+            listItems.forEach(function (li) {
+                li.addEventListener("click", function (event) {
                     // 移除所有鏈接和圖標的.active樣式
-                    listItems.forEach(function(item) {
+                    listItems.forEach(function (item) {
                         var link = item.querySelector("a");
                         var icon = item.querySelector("i");
                         if (link) {
