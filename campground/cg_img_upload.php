@@ -1,4 +1,5 @@
 <?php
+include("session_check_login.php");
 require_once("../db_connect.php");
 
 if(!isset($_GET["camp_id"])){
@@ -49,32 +50,32 @@ $pageTitle=$rowCamp["campground_name"];
 
     <body>
 
-        <h1>營地主後台</h1>
-        <hr>
+        <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
 
 
             <div class="container">
-                <h4 class="mb-3"><?=$pageTitle?></h4>
-                <div class="row">
-                    <form action="doUpload.php?camp_id=<?=$camp_id?>" method="post" id="first_page" enctype="multipart/form-data">
-
-                    <div class="col-12 mb-3">
-                        <label class="form-label">名稱</label>
-                        <input type="text" class="form-control" name="name">
-                    </div>
-
-                    <div class="col-12 mb-3">
-                        <label for="form-label" class="form-label">上傳營地照片</label>
-                        <input class="form-control" type="file" name="file">
-                    </div>
-                    <div class="mb-3">
-                        <button class="btn btn-primary" type="submit">送出</button>
-                    </div>
-                    </form>
                 
-                    <div class="col-lg-12">
+                <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                        <h4 class="mb-3"><?=$pageTitle?></h4>
+                        <table class="table table-hover mb-3">
+                            <form action="doUpload.php?camp_id=<?=$camp_id?>" method="post" id="first_page" enctype="multipart/form-data">
+                                <input type="hidden" class="form-control" name="name">
+                            
+                            <tr>
+                                <label for="form-label" class="form-label">上傳營地照片</label>
+                                <input class="form-control" type="file" name="file">
+                            </tr>
+                            <div class="my-3">
+                                <button class="btn btn-primary" type="submit">送出</button>
+                            </div>
+                            </form>
+                        </table>
+
                         <div class="row g-4">
                         <?php foreach($rows as $image): ?>
                             <div class="col-lg-2 col-md-3">
@@ -82,10 +83,17 @@ $pageTitle=$rowCamp["campground_name"];
                                     <img class="object-fit-cover c_img" src="<?=$image['path']?>" alt="">
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                    >Delete <i class="fa-solid fa-trash-can"></i></button>
+                                    <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             </div>
+                        <?php endforeach ?>
+                        </div>
+                    
+                        </div>
+                    </div>
+                </div>
+                
+                    
 
                             <!-- Modal -->
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -105,7 +113,7 @@ $pageTitle=$rowCamp["campground_name"];
                                 </div>
                             </div>
                             </div>
-                        <?php endforeach ?>
+                        
                         </div>
                     </div>
 

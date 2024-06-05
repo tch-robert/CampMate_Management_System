@@ -1,6 +1,7 @@
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  background-color: #baad9c;
 }
 
 html {
@@ -62,3 +63,17 @@ main {
   overflow-y: auto;
 }
 
+.title{
+  background-color: rgb(38, 35, 35);
+  height: 70px;
+  color: white;
+}
+
+.card{
+  margin: 50px;
+ 
+}
+.card-body{
+  padding: 50px;
+  
+}

@@ -133,6 +133,141 @@ for ($i = 0; $i < count($rows); $i++) {
     <?php include("../css.php") ?>
 
     <style>
+        :root {
+            --primary-color: #e3dcd3;
+            --secondary-color: #9ba45c;
+            --shadow-color: #9a968f;
+            --highlight-color: #ffffff;
+            --font-color: #2d2d2d;
+            --input-padding: 10px;
+            --border-radius: 36px;
+            --aside-width: 250px;
+            --header-height: 186px;
+        }
+
+        body {
+            font-family: "Montserrat", "Noto Sans TC";
+            background: var(--primary-color);
+            color: var(--font-color);
+        }
+
+        .main-header {
+            width: var(--aside-width);
+            background: var(--secondary-color);
+
+            .logo,
+            .text {
+                margin-left: 30px;
+                margin-right: 30px;
+                margin-top: 20px;
+                border-radius: 24px;
+            }
+
+            .logo {
+                padding: 30px 20px;
+                background: #9ba45c;
+                box-shadow: 6px 6px 10px #798048,
+                    -6px -6px 10px #bdc870;
+
+                &:hover {
+                    box-shadow: inset 6px 6px 10px #798048,
+                        inset -6px -6px 10px #bdc870;
+                }
+            }
+
+            .text {
+                margin-bottom: 20px;
+                text-align: center;
+                padding: 9px;
+                font-size: 14px;
+                color: var(--primary-color);
+                background: #9ba45c;
+                box-shadow: inset 6px 6px 10px #798048,
+                    inset -6px -6px 10px #bdc870;
+            }
+        }
+
+        .aside-left {
+            padding: var(--header-height) 20px 0 20px;
+            width: var(--aside-width);
+            top: 0;
+            overflow: auto;
+            background: var(--secondary-color);
+
+            li {
+                margin-bottom: 18px;
+
+                a {
+                    transition: 0.3s ease;
+                    color: #fff;
+                    letter-spacing: 1px;
+
+                    &:hover {
+                        transform: translate(-3px, -3px);
+
+                        i {
+                            color: #9ba45c;
+                            background: linear-gradient(145deg, #ffefda, #d7c9b8);
+                            box-shadow: 2px 2px 8px #baae9f,
+                                -2px -2px 8px #fffff9;
+                        }
+                    }
+                }
+
+                i {
+                    width: 48px;
+                    height: 48px;
+                    text-align: center;
+                    transition: 0.3s ease;
+                    padding: 15px;
+                    margin-right: 10px;
+                    border-radius: 16px;
+                    background: linear-gradient(145deg, #a6af62, #8c9453);
+                    box-shadow: 6px 6px 12px #848b4e,
+                        -6px -6px 12px #b2bd6a;
+                }
+
+                span {
+                    font-size: 12px;
+                }
+
+                .line {
+                    margin: 0 16px;
+                    border: none;
+                    height: 1px;
+                    background: var(--primary-color);
+                }
+            }
+        }
+
+        .main-content {
+            margin-left: var(--aside-width);
+            margin-top: 20px;
+        }
+
+        .aside-a-active {
+            transform: translate(-3px, -3px);
+        }
+
+        .aside-i-active {
+            color: #9ba45c;
+            background: linear-gradient(145deg, #ffefda, #d7c9b8) !important;
+            box-shadow: 2px 2px 8px #baae9f,
+                -2px -2px 8px #fffff9 !important;
+        }
+
+        /* 商品列表頁面css */
+        .nav-tabs .nav-link {
+            opacity: 60%;
+            color: var(--font-color);
+        }
+
+        /* 自訂active標籤的背景顏色 */
+        .nav-tabs .nav-link.active {
+            opacity: 100%;
+            color: var(--font-color);
+        }
+
         .addP {
             height: 40px;
         }
@@ -169,93 +304,152 @@ for ($i = 0; $i < count($rows); $i++) {
 </head>
 
 <body>
-    <div class="container">
-        <!-- 頁面大標題＆新增商品 -->
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <h1>我的商品</h1>
-            <a href="./addProduct.php" class="addP btn btn-primary">
-                <i class="fa-solid fa-plus"></i> 新增商品
-            </a>
+    <header class="main-header d-flex flex-column fixed-top justify-content-center">
+        <a href="http://localhost/campmate/index.php" class="text-decoration-none logo">
+            <img src="/campmate/images/logo.svg" alt="">
+        </a>
+        <div class="text">
+            Hi, Admin
         </div>
+    </header>
+    <aside class="aside-left position-fixed vh-100">
+        <ul class="list-unstyled mt-3">
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
+                    <i class="fa-solid fa-user"></i> <span>一般會員</span>
+                </a>
+            </li>
+            <li>
 
-        <!-- 商品狀態標籤列 -->
-        <nav>
-            <ul class="nav nav-tabs">
-                <?php if (isset($_GET["viewMode"])) {
-                    switch ($viewMode) {
-                        case 1:
-                            $viewNum = "viewMode=1";
-                            break;
-                        case 2:
-                            $viewNum = "viewMode=2";
-                            break;
-                    }
-                } else {
-                    $viewNum = "viewMode=1";
-                } ?>
-                <li class="nav-item">
-                    <a class="nav-link 
-                    <?php if (!isset($_GET["statusPage"]) || $_GET["statusPage"] == 2) echo "active" ?>
-                    " href="./camp_productList.php?statusPage=2&<?= $viewNum ?>">所有商品</a>
-                </li>
+                <a class="d-block px-3 text-decoration-none" href="../campmate/campground_owner/owners.php">
 
-                <!-- 用for迴圈讓status可以倒序地跑出來 -->
-                <?php for ($i = count($staRows) - 1; $i >= 0; $i--) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link 
-                        <?php if (isset($_GET["statusPage"]) && $_GET["statusPage"] == $staRows[$i]["p_status_id"]) echo "active"; ?>
-                        " href="./camp_productList.php?statusPage=<?= $staRows[$i]["p_status_id"] ?>&<?= $viewNum ?>">
-                            <?= $staRows[$i]["p_status_name"] ?>
-                        </a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </nav>
+                    <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
+                </a>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link3">
+                    <i class="fa-solid fa-campground"></i> <span>營地訂位管理</span>
+                </a>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/camp_product/camp_productList.php" data-id="link4">
+                    <i class="fa-solid fa-person-hiking"></i> <span>露營用品租用管理</span>
+                </a>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
+                    <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
+                </a>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
+                    <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
+                </a>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php">
 
-        <div class="bg-white border border-top-0 rounded-bottom p-4">
-            <!-- 搜尋功能 -->
-            <div class="row justify-content-end">
-                <div class="col-4">
-                    <form action="">
-                        <div class="d-flex mb-3 input-group">
-                            <input class="form-control" type="text" placeholder="搜尋商品" name="search">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <i class="fa-solid fa-headset"></i> <span>客服</span>
+                </a>
+            </li>
+            <li>
+                <div class="line"></div>
+            </li>
+            <li>
+                <a class="d-block px-3 text-decoration-none" href="" data-id="link8">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>登出</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    <main class="main-content">
+        <div class="container">
+            <!-- 頁面大標題＆新增商品 -->
+            <div class="d-flex justify-content-between align-items-center my-4">
+                <h1>我的商品</h1>
+                <a href="./addProduct.php" class="addP btn btn-primary shadow">
+                    <i class="fa-solid fa-plus"></i> 新增商品
+                </a>
             </div>
 
-            <!-- 商品數量＆檢視方式 -->
-            <div class="d-flex justify-content-between mb-3">
-                <h4>
-                    <?php if (isset($_GET["search"]) && !empty($search)) echo "<span class=\"fs-3\">$search</span> 的搜尋結果，" ?>
-                    共 <?= count($allRows) ?> 件商品
-                    <span class="fs-5">
-                        <?php if ($countRows > $eachPageCount) echo ", 每頁" . $eachPageCount . "件"; ?>
-                    </span>
-                </h4>
+            <!-- 商品狀態標籤列 -->
+            <nav>
+                <ul class="nav nav-tabs">
+                    <?php if (isset($_GET["viewMode"])) {
+                        switch ($viewMode) {
+                            case 1:
+                                $viewNum = "viewMode=1";
+                                break;
+                            case 2:
+                                $viewNum = "viewMode=2";
+                                break;
+                        }
+                    } else {
+                        $viewNum = "viewMode=1";
+                    } ?>
+                    <li class="nav-item px-1 m-0">
+                        <a class="bg-light nav-link 
+                    <?php if (!isset($_GET["statusPage"]) || $_GET["statusPage"] == 2) echo "active" ?>
+                    " href="./camp_productList.php?statusPage=2&<?= $viewNum ?>">所有商品</a>
+                    </li>
 
-                <!-- 檢視方式切換 -->
-                <?php if (isset($_GET["statusPage"])) {
-                    switch ($status_page_id) {
-                        case 2:
-                            $statusNum = "statusPage=2";
-                            break;
-                        case 1:
-                            $statusNum = "statusPage=1";
-                            break;
-                        case 0:
-                            $statusNum = "statusPage=0";
-                            break;
-                    }
-                } else {
-                    $statusNum = "statusPage=2";
-                } ?>
+                    <!-- 用for迴圈讓status可以倒序地跑出來 -->
+                    <?php for ($i = count($staRows) - 1; $i >= 0; $i--) : ?>
+                        <li class="nav-item px-1 m-0">
+                            <a class="bg-light nav-link 
+                        <?php if (isset($_GET["statusPage"]) && $_GET["statusPage"] == $staRows[$i]["p_status_id"]) echo "active"; ?>
+                        " href="./camp_productList.php?statusPage=<?= $staRows[$i]["p_status_id"] ?>&<?= $viewNum ?>">
+                                <?= $staRows[$i]["p_status_name"] ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
 
-                <div class="btn-group">
-                    <a href="./camp_productList.php?
+            <div class="bg-light border border-top-0 rounded-bottom p-4 pb-5 m-0">
+                <!-- 搜尋功能 -->
+                <div class="row justify-content-end">
+                    <div class="col-4">
+                        <form action="">
+                            <div class="d-flex mb-3 input-group">
+                                <input class="form-control" type="text" placeholder="搜尋商品" name="search">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 商品數量＆檢視方式 -->
+                <div class="d-flex justify-content-between mb-3">
+                    <h4>
+                        <?php if (isset($_GET["search"]) && !empty($search)) echo "<span class=\"fs-3\">$search</span> 的搜尋結果，" ?>
+                        共 <?= count($allRows) ?> 件商品
+                        <span class="fs-5">
+                            <?php if ($countRows > $eachPageCount) echo ", 每頁" . $eachPageCount . "件"; ?>
+                        </span>
+                    </h4>
+
+                    <!-- 檢視方式切換 -->
+                    <?php if (isset($_GET["statusPage"])) {
+                        switch ($status_page_id) {
+                            case 2:
+                                $statusNum = "statusPage=2";
+                                break;
+                            case 1:
+                                $statusNum = "statusPage=1";
+                                break;
+                            case 0:
+                                $statusNum = "statusPage=0";
+                                break;
+                        }
+                    } else {
+                        $statusNum = "statusPage=2";
+                    } ?>
+
+                    <div class="btn-group">
+                        <a href="./camp_productList.php?
                 <?php if (isset($_GET["search"])) {
                 } else {
                     echo "$statusNum&";
@@ -265,10 +459,10 @@ for ($i = 0; $i < count($rows); $i++) {
                 " class="btn btn-outline-primary 
                 <?php if ($viewMode == 1) echo "active" ?>
                 ">
-                        <i class="fa-solid fa-bars"></i>
-                    </a>
+                            <i class="fa-solid fa-bars"></i>
+                        </a>
 
-                    <a href="./camp_productList.php?
+                        <a href="./camp_productList.php?
                 <?php if (isset($_GET["search"])) {
                 } else {
                     echo "$statusNum&";
@@ -278,229 +472,301 @@ for ($i = 0; $i < count($rows); $i++) {
                 " class="btn btn-outline-primary 
                 <?php if ($viewMode == 2) echo "active" ?>
                 ">
-                        <i class=" fa-solid fa-grip"></i>
-                    </a>
+                            <i class=" fa-solid fa-grip"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 商品列表 表單區域 -->
+                <!-- 商品列表 表單區域 -->
 
-            <!-- 商品列表-表單檢視方式 -->
-            <?php if ($viewMode == 1) : ?>
-                <!-- 列表表頭 -->
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>圖片</th>
-                            <th>商品資訊</th>
-                            <th>已租出（數量）</th>
-                            <th>租賃單價</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="">
-                        <!-- 商品列表的html -->
-                        <?php foreach ($rows as $product) : ?>
+                <!-- 商品列表-表單檢視方式 -->
+                <?php if ($viewMode == 1) : ?>
+                    <!-- 列表表頭 -->
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                                <!-- 圖片 -->
-                                <td class="imgTable">
-                                    <div class="imgBox ratio ratio-1x1">
-                                        <img class="productImg" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
-                                    </div>
-                                </td>
+                                <th>圖片</th>
+                                <th>商品資訊</th>
+                                <th>已租出（數量）</th>
+                                <th>租賃單價</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
 
-                                <td class="px-3">
-                                    <div class="productInfo d-flex flex-column justify-content-between">
-                                        <div>
-                                            <!-- 商品狀態 -->
-                                            <div class="d-flex mb-2">
-                                                <div class="product_status p-1 
+                        <tbody class="">
+                            <!-- 商品列表的html -->
+                            <?php foreach ($rows as $product) : ?>
+                                <tr>
+                                    <!-- 圖片 -->
+                                    <td class="imgTable viewP" data-id="<?= $product["product_id"] ?>">
+                                        <div class="imgBox ratio ratio-1x1">
+                                            <img class="productImg" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                        </div>
+                                    </td>
+
+                                    <td class="px-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                        <div class="productInfo d-flex flex-column justify-content-between">
+                                            <div>
+                                                <!-- 商品狀態 -->
+                                                <div class="d-flex mb-2">
+                                                    <div class="product_status p-1 
                                                 <?php if ($product["product_status"] == 0) {
                                                     echo "bg-info";
                                                 } else {
                                                     echo "bg-warning";
                                                 } ?>">
-                                                    <?= $product["p_status_name"] ?>
+                                                        <?= $product["p_status_name"] ?>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 商品名稱 -->
+                                                <div>
+                                                    商品名稱：<?= $product["product_name"] ?>
                                                 </div>
                                             </div>
 
-                                            <!-- 商品名稱 -->
-                                            <div>
-                                                商品名稱：<?= $product["product_name"] ?>
+                                            <div class="d-flex justify-content-between">
+
+                                                <!-- 商品被瀏覽次數 -->
+                                                <div>
+                                                    <i class="fa-regular fa-eye"></i>113
+                                                </div>
+
+                                                <!-- 商品被收藏次數 -->
+                                                <div>
+                                                    <i class="fa-regular fa-heart"></i>25
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="d-flex justify-content-between">
+                                    </td>
 
-                                            <!-- 商品被瀏覽次數 -->
-                                            <div>
-                                                <i class="fa-regular fa-eye"></i>113
-                                            </div>
+                                    <td class="px-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                        10
+                                    </td>
 
-                                            <!-- 商品被收藏次數 -->
-                                            <div>
-                                                <i class="fa-regular fa-heart"></i>25
-                                            </div>
+                                    <td class="px-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                        <?= $product["product_price"] ?>
+                                    </td>
+
+                                    <!-- 商品編輯、上架or下架、刪除 -->
+                                    <td>
+
+                                        <div class="d-flex flex-column gap-2">
+                                            <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-primary">
+                                                <i class="fa-solid fa-pen-to-square"></i> 編輯
+                                            </a>
+
+                                            <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
+                                                <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                                <?php if ($product["product_status"] == 0) : ?>
+                                                    <input class="d-none" type="number" name="changeSta" value="1">
+                                                    <button type="submit" class="btn btn-primary w-100">
+                                                        <i class="fa-solid fa-arrow-up"></i> 上架
+                                                    </button>
+                                                <?php elseif ($product["product_status"] == 1) : ?>
+                                                    <input class="d-none" type="number" name="changeSta" value="0">
+                                                    <button type="submit" class="btn btn-primary w-100">
+                                                        <i class="fa-solid fa-arrow-down"></i> 下架
+                                                    </button>
+                                                <?php endif; ?>
+                                            </form>
+
+                                            <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
+                                                <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                                <input class="d-none" type="number" name="softDelete" value="0">
+                                                <button type="submit" class="btn btn-danger w-100">
+                                                    <i class="fa-solid fa-trash"></i> 刪除
+                                                </button>
+                                            </form>
                                         </div>
-                                    </div>
 
-                                </td>
-                                <td class="px-3">10</td>
-                                <td class="px-3"><?= $product["product_price"] ?></td>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php if (count($rows) == 0) echo "沒有符合的結果。" ?>
+                    <!-- ------------------------------------------------------------------------------------- -->
 
-                                <!-- 商品編輯、上架or下架、刪除 -->
-                                <td>
-
-                                    <div class="d-flex flex-column gap-2">
-                                        <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-primary">
-                                            <i class="fa-solid fa-pen-to-square"></i> 編輯
-                                        </a>
-
-                                        <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
-                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                            <?php if ($product["product_status"] == 0) : ?>
-                                                <input class="d-none" type="number" name="changeSta" value="1">
-                                                <button type="submit" class="btn btn-primary w-100">
-                                                    <i class="fa-solid fa-arrow-up"></i> 上架
-                                                </button>
-                                            <?php elseif ($product["product_status"] == 1) : ?>
-                                                <input class="d-none" type="number" name="changeSta" value="0">
-                                                <button type="submit" class="btn btn-primary w-100">
-                                                    <i class="fa-solid fa-arrow-down"></i> 下架
-                                                </button>
-                                            <?php endif; ?>
-                                        </form>
-
-                                        <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
-                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                            <input class="d-none" type="number" name="softDelete" value="0">
-                                            <button type="submit" class="btn btn-danger w-100">
-                                                <i class="fa-solid fa-trash"></i> 刪除
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php if (count($rows) == 0) echo "沒有符合的結果。" ?>
-                <!-- ------------------------------------------------------------------------------------- -->
-
-            <?php elseif ($viewMode == 2) : ?>
-                <!-- 商品列表-圖磚檢視方式 -->
-                <div class="row">
-                    <?php foreach ($rows as $product) : ?>
-                        <div class="col-3 g-3 ">
-                            <div class="bg-white p-3 shadow-sm productBox d-flex flex-column justify-content-between">
-                                <!-- 圖片 -->
-                                <div>
-                                    <div class="ratio ratio-1x1">
-                                        <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
-                                    </div>
-                                    <!-- 商品狀態 -->
-                                    <div class="d-flex my-2">
-                                        <div class="product_status p-1 
+                <?php elseif ($viewMode == 2) : ?>
+                    <!-- 商品列表-圖磚檢視方式 -->
+                    <div class="row">
+                        <?php foreach ($rows as $product) : ?>
+                            <div class="col-3 g-3">
+                                <div class="bg-white p-3 shadow-sm productBox d-flex flex-column justify-content-between rounded">
+                                    <!-- 圖片 -->
+                                    <div class="flex-grow-1 viewP" data-id="<?= $product["product_id"] ?>">
+                                        <div class="ratio ratio-1x1">
+                                            <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                        </div>
+                                        <!-- 商品狀態 -->
+                                        <div class="d-flex my-2">
+                                            <div class="product_status p-1 
                                 <?php if ($product["product_status"] == 0) {
                                     echo "bg-body-secondary";
                                 } else {
                                     echo "bg-warning";
                                 } ?>
                                     ">
-                                            <?= $product["p_status_name"] ?>
+                                                <?= $product["p_status_name"] ?>
+                                            </div>
+                                        </div>
+
+                                        <!-- 商品名稱 -->
+                                        <div class="mb-3">
+                                            商品名稱：<br>
+                                            <?= $product["product_name"] ?>
                                         </div>
                                     </div>
 
-                                    <!-- 商品名稱 -->
-                                    <div class="mb-3">
-                                        商品名稱：<br>
-                                        <?= $product["product_name"] ?>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex flex-column justify-content-end">
-                                    <!-- 租賃價格 -->
-                                    <div class="text-end mb-3">
-                                        <?= $product["product_price"] ?>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <!-- 商品被瀏覽次數 -->
-                                        <div>
-                                            <i class="fa-regular fa-eye"></i>113
+                                    <div class="d-flex flex-column justify-content-end ">
+                                        <!-- 租賃價格 -->
+                                        <div class="text-end mb-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                            <?= $product["product_price"] ?>
                                         </div>
-                                        <!-- 商品被收藏次數 -->
-                                        <div>
-                                            <i class="fa-regular fa-heart"></i>25
+
+                                        <div class="d-flex justify-content-between mb-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                            <!-- 商品被瀏覽次數 -->
+                                            <div class="viewP" data-id="<?= $product["product_id"] ?>">
+                                                <i class="fa-regular fa-eye"></i>113
+                                            </div>
+                                            <!-- 商品被收藏次數 -->
+                                            <div class="viewP" data-id="<?= $product["product_id"] ?>">
+                                                <i class="fa-regular fa-heart"></i>25
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <!-- 商品編輯、上架or下架、刪除 -->
+                                        <!-- 商品編輯、上架or下架、刪除 -->
 
-                                    <div class="d-flex justify-content-between">
-                                        <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-outline-primary">
-                                            <i class="fa-solid fa-pen-to-square"></i> 編輯
-                                        </a>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-outline-primary">
+                                                <i class="fa-solid fa-pen-to-square"></i> 編輯
+                                            </a>
 
-                                        <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
-                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                            <?php if ($product["product_status"] == 0) : ?>
-                                                <input class="d-none" type="number" name="changeSta" value="1">
-                                                <button type="submit" class="btn btn-outline-primary">
-                                                    <i class="fa-solid fa-arrow-up"></i> 上架
+                                            <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
+                                                <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                                <?php if ($product["product_status"] == 0) : ?>
+                                                    <input class="d-none" type="number" name="changeSta" value="1">
+                                                    <button type="submit" class="btn btn-outline-primary">
+                                                        <i class="fa-solid fa-arrow-up"></i> 上架
+                                                    </button>
+                                                <?php elseif ($product["product_status"] == 1) : ?>
+                                                    <input class="d-none" type="number" name="changeSta" value="0">
+                                                    <button type="submit" class="btn btn-outline-primary">
+                                                        <i class="fa-solid fa-arrow-down"></i> 下架
+                                                    </button>
+                                                <?php endif; ?>
+                                            </form>
+
+                                            <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
+                                                <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                                <input class="d-none" type="number" name="softDelete" value="0">
+                                                <button type="submit" class="btn btn-outline-danger w-100">
+                                                    <i class="fa-solid fa-trash"></i> 刪除
                                                 </button>
-                                            <?php elseif ($product["product_status"] == 1) : ?>
-                                                <input class="d-none" type="number" name="changeSta" value="0">
-                                                <button type="submit" class="btn btn-outline-primary">
-                                                    <i class="fa-solid fa-arrow-down"></i> 下架
-                                                </button>
-                                            <?php endif; ?>
-                                        </form>
-
-                                        <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
-                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                            <input class="d-none" type="number" name="softDelete" value="0">
-                                            <button type="submit" class="btn btn-outline-danger w-100">
-                                                <i class="fa-solid fa-trash"></i> 刪除
-                                            </button>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination my-4">
-                <li class="page-item">
-                    <a class="page-link" href="
+            <nav aria-label="Page navigation example">
+                <ul class="pagination my-4">
+                    <li class="page-item">
+                        <a class="page-link" href="
                     <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $sameUrl : '#' ?>
                     " aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
-                    <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i ?><?= $sameUrl ?>">
-                            <?= $i ?>
-                        </a></li>
-                <?php endfor; ?>
-                <li class="page-item">
-                    <a class="page-link" href="
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
+                        <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i ?><?= $sameUrl ?>">
+                                <?= $i ?>
+                            </a></li>
+                    <?php endfor; ?>
+                    <li class="page-item">
+                        <a class="page-link" href="
                     <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $sameUrl : '#' ?>
                     " aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+        <!-- 這裡將顯示動態加載的內容 -->
+    </main>
+    <!-- js -->
+    <?php include("../js.php") ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const viewP = document.querySelectorAll(".viewP");
+            viewP.forEach(element => {
+                element.addEventListener("click", function() {
+                    const productId = this.getAttribute("data-id");
+                    if (productId) {
+                        window.location.href = "./product_detail.php?product_id=" + productId;
+                    }
+                });
+            });
+        })
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 檢查當前URL是否是首頁URL
+            if (window.location.href === "http://localhost/campmate/index.php") {
+                localStorage.removeItem("activeLinkId");
+            }
+
+            // 恢復上次點擊的active狀態
+            var activeLinkId = localStorage.getItem("activeLinkId");
+            if (activeLinkId) {
+                var activeLink = document.querySelector(`a[data-id="${activeLinkId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add("aside-a-active");
+                    activeLink.querySelector("i").classList.add("aside-i-active");
+                }
+            }
+
+            var listItems = document.querySelectorAll(".aside-left li");
+
+            listItems.forEach(function(li) {
+                li.addEventListener("click", function(event) {
+                    // 移除所有鏈接和圖標的.active樣式
+                    listItems.forEach(function(item) {
+                        var link = item.querySelector("a");
+                        var icon = item.querySelector("i");
+                        if (link) {
+                            link.classList.remove("aside-a-active");
+                        }
+                        if (icon) {
+                            icon.classList.remove("aside-i-active");
+                        }
+                    });
+
+                    // 為被點擊的鏈接和圖標添加.active樣式
+                    var clickedLink = event.currentTarget.querySelector("a");
+                    var clickedIcon = event.currentTarget.querySelector("i");
+                    if (clickedLink) {
+                        clickedLink.classList.add("aside-a-active");
+                        clickedIcon.classList.add("aside-i-active");
+                        // 保存active狀態到localStorage
+                        localStorage.setItem("activeLinkId", clickedLink.getAttribute("data-id"));
+                    }
+                });
+            });
+        });
+    </script>
+
+
 
     <!-- 把共通的js叫入 -->
     <?php include("../js.php") ?>

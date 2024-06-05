@@ -8,8 +8,11 @@ if(!isset($_GET['img_id'])){
 
 $camp_id = $_GET["camp_id"];
 $img_id=$_GET["img_id"];
+$decode_id = str_replace("%20", " ", $img_id);
+// echo $decode_id;
 
-$sql="DELETE FROM images WHERE id = $img_id";
+$sql="DELETE FROM images WHERE id = '$decode_id'";
+
 
 
 if ($conn->query($sql) === TRUE) {

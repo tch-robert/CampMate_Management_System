@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- css -->
-    <?php include("css_neumorphic.php") ?>
+    <?php include ("css_neumorphic.php") ?>
     <style>
         :root {
             --aside-width: 250px;
@@ -153,22 +153,14 @@
                 </a>
             </li>
             <li>
-<<<<<<< HEAD
-                <a class="d-block px-3 text-decoration-none" href="./group_camping/activities_list.php" data-id="link5">
-                    <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
-=======
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
                     <i class="fa-solid fa-people-roof me-3"></i><span>揪團管理</span>
->>>>>>> c449dbad6b796c78ae64f0b5a2d673bcb89e95cc
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
-<<<<<<< HEAD
-                    <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
-=======
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php"
+                    data-id="link6">
                     <i class="fa-solid fa-ticket me-3"></i><span>優惠券管理</span>
->>>>>>> c449dbad6b796c78ae64f0b5a2d673bcb89e95cc
                 </a>
             </li>
             <li>
@@ -190,11 +182,20 @@
         <!-- 這裡將顯示其他頁面的內容 -->
     </main>
     <!-- js -->
-    <?php include("../js.php") ?>
+    <?php include ("../js.php") ?>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        // 獲取當前網址
+        const currentUrl = window.location.href;
+
+        // 檢查當前網址是否為指定的網址之一
+        if (currentUrl === "http://localhost/campmate/" || currentUrl === "http://localhost/campmate/index.php") {
+            // 重新導向到新的網址
+            window.location.href = "http://localhost/campmate/chart/chart.php";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
             // 檢查當前URL是否是首頁URL
-            if (window.location.href === "http://localhost/campmate/chart/chart.php") {
+            if (window.location.href === "http://localhost/campmate/index.php") {
                 localStorage.removeItem("activeLinkId");
             }
 
@@ -210,10 +211,10 @@
 
             var listItems = document.querySelectorAll(".aside-left li");
 
-            listItems.forEach(function(li) {
-                li.addEventListener("click", function(event) {
+            listItems.forEach(function (li) {
+                li.addEventListener("click", function (event) {
                     // 移除所有鏈接和圖標的.active樣式
-                    listItems.forEach(function(item) {
+                    listItems.forEach(function (item) {
                         var link = item.querySelector("a");
                         var icon = item.querySelector("i");
                         if (link) {
