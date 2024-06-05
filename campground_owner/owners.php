@@ -127,13 +127,7 @@ if (isset($_GET["page"])) {
 </head>
 
 <body>
-<<<<<<< HEAD
 <?php include("../index.php") ?>
-=======
-
-<?php include("../html_admin.php") ?>
-
->>>>>>> e47231a3e6ccb485d6453d1ede57a8dc4c5a715e
     <main class="main-content">
         <!-- 這裡將顯示其他頁面的內容 -->
         <div class="container">

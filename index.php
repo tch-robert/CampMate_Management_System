@@ -138,41 +138,32 @@
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/campground_owner/owners.php?page=1&order=1" data-id="link2">
                     <i class="fa-solid fa-user-tie me-3"></i><span>營地主管理</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link3">
                     <i class="fa-solid fa-campground me-3"></i><span>營地訂位管理</span>
                 </a>
-            </li>
+            </li> -->
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link4">
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/camp_product/camp_productList.php" data-id="link4">
                     <i class="fa-solid fa-fire-burner me-3"></i><span>露營用品租用管理</span>
                 </a>
             </li>
             <li>
-<<<<<<< HEAD
-                <a class="d-block px-3 text-decoration-none" href="./group_camping/activities_list.php" data-id="link5">
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/group_camping/activities_list.php" data-id="link5">
                     <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
-=======
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
-                    <i class="fa-solid fa-people-roof me-3"></i><span>揪團管理</span>
->>>>>>> c449dbad6b796c78ae64f0b5a2d673bcb89e95cc
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
-<<<<<<< HEAD
                     <i class="fa-solid fa-ticket"></i> <span>優惠券</span>
-=======
-                    <i class="fa-solid fa-ticket me-3"></i><span>優惠券管理</span>
->>>>>>> c449dbad6b796c78ae64f0b5a2d673bcb89e95cc
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link7">
+                <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/customer_service/tickets.php?page=1&order=1" data-id="link7">
                     <i class="fa-solid fa-headset me-3"></i><span>客服管理</span>
                 </a>
             </li>

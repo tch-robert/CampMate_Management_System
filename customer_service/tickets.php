@@ -46,30 +46,6 @@ $ticketCount = $result->num_rows;
 if (isset($_GET["page"])) {
     $ticketCount = $allTicketCount;
 }
-
-// //處理表單提交的數據顯示
-// if($_SERVER["REQUEST_METHOD"] == "POST"){
-//     $selectCategory = $_POST["category"];
-
-//     //根據標題的分類篩選
-//     if ($selectCategory) {
-//         $sql = "SELECT id, title, description, user_id, reply, createtime, status FROM ticket WHERE title LIKE ? AND valid = 1";
-//         $stmt = $conn->prepare($sql);
-//         $searchTerm = '%' . $selectCategory . '%';
-//         $stmt->bind_param("s", $searchTerm);
-//     } else {
-//         $sql = "SELECT id, title, description, user_id, reply, createtime, status FROM ticket WHERE valid = 1";
-//         $stmt = $conn->prepare($sql);
-//     }
-
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $rows = $result->fetch_all(MYSQLI_ASSOC);
-//     $ticketCount = $result->num_rows;
-//     $stmt->close();
-//     $conn->close();
-// }
-
 ?>
 <!doctype html>
 <html lang="zh-Hant">
@@ -193,12 +169,12 @@ if (isset($_GET["page"])) {
             <!-- <form method="POST" action="" id="filterForm">
                 <label for="category">客服分類:</label>
                 <select name="category" id="category" onchange="submitForm()">
-                    <option value="" href="tickets.php" <?= $selectCategory == '' ? 'selected' : '' ?>>所有分類</option>
-                    <option value="營地相關" <?= $selectCategory == '營地相關' ? 'selected' : '' ?>>營地相關</option>
-                    <option value="用品租借相關" <?= $selectCategory == '用品租借相關' ? 'selected' : '' ?>>用品租借相關</option>
-                    <option value="網站操作相關" <?= $selectCategory == '網站操作相關' ? 'selected' : '' ?>>網站操作相關</option>
-                    <option value="費用相關" <?= $selectCategory == '費用相關' ? 'selected' : '' ?>>費用相關</option>
-                    <option value="其他" <?= $selectCategory == '其他' ? 'selected' : '' ?>>其他</option>
+                    <option value="" href="tickets.php" >所有分類</option>
+                    <option value="營地相關" >營地相關</option>
+                    <option value="用品租借相關" >用品租借相關</option>
+                    <option value="網站操作相關">網站操作相關</option>
+                    <option value="費用相關">費用相關</option>
+                    <option value="其他">其他</option>
                 </select>
             </form> -->
             <?php if ($result->num_rows > 0) : ?>
