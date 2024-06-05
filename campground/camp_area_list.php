@@ -19,7 +19,7 @@ $camp_name=$rowCamp["campground_name"];
 
 
 
-$sqlAll="SELECT * FROM camp_area";
+$sqlAll="SELECT * FROM camp_area WHERE campground_id = $camp_id";
 $resultAll = $conn->query($sqlAll);
 $allCampAreaCount = $resultAll->num_rows;
 

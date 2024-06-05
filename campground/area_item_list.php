@@ -166,7 +166,11 @@ $itemCount = $result->num_rows;
                         </td>
                         <td><?=$item["status"]?></td>
                         
-                        <td class="text-center"><a href="camp_area_list.php?camp_id=<?=$camp["id"]?>" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                        <td class="text-center">
+                        <a href="edit_item.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item["item_id"]?>" class="btn btn-primary">
+                            編輯<i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        </td>
                         <td class="text-center"><a class="btn btn-primary" href="campground.php?id=<?=$camp["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
                     </tr>
                     <?php endforeach; ?>

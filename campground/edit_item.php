@@ -9,23 +9,32 @@ if(!isset($_GET["item_id"])){
 
 $camp_id = $_GET["camp_id"];
 $area_id = $_GET["area_id"];
+$item_id = $_GET["item_id"];
 
-$sql = "SELECT * FROM camp_area WHERE id=$area_id";
+$sql = "SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, area_item.path AS itemPath, camp_area.area_name AS areaName FROM camp_area_item
+JOIN area_item ON camp_area_item.item_id = area_item.id 
+JOIN camp_area ON camp_area_item.area_id = camp_area.id
+WHERE camp_area_item.item_id = $item_id AND area_item.valid=1";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
 
-$sqlCamp =  "SELECT * FROM campground_info WHERE id=$camp_id";
+$sqlCamp =  "SELECT campground_info.*, camp_area.area_name AS areaName FROM campground_info 
+JOIN camp_area ON campground_info.id = camp_area.campground_id 
+WHERE camp_area.id=$area_id";
+
 $resultCamp = $conn->query($sqlCamp);
 $rowCamp = $resultCamp->fetch_assoc();
 $camp_name = $rowCamp["campground_name"];
+$area_name = $rowCamp["areaName"];
+
 
 if($result->num_rows > 0){
     $areaExist=true;
-    $title=$camp_name." > ".$row["area_name"];
+    $title=$camp_name." > ".$area_name;
 }else{
     $areaExist=false;
-    $title="營區不存在";
+    $title="商品不存在";
 }
 
 
@@ -33,7 +42,7 @@ if($result->num_rows > 0){
 <!doctype html>
 <html lang="en">
     <head>
-        <title><?=$title?></title>
+        <title>商品編輯</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -55,6 +64,12 @@ if($result->num_rows > 0){
 
             .card {
             border-radius: .5rem;
+            }
+            img {
+                max-width: 150px; /* Replace with desired width */
+                max-height: 150px; /* Replace with desired height */
+                display: block; /* Ensure the image takes up the full width and height of its container */
+                
             }
         </style>
     </head>
@@ -91,44 +106,54 @@ if($result->num_rows > 0){
                         <div class="card-body">
                         <h4 class="mb-3"><?=$title?></h4>
                         <div class="py-2">
-                            <a href="camp_area_list.php?camp_id=<?=$camp_id?>" class="btn btn-primary">
+                            <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">
                             <i class="fa-solid fa-backward"></i>
-                                回營區列表
+                                回商品列表
                             </a>
                         </div>
                             <div class="d-flex justify-content-end">
-                            <a class="btn btn-primary" title="營區圖片" href="area_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$row['id']?>">營區圖片 <i class="fa-regular fa-image"></i></a>
+                            <a class="btn btn-primary" title="商品圖片" href="item_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$row['id']?>">上傳商品圖片 <i class="fa-regular fa-image"></i></a>
                             </div>
 
-                            <form action="doUpdateArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post">
+                            <form action="doUpdateItem.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>" method="post" enctype="multipart/form-data">
                             <table class="table table-hover mb-3">
                                 <tr>
-                                    <th>所屬營地</th>
-                                    <td><?=$camp_name ?><input type="hidden" name="area_id" value="<?=$row["id"]; ?>"></td>
+                                    <th>所屬營區</th>
+                                    <td><?=$area_name ?><input type="hidden" name="item_id" value="<?=$row["item_id"]; ?>"></td>
                                     
                                 </tr>
                                 <tr>
-                                    <th>營區名稱</th>
-                                    <td><input type="text" class="form-control"  name="area_name" value="<?=$row["area_name"]; ?>"></td>
+                                    <th>商品名稱</th>
+                                    <td><input type="text" class="form-control"  name="item_name" value="<?=$row["itemName"]; ?>"></td>
                                 </tr>
                                 <tr>
-                                    <th>營地類型</th>
+                                    <th>商品狀態</th>
                                     <td>
-                                    <select class="form-select" name="area_category">
-                                        <option selected>*請選擇營地類型</option>
-                                        <option value="草地型地面" <?php if($row["area_category"]=="草地型地面"){echo "selected";} ?>>草地型地面</option>
-                                        <option value="碎石型地面" <?php if($row["area_category"]=="碎石型地面"){echo "selected";} ?>>碎石型地面</option>
-                                        <option value="棧板型地面" <?php if($row["area_category"]=="棧板型地面"){echo "selected";} ?>>棧板型地面</option>
-                                        <option value="水泥型地面" <?php if($row["area_category"]=="水泥型地面"){echo "selected";} ?>>水泥型地面</option>
-                                        <option value="雨棚區" <?php if($row["area_category"]=="雨棚區"){echo "selected";} ?>>雨棚區</option>
-                                        <option value="森林區" <?php if($row["area_category"]=="森林區"){echo "selected";} ?>>森林區</option>
-                                        <option value="泥土區" <?php if($row["area_category"]=="泥土區"){echo "selected";} ?>>泥土區</option>
+                                    <select class="form-select" name="status">
+                                        <option value="上架中" <?php if($row["status"]=="上架中"){echo "selected";} ?>>上架中</option>
+                                        <option value="下架中" <?php if($row["status"]=="下架中"){echo "selected";} ?>>下架中</option>
+                                        <option value="維修中" <?php if($row["status"]=="維修中"){echo "selected";} ?>>維修中</option>
                                     </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>價格/日</th>
-                                    <td><input type="text" class="form-control" name="price_per_day" value="<?=$row["price_per_day"]; ?>"></td>
+                                    <td><input type="text" class="form-control" name="itemPrice" value="<?=$row["itemPrice"]; ?>"></td>
+                                </tr>
+                                <tr>
+                                    <th>商品圖片</th>
+                                    <td>
+                                        <?php if(!empty($row["itemPath"])):?>
+                                        <img src="<?=$row["itemPath"]?>" alt="" class="mb-3"> 
+
+                                        <div class="d-flex ms-4">
+                                        <a href="doDeleteItemPic.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>" title="刪除圖片" class="btn btn-danger">Delete <i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    
+                                        <?php else:?>
+                                        <input type="file" class="form-control" name="file" >
+                                        <?php endif; ?>
+                                    </td>
                                 </tr>
 
                             </table>
@@ -136,11 +161,10 @@ if($result->num_rows > 0){
                             </form>
                            
                             <?php else : ?>
-                                <h1>營區不存在</h1>
+                                <h1>商品不存在</h1>
                             <?php endif ?>
                         </div>
                         </div>
-                
             
                 </div>
             </div>
