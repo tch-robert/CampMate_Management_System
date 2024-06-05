@@ -116,9 +116,10 @@ $itemCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <hr>
             <div class="mb-3">
                     <?php if(isset($_GET["search"])): ?>
-                        <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>返回</a>
+                        <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
                     <?php else: ?>
                         <a href="camp_area_list.php?camp_id=<?=$camp_id?>" class="btn btn-primary">返回列表</a>
                     <?php endif; ?>
@@ -173,10 +174,10 @@ $itemCount = $result->num_rows;
                         
                         <td class="text-center">
                         <a href="edit_item.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item["item_id"]?>" class="btn btn-primary">
-                            編輯<i class="fa-solid fa-pen-to-square"></i>
+                            編輯 <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         </td>
-                        <td class="text-center"><a class="btn btn-primary" href="campground.php?id=<?=$camp["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
+                        <td class="text-center"><a class="btn btn-primary" href="item_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item["item_id"]?>">進入 <i class="fa-solid fa-image"></i></a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

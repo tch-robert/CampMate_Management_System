@@ -93,6 +93,7 @@ $campCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <hr>
             <?php if($result->num_rows > 0): ?>
             
             <?php if(isset($_GET["search"])): ?>
@@ -109,7 +110,7 @@ $campCount = $result->num_rows;
                     </div>
                     </form>
                 </div>
-                <hr>
+                
                 <a class="btn btn-primary" href="create_campground_info.php">新增 <i class="fa-solid fa-plus"></i></a>
             </div>
             <table class="table table-hover mb-3" >

@@ -87,6 +87,7 @@ $campCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <hr>
                 <div class="mb-3">
                     <a href="camp_area_search.php" class="btn btn-primary">返回營區列表</a>
                 </div>

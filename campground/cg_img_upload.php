@@ -62,6 +62,10 @@ $pageTitle=$rowCamp["campground_name"];
                     <div class="card">
                         <div class="card-body">
                         <h4 class="mb-3"><?=$pageTitle?></h4>
+                        <hr>
+                        <div class="mb-3">
+                            <a href="campground.php?id=<?=$camp_id?>" class="btn btn-primary">返回列表</a>
+                        </div>
                         <table class="table table-hover mb-3">
                             <form action="doUpload.php?camp_id=<?=$camp_id?>" method="post" id="first_page" enctype="multipart/form-data">
                                 <input type="hidden" class="form-control" name="name">
@@ -83,7 +87,7 @@ $pageTitle=$rowCamp["campground_name"];
                                     <img class="object-fit-cover c_img" src="<?=$image['path']?>" alt="">
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete <i class="fa-solid fa-trash-can"></i></button>
+                                    <a href="cg_img_delete.php?camp_id=<?=$camp_id?>&img_id=<?= $image["id"]?>" title="刪除圖片" class="btn btn-danger" >Delete <i class="fa-solid fa-trash-can"></i></a>
                                 </div>
                             </div>
                         <?php endforeach ?>
@@ -94,25 +98,6 @@ $pageTitle=$rowCamp["campground_name"];
                 </div>
                 
                     
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deleteModalLabel">確認刪除</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    確認刪除圖片?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                    <a href="cg_img_delete.php?camp_id=<?=$camp_id?>&img_id=<?= $image["id"]?>" class="btn btn-danger">確認</a>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
                         
                         </div>
                     </div>

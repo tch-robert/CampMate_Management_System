@@ -77,3 +77,16 @@ main {
   padding: 50px;
   
 }
+.container{
+  align-items: start;
+}
+
+.sidebar{
+  height: calc(100vh - 70px);
+  background-color: rgb(153, 137, 122);
+  color: rgb(240, 222, 222);
+}
+
+span{
+  color: rgb(240, 222, 222);
+}

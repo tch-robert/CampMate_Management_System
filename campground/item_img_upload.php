@@ -2,7 +2,7 @@
 include("session_check_login.php");
 require_once("../db_connect.php");
 
-if(!isset($_GET["area_id"])){
+if(!isset($_GET["item_id"])){
     $data=[
         "status" => 0,
         "message"=> "請循正常管道進入"
@@ -13,8 +13,9 @@ if(!isset($_GET["area_id"])){
 
 $camp_id = $_GET["camp_id"];
 $area_id = $_GET["area_id"];
+$item_id = $_GET["item_id"];
 
-$sql="SELECT * FROM images WHERE camp_area_id=$area_id ORDER BY id DESC";
+$sql="SELECT * FROM images WHERE area_item_id=$item_id ORDER BY id DESC";
 $result = $conn->query($sql);
 $rows=$result->fetch_all(MYSQLI_ASSOC);
 
@@ -26,8 +27,12 @@ $sqlArea= "SELECT * FROM camp_area WHERE id=$area_id ";
 $resultArea=$conn->query($sqlArea);
 $rowArea=$resultArea->fetch_assoc();
 
+$sqlItem= "SELECT * FROM area_item WHERE id=$item_id ";
+$resultItem=$conn->query($sqlItem);
+$rowItem=$resultItem->fetch_assoc();
 
-$pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片";
+
+$pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > ".$rowItem["item_name"]." > "."圖片";
 
 ?>
 
@@ -44,7 +49,6 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
         <?php include("../css.php"); ?>
         <link rel="stylesheet" href="./style/sidebars.css">
         <script src="./style/sidebars.js"></script>
-        
         
         <style>
             .c_img{
@@ -69,16 +73,17 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
                 <h4 class="mb-3"><?=$pageTitle?></h4>
                 <hr>
                 <div class="mb-3">
-                    <a href="camp_area.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
+                    <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
                 </div>
-                    <form action="doUploadArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post"  enctype="multipart/form-data">
+
+                    <form action="doUploadItem.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>" method="post"  enctype="multipart/form-data">
 
                     
                         <input type="hidden" class="form-control" name="name">
                     
 
                         <div class="mb-3">
-                        <label for="form-label" class="form-label">上傳營區照片</label>
+                        <label for="form-label" class="form-label">上傳商品照片</label>
                         <input class="form-control" type="file" name="file">
                         </div>
                     
@@ -94,29 +99,12 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
                                     <img class="object-fit-cover c_img" src="<?=$image['path']?>" alt="">
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button href="" title="刪除圖片" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                    >Delete <i class="fa-solid fa-trash-can"></i></button>
+                                    <a href="item_img_delete.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>&img_id=<?=$image["id"]?>" title="刪除圖片" class="btn btn-danger" >Delete <i class="fa-solid fa-trash-can"></i></a>
                                 </div>
                             </div>
 
                             <!-- Modal -->
-                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deleteModalLabel">確認刪除</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    確認刪除圖片?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                    <a href="area_img_delete.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&img_id=<?=$image["id"]?>" class="btn btn-danger">確認</a>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
+                            
                         <?php endforeach ?>
                         </div>
                   
