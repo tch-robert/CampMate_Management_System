@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
     $organizer_email = $_POST['organizer_email'];
-    // $organizer_id = $_POST['organizer_id'];
 
     if (empty($activity_name) || empty($location) || empty($start_date) || empty($end_date) || empty($organizer_email)) {
         exit("請填入必要欄位");
