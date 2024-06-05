@@ -12,8 +12,10 @@ if (!isset($_GET["page"])) {
 
 // 抓取相同的$_GET value避免頁面的檢視方式或者上下架區塊跑掉
 $sameUrl = "";
-if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"])) {
+if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"]) && !isset($_GET["page"])) {
     $sameUrl = $sameUrl . "?";
+} else if (isset($_GET["viewMode"]) || isset($_GET["statusPage"]) || isset($_GET["search"]) && isset($_GET["page"])) {
+    $sameUrl = $sameUrl . "&";
 }
 if (isset($_GET["viewMode"])) {
     $sameUrl = $sameUrl . "viewMode=" . $_GET["viewMode"];
@@ -151,6 +153,18 @@ for ($i = 0; $i < count($rows); $i++) {
             height: 100%;
             object-fit: contain;
         }
+
+        .productInfo {
+            height: 120px;
+        }
+
+        .productBox {
+            height: 100%;
+        }
+
+        .imgTable {
+            width: 130px;
+        }
     </style>
 </head>
 
@@ -219,7 +233,7 @@ for ($i = 0; $i < count($rows); $i++) {
                     <?php if (isset($_GET["search"]) && !empty($search)) echo "<span class=\"fs-3\">$search</span> 的搜尋結果，" ?>
                     共 <?= count($allRows) ?> 件商品
                     <span class="fs-5">
-                        <?php if (isset($_GET["page"])) echo ", 每頁" . $eachPageCount . "件"; ?>
+                        <?php if ($countRows > $eachPageCount) echo ", 每頁" . $eachPageCount . "件"; ?>
                     </span>
                 </h4>
 
@@ -274,7 +288,7 @@ for ($i = 0; $i < count($rows); $i++) {
             <!-- 商品列表-表單檢視方式 -->
             <?php if ($viewMode == 1) : ?>
                 <!-- 列表表頭 -->
-                <table class="table teble-bordered">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>圖片</th>
@@ -290,32 +304,32 @@ for ($i = 0; $i < count($rows); $i++) {
                         <?php foreach ($rows as $product) : ?>
                             <tr>
                                 <!-- 圖片 -->
-                                <td>
+                                <td class="imgTable">
                                     <div class="imgBox ratio ratio-1x1">
-                                        <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                        <img class="productImg" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
                                     </div>
                                 </td>
 
                                 <td class="px-3">
-                                    <div class="d-flex flex-column justify-content-between">
-                                        <ul class="list-unstyled">
-
+                                    <div class="productInfo d-flex flex-column justify-content-between">
+                                        <div>
                                             <!-- 商品狀態 -->
-                                            <li class="d-flex mb-2">
+                                            <div class="d-flex mb-2">
                                                 <div class="product_status p-1 
-                                        <?php if ($product["product_status"] == 0) {
-                                            echo "bg-body-secondary";
-                                        } else {
-                                            echo "bg-warning";
-                                        } ?>
-                                        ">
+                                                <?php if ($product["product_status"] == 0) {
+                                                    echo "bg-info";
+                                                } else {
+                                                    echo "bg-warning";
+                                                } ?>">
                                                     <?= $product["p_status_name"] ?>
                                                 </div>
-                                            </li>
+                                            </div>
 
                                             <!-- 商品名稱 -->
-                                            <li>商品名稱：<?= $product["product_name"] ?></li>
-                                        </ul>
+                                            <div>
+                                                商品名稱：<?= $product["product_name"] ?>
+                                            </div>
+                                        </div>
 
                                         <div class="d-flex justify-content-between">
 
@@ -379,75 +393,81 @@ for ($i = 0; $i < count($rows); $i++) {
                 <!-- 商品列表-圖磚檢視方式 -->
                 <div class="row">
                     <?php foreach ($rows as $product) : ?>
-                        <div class="col-3 g-3">
-                            <div class="bg-white p-3 shadow-sm">
+                        <div class="col-3 g-3 ">
+                            <div class="bg-white p-3 shadow-sm productBox d-flex flex-column justify-content-between">
                                 <!-- 圖片 -->
-                                <div class="ratio ratio-1x1">
-                                    <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
-                                </div>
-                                <!-- 商品狀態 -->
-                                <div class="d-flex mb-2">
-                                    <div class="product_status p-1 
+                                <div>
+                                    <div class="ratio ratio-1x1">
+                                        <img class="productImg object-fit-contain" src="./product_image/<?= $product["mainImg_path"] ?>" alt="">
+                                    </div>
+                                    <!-- 商品狀態 -->
+                                    <div class="d-flex my-2">
+                                        <div class="product_status p-1 
                                 <?php if ($product["product_status"] == 0) {
                                     echo "bg-body-secondary";
                                 } else {
                                     echo "bg-warning";
                                 } ?>
                                     ">
-                                        <?= $product["p_status_name"] ?>
+                                            <?= $product["p_status_name"] ?>
+                                        </div>
+                                    </div>
+
+                                    <!-- 商品名稱 -->
+                                    <div class="mb-3">
+                                        商品名稱：<br>
+                                        <?= $product["product_name"] ?>
                                     </div>
                                 </div>
 
-                                <!-- 商品名稱 -->
-                                <div class="mb-3">
-                                    商品名稱：<br>
-                                    <?= $product["product_name"] ?>
-                                </div>
-                                <!-- 租賃價格 -->
-                                <div class="text-end mb-3">
-                                    <?= $product["product_price"] ?>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-3">
-                                    <!-- 商品被瀏覽次數 -->
-                                    <div>
-                                        <i class="fa-regular fa-eye"></i>113
+                                <div class="d-flex flex-column justify-content-end">
+                                    <!-- 租賃價格 -->
+                                    <div class="text-end mb-3">
+                                        <?= $product["product_price"] ?>
                                     </div>
-                                    <!-- 商品被收藏次數 -->
-                                    <div>
-                                        <i class="fa-regular fa-heart"></i>25
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <!-- 商品被瀏覽次數 -->
+                                        <div>
+                                            <i class="fa-regular fa-eye"></i>113
+                                        </div>
+                                        <!-- 商品被收藏次數 -->
+                                        <div>
+                                            <i class="fa-regular fa-heart"></i>25
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- 商品編輯、上架or下架、刪除 -->
 
-                                <div class="d-flex justify-content-between">
-                                    <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-pen-to-square"></i> 編輯
-                                    </a>
+                                    <!-- 商品編輯、上架or下架、刪除 -->
 
-                                    <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
-                                        <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                        <?php if ($product["product_status"] == 0) : ?>
-                                            <input class="d-none" type="number" name="changeSta" value="1">
-                                            <button type="submit" class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-arrow-up"></i> 上架
+                                    <div class="d-flex justify-content-between">
+                                        <a href="./editProduct.php?product_id=<?= $product["product_id"] ?>" class="btn btn-outline-primary">
+                                            <i class="fa-solid fa-pen-to-square"></i> 編輯
+                                        </a>
+
+                                        <form action="./doChangeProductStatus.php<?= $sameUrl ?>" method="post">
+                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                            <?php if ($product["product_status"] == 0) : ?>
+                                                <input class="d-none" type="number" name="changeSta" value="1">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fa-solid fa-arrow-up"></i> 上架
+                                                </button>
+                                            <?php elseif ($product["product_status"] == 1) : ?>
+                                                <input class="d-none" type="number" name="changeSta" value="0">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fa-solid fa-arrow-down"></i> 下架
+                                                </button>
+                                            <?php endif; ?>
+                                        </form>
+
+                                        <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
+                                            <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
+                                            <input class="d-none" type="number" name="softDelete" value="0">
+                                            <button type="submit" class="btn btn-outline-danger w-100">
+                                                <i class="fa-solid fa-trash"></i> 刪除
                                             </button>
-                                        <?php elseif ($product["product_status"] == 1) : ?>
-                                            <input class="d-none" type="number" name="changeSta" value="0">
-                                            <button type="submit" class="btn btn-outline-primary">
-                                                <i class="fa-solid fa-arrow-down"></i> 下架
-                                            </button>
-                                        <?php endif; ?>
-                                    </form>
-
-                                    <form action="./doProductSoftDelete.php<?= $sameUrl ?>" method="post">
-                                        <input class="d-none" type="number" name="productId" value="<?= $product["product_id"] ?>">
-                                        <input class="d-none" type="number" name="softDelete" value="0">
-                                        <button type="submit" class="btn btn-outline-danger w-100">
-                                            <i class="fa-solid fa-trash"></i> 刪除
-                                        </button>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
 
                             </div>
@@ -461,19 +481,19 @@ for ($i = 0; $i < count($rows); $i++) {
             <ul class="pagination my-4">
                 <li class="page-item">
                     <a class="page-link" href="
-                    <?= $page > 1 ? "./camp_productList.php$sameUrl&page=" . ($page - 1) : '#' ?>
+                    <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $sameUrl : '#' ?>
                     " aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
-                    <li class="page-item"><a class="page-link" href="./camp_productList.php<?= $sameUrl ?>&page=<?= $i ?>">
+                    <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i ?><?= $sameUrl ?>">
                             <?= $i ?>
                         </a></li>
                 <?php endfor; ?>
                 <li class="page-item">
                     <a class="page-link" href="
-                    <?= $page < $pageNum ? "./camp_productList.php$sameUrl&page=" . ($page + 1) : '#' ?>
+                    <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $sameUrl : '#' ?>
                     " aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

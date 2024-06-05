@@ -4,6 +4,26 @@ require_once("../db_connect.php");
 //抓取button的value判斷要怎麼作動
 $buttonAct = $_POST["action"];
 $productId = $_GET["product_id"];
+$product_style = $_POST["productStyles"];
+
+
+$delStyleSql = "DELETE FROM product_style WHERE product_id='$productId'";
+if ($conn->query($delStyleSql) === TRUE) {
+    echo "舊商品款式 從 product_style資料表 刪除成功";
+} else {
+    echo "舊商品款式 從 product_style資料表 刪除失敗";
+}
+if (isset($_POST["productStyles"])) {
+    foreach ($product_style as $style) {
+        $styleSql = "INSERT INTO product_style (style_name, product_id) VALUES ('$style', '$productId')";
+
+        if ($conn->query($styleSql) === TRUE) {
+            echo "商品款式修改 寫入 product_style資料表 成功 <br>";
+        } else {
+            echo "商品款式修改 寫入 product_style資料表 成功 <br>";
+        }
+    }
+}
 
 //如果是0 就代表是取消按鈕 所以取消並且exit
 if ($buttonAct == 0) {
@@ -48,14 +68,14 @@ if ($buttonAct == 1) {
         }
     }
 
-    if (isset($_POST["productBrief"])) {
-        $product_brief = $_POST["productBrief"];
-        $product_specifications = $_POST["productBrief"];
-        $editBriefSql = "UPDATE product SET product_brief='$product_brief',product_specifications='$product_specifications' WHERE product_id='$productId'";
-        if ($conn->query($editBriefSql) === TRUE) {
-            echo "規格&簡述更新完成 <br>";
+    if (isset($_POST["productSpec"])) {
+        // $product_brief = $_POST["productBrief"];
+        $product_specifications = $_POST["productSpec"];
+        $editSpecSql = "UPDATE product SET product_specifications='$product_specifications' WHERE product_id='$productId'";
+        if ($conn->query($editSpecSql) === TRUE) {
+            echo "規格更新完成 <br>";
         } else {
-            echo "規格&簡述更新失敗 <br>";
+            echo "規格更新失敗 <br>";
         }
     }
 
