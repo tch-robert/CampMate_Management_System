@@ -14,7 +14,7 @@
             </a>
         </li>
         <li>
-            <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
+            <a class="d-block px-3 text-decoration-none" href="/campmate/campground_owner/owners.php" data-id="link2">
                 <i class="fa-solid fa-user-tie"></i> <span>營地主系統</span>
             </a>
         </li>
@@ -39,7 +39,7 @@
             </a>
         </li>
         <li>
-            <a class="d-block px-3 text-decoration-none" href="" data-id="link7">
+            <a class="d-block px-3 text-decoration-none" href="/campmate/customer_service/tickets.php" data-id="link7">
                 <i class="fa-solid fa-headset"></i> <span>客服</span>
             </a>
         </li>
