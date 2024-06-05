@@ -49,15 +49,25 @@ $userCount = $result->num_rows;
                 <?php endif; ?>
             </div>
             <div>
-                <div class="p-2">
-                    共 <?= $userCount ?> 個揪團
-                </div>
-                <?php if (!isset($_GET["search"])) : ?>
-                    <!-- <a href="my_activities.php" class="btn btn-primary">
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="mt-2 mx-2">
+                        共 <?= $userCount ?> 個揪團
+                    </div>
+                    <?php if (!isset($_GET["search"])) : ?>
+                        <!-- <a href=" my_activities.php" class="btn btn-primary">
                         <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                    </a> -->
-                <?php else : ?>
-                <?php endif; ?>
+                        </a> -->
+                    <?php else : ?>
+                    <?php endif; ?>
+                    <div>
+                    </div>
+                    <a href="../index.php" class="btn btn-primary">
+                        <i class="fa-solid fa-house"></i> 返回首頁
+                    </a>
+
+
+                </div>
+
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->

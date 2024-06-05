@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div>
             </div>
             <a href="activity_information.php?id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
-                <i class="fa-solid fa-door-open"></i>返回揪團
+                <i class="fa-solid fa-door-open"></i> 返回揪團
             </a>
         </div>
 

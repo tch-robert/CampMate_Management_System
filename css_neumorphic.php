@@ -155,6 +155,32 @@
         box-shadow: inset 5px 5px 10px var(--shadow-color), inset -5px -5px 10px var(--highlight-color);
     }
 
+    /* 修改滾動條的寬度和顏色 */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--secondary-color);
+        border-radius: var(--border-radius);
+    }
+
+    /* 隱藏滾動條上下箭頭 */
+    ::-webkit-scrollbar-button {
+        display: none;
+    }
+
+    /* 隱藏滾動條軌道 */
+    ::-webkit-scrollbar-track {
+        display: none;
+    }
+
+    /* 隱藏滾動條角落 */
+    ::-webkit-scrollbar-corner {
+        display: none;
+    }
+
     /* 日期 */
     .flatpickr-calendar {
         background: var(--primary-color);
@@ -189,6 +215,7 @@
 
     .coupon-modal .modal-header,
     .coupon-modal .modal-footer {
+        color: var(--secondary-color);
         border: none;
         outline: none;
     }
