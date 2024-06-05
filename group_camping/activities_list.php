@@ -62,7 +62,7 @@ $userCount = $result->num_rows;
                     <div>
                     </div>
                     <a href="../index.php" class="btn btn-primary">
-                        <i class="fa-solid fa-door-open"></i>返回列表
+                        <i class="fa-solid fa-house"></i> 返回首頁
                     </a>
 
 

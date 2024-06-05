@@ -56,7 +56,7 @@ $conn->close();
             <div>
             </div>
             <a href="activities_list.php" class="btn btn-primary">
-                <i class="fa-solid fa-door-open"></i>返回列表
+                <i class="fa-solid fa-door-open"></i> 返回列表
             </a>
         </div>
         <table class='table table-bordered'>
