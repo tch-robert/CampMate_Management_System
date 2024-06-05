@@ -1,0 +1,12 @@
+css:
+<?php include("../css_admin.php") ?>
+
+html:
+<?php include("../html_admin.php") ?>
+<main class="main-content">
+<!-- 這裡將顯示動態加載的內容 -->
+
+</main>
+
+js:
+<?php include("../js_admin.php")?>
