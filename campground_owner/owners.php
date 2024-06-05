@@ -127,7 +127,9 @@ if (isset($_GET["page"])) {
 </head>
 
 <body>
+
 <?php include("../html_admin.php") ?>
+
     <main class="main-content">
         <!-- 這裡將顯示其他頁面的內容 -->
         <div class="container">
