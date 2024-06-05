@@ -134,12 +134,12 @@
         <ul class="list-unstyled mt-3">
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link1">
-                    <i class="fa-solid fa-user me-3"></i><span>一般會員</span>
+                    <i class="fa-solid fa-user me-3"></i><span>一般會員管理</span>
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link2">
-                    <i class="fa-solid fa-user-tie me-3"></i><span>營地主系統</span>
+                    <i class="fa-solid fa-user-tie me-3"></i><span>營地主管理</span>
                 </a>
             </li>
             <li>
@@ -154,17 +154,17 @@
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
-                    <i class="fa-solid fa-people-roof me-3"></i><span>揪團系統</span>
+                    <i class="fa-solid fa-people-roof me-3"></i><span>揪團管理</span>
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="http://localhost/campmate/coupons/coupons-list.php" data-id="link6">
-                    <i class="fa-solid fa-ticket me-3"></i><span>優惠券</span>
+                    <i class="fa-solid fa-ticket me-3"></i><span>優惠券管理</span>
                 </a>
             </li>
             <li>
                 <a class="d-block px-3 text-decoration-none" href="" data-id="link7">
-                    <i class="fa-solid fa-headset me-3"></i><span>客服</span>
+                    <i class="fa-solid fa-headset me-3"></i><span>客服管理</span>
                 </a>
             </li>
             <li>

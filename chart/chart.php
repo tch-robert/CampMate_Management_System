@@ -17,7 +17,7 @@ $monthlyCouponsJson = json_encode($monthlyCouponsData);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>優惠券數量圖表</title>
+    <title>Dashboard</title>
     <!-- 引入 Chart.js 的 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- css -->
@@ -73,7 +73,7 @@ $monthlyCouponsJson = json_encode($monthlyCouponsData);
             // 定義顏色變數
             const backgroundColor = '#e3dcd3';
             const borderColor = '#ffffff';
-            const gridColor = '#cdd78f';
+            const gridColor = '#DACBB9';
             const tickColor = '#9ba45c';
             const legendColor = '#9ba45c';
 
