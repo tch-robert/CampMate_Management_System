@@ -3,11 +3,20 @@ require_once("../db_connect.php");
 
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_id, activity_name, description, location, start_date, end_date FROM activities WHERE location LIKE '%$search%' AND valid = 1";
+    $sql = "SELECT activity_id, activity_name, description, location, start_date, end_date 
+            FROM activities 
+            WHERE location LIKE '%$search%' 
+            AND valid = 1";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
-    $sql = "SELECT * FROM activities WHERE valid = 1";
+    // $sql = "SELECT * FROM activities WHERE valid = 1";
+    $sql = "SELECT a.activity_id, a.activity_name, a.description, a.location, a.start_date, a.end_date,
+            COUNT(ap.user_id) AS participant_count 
+            FROM activities a 
+            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id 
+            WHERE a.valid = 1 
+            GROUP BY a.activity_id";
     // $result = $conn->query($sql);
     $pageTitle = "揪團列表";
 endif;
@@ -84,6 +93,7 @@ $userCount = $result->num_rows;
                         <th>地點</th>
                         <th>開始日期</th>
                         <th>結束日期</th>
+                        <th>參加人數</th>
                         <th>了解更多</th>
                     </tr>
                 </thead>
@@ -91,11 +101,12 @@ $userCount = $result->num_rows;
                     <?php while ($row = $result->fetch_assoc()) : ?>
                         <tr>
                             <td class="text-center"><?= $row["activity_id"] ?></td>
-                            <td><?= $row["activity_name"]  ?></td>
+                            <td><?= $row["activity_name"] ?></td>
                             <td><?= $row["description"] ?></td>
                             <td><?= $row["location"] ?></td>
                             <td><?= $row["start_date"] ?></td>
                             <td><?= $row["end_date"] ?></td>
+                            <td class="text-center">有 <?= $row["participant_count"] ?> 個人參加!</td>
                             <td class="d-flex justify-content-center align-items-center">
                                 <a href='activity_information.php?activity_id=<?= $row["activity_id"] ?>' class='btn btn-primary btn-sm'>
                                     <i class='fa-solid fa-circle-info'></i>
@@ -108,10 +119,11 @@ $userCount = $result->num_rows;
                 沒有關於<?= $search ?>的活動
             <?php endif; ?>
 
-            <?php $conn->close(); ?>
+
             </table>
     </div>
     <?php include("../js.php") ?>
 </body>
 
 </html>
+<?php $conn->close(); ?>
