@@ -257,7 +257,7 @@ if (isset($_GET["page"])) {
                 </a>
             </li>
             <li>
-                <a class="d-block px-3 text-decoration-none" href="" data-id="link5">
+                <a class="d-block px-3 text-decoration-none" href="../group_camping/activities_list.php" data-id="link5">
                     <i class="fa-solid fa-people-roof"></i> <span>揪團系統</span>
                 </a>
             </li>
