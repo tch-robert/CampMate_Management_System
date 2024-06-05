@@ -194,7 +194,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             // 檢查當前URL是否是首頁URL
-            if (window.location.href === "http://localhost/campmate/index.php") {
+            if (window.location.href === "http://localhost/campmate/index.php" || window.location.href === "http://localhost/campmate/chart/chart.php") {
                 localStorage.removeItem("activeLinkId");
             }
 
