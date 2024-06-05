@@ -1,7 +1,7 @@
 <?php
 require_once("../db_connect.php");
 
-$activity_id = $_GET['id'];
+$activity_id = $_GET['activity_id'];
 
 $sql = "SELECT a.*, u.username, u.email 
         FROM activities a 
@@ -42,7 +42,7 @@ $conn->close();
                     確認要刪除揪團資訊嗎?
                 </div>
                 <div class="modal-footer">
-                    <a href="delete_activity.php?id=<?= $row["activity_id"] ?>" class="btn btn-danger">確認</a>
+                    <a href="delete_activity.php?activity_id=<?= $row["activity_id"] ?>" class="btn btn-danger">確認</a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -55,7 +55,7 @@ $conn->close();
         <div class="d-flex justify-content-between mb-3">
             <div>
             </div>
-            <a href="activities_list.php" class="btn btn-primary">
+            <a href="activities_list.php" class="btn btn-secondary">
                 <i class="fa-solid fa-door-open"></i> 返回列表
             </a>
         </div>
@@ -63,54 +63,57 @@ $conn->close();
             <tbody>
                 <tr>
                     <th class="text-nowrap">揪團 ID</th>
-                    <td><?php echo $row['activity_id']; ?></td>
+                    <td><?= $row['activity_id']; ?></td>
                 </tr>
                 <tr>
                     <th class="text-nowrap">建立時間</th>
-                    <td><?php echo $row['created_at']; ?></td>
+                    <td><?= $row['created_at']; ?></td>
                 </tr>
                 <tr>
                     <th class="text-nowrap">團主</th>
-                    <td><?php echo $row['username']; ?></td>
+                    <td><?= $row['username']; ?></td>
                 </tr>
                 <tr>
                     <th class="text-nowrap">團主 Email</th>
-                    <td><?php echo $row['email']; ?></td>
+                    <td><?= $row['email']; ?></td>
                 </tr>
                 <tr>
                     <th class="text-nowrap">揪團名稱</th>
-                    <td><?php echo $row['activity_name']; ?></td>
+                    <td><?= $row['activity_name']; ?></td>
                 </tr>
                 <tr>
                     <th>描述</th>
-                    <td><?php echo $row['description']; ?></td>
+                    <td><?= $row['description']; ?></td>
                 </tr>
                 <tr>
                     <th>地點</th>
-                    <td><?php echo $row['location']; ?></td>
+                    <td><?= $row['location']; ?></td>
                 </tr>
                 <tr>
                     <th>開始日期</th>
-                    <td><?php echo $row['start_date']; ?></td>
+                    <td><?= $row['start_date']; ?></td>
                 </tr>
                 <tr>
                     <th>結束日期</th>
-                    <td><?php echo $row['end_date']; ?></td>
+                    <td><?= $row['end_date']; ?></td>
                 </tr>
             </tbody>
         </table>
         <div class="d-flex justify-content-between">
             <div>
-                <a href="join_activity.php?id=<?php echo $row['activity_id']; ?>" class="btn btn-primary">
-                    <i class="fa-solid fa-user-plus"></i> 參加
+                <a href="join_activity.php?activity_id=<?= $row['activity_id']; ?>" class="btn btn-primary">
+                    <i class="fa-solid fa-user-plus"></i> 我要參加
                 </a>
-                <a href="edit_activity.php?id=<?php echo $row['activity_id'] ?>" class="btn btn-secondary ms-2">
-                    <i class="fa-solid fa-pen-to-square"></i> 編輯
+                <a href="participant_list.php?activity_id=<?= $activity_id ?>" class="btn btn-primary ms-2">
+                    <i class="fa-solid fa-address-book"></i> 參加名單
                 </a>
             </div>
             <div>
+                <a href="edit_activity.php?activity_id=<?= $row['activity_id'] ?>" class="btn btn-secondary me-2">
+                    <i class="fa-solid fa-pen-to-square"></i> 編輯揪團
+                </a>
                 <button class="btn btn-danger" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="fa-solid fa-trash-can"></i> 刪除
+                    <i class="fa-solid fa-trash-can"></i> 刪除揪團
                 </button>
             </div>
         </div>

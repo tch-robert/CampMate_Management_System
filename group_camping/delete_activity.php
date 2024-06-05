@@ -17,19 +17,18 @@
 
 require_once("../db_connect.php");
 
-if(!isset($_GET["id"])){
+if (!isset($_GET["activity_id"])) {
     echo "請循正常管道進入此頁";
     exit;
 }
 
-$id=$_GET["id"];
-$sql="UPDATE activities SET valid=0 WHERE activity_id=$id"; // 軟刪除
+$activity_id = $_GET["activity_id"];
+$sql = "UPDATE activities SET valid=0 WHERE activity_id=$activity_id"; // 軟刪除
 
-if($conn->query($sql)===TRUE):
+if ($conn->query($sql) === TRUE) :
     echo "揪團刪除成功";
-else:
-    echo "揪團刪除錯誤".$conn->error;
+else :
+    echo "揪團刪除錯誤" . $conn->error;
 endif;
 
 header("location: activities_list.php");
-?>
