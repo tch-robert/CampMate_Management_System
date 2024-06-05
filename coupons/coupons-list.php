@@ -4,7 +4,7 @@ $pageTitle = "優惠券管理";
 
 // 獲取當前頁數，如果沒有指定則默認為第1頁
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$couponsPerPage = 12; // 每頁顯示的優惠券數量
+$couponsPerPage = 10; // 每頁顯示的優惠券數量
 $offset = ($page - 1) * $couponsPerPage;
 
 // 獲取搜尋和篩選條件
@@ -66,7 +66,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>優惠券管理</title>
+    <title><?= $pageTitle ?> - 第 <?= $page ?> 頁</title>
     <!-- css -->
     <?php include("../css_neumorphic.php") ?>
     <!-- Flatpickr CSS -->
@@ -76,20 +76,23 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             color: var(--secondary-color);
         }
 
-        table {
+        .table-wrapper {
 
-            th.id-col,
-            td.id-col {
-                width: 5%;
-                font-weight: 700;
-                color: var(--secondary-color);
+            table {
+
+                th.id-col,
+                td.id-col {
+                    width: 5%;
+                    font-weight: 700;
+                    color: var(--secondary-color);
+                }
+
+                th.func-col,
+                td.func-col {
+                    width: 15%;
+                }
+
             }
-
-            th.func-col,
-            td.func-col {
-                width: 15%;
-            }
-
         }
 
         .breadcrumb {
@@ -171,33 +174,24 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             ID :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_asc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-1-9"></i>
-                        </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'id_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'id_desc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-up-9-1"></i>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => ($order == 'id_asc') ? 'id_desc' : 'id_asc'])) ?>" class="btn btn-neumorphic btn-circle">
+                            <i class="fa-solid <?= ($order == 'id_asc') ? 'fa-arrow-up-9-1' : 'fa-arrow-down-1-9' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div class="filter-font">
                             名稱 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_asc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_asc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-down-a-z"></i>
-                        </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => 'name_desc'])) ?>" class="btn btn-neumorphic btn-circle <?= ($order == 'name_desc') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => ($order == 'name_asc') ? 'name_desc' : 'name_asc'])) ?>" class="btn btn-neumorphic btn-circle">
+                            <i class="fa-solid <?= ($order == 'name_asc') ? 'fa-arrow-up-z-a' : 'fa-arrow-down-a-z' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <div class="filter-font">
                             類別 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '%數折扣'])) ?>" class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '%數折扣') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-percent"></i>
-                        </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => '金額折抵'])) ?>" class="btn btn-neumorphic btn-circle <?= ($categoryFilter == '金額折抵') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-dollar-sign"></i>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['category' => ($categoryFilter == '%數折扣') ? '金額折抵' : '%數折扣'])) ?>" class="btn btn-neumorphic btn-circle">
+                            <i class="fa-solid <?= ($categoryFilter == '%數折扣') ? 'fa-dollar-sign' : 'fa-percent' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -208,14 +202,13 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
                             <input type="hidden" name="order" value="<?= htmlspecialchars($order) ?>">
                             <input type="hidden" name="category" value="<?= htmlspecialchars($categoryFilter) ?>">
+                            <input type="hidden" name="start" id="start-date-hidden" value="<?= htmlspecialchars($startDate) ?>">
+                            <input type="hidden" name="end" id="end-date-hidden" value="<?= htmlspecialchars($endDate) ?>">
                             <div class="col-auto">
-                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="start-date" class="form-control-neumorphic form-control-sm flatpickr" name="start" value="<?= htmlspecialchars($startDate) ?>">
-                            </div>
-                            <div class="col-auto">
-                                <input type="date" placeholder="年 / 月 / 日" aria-label="年 / 月 / 日" id="end-date" class="form-control-neumorphic form-control-sm flatpickr" name="end" value="<?= htmlspecialchars($endDate) ?>">
+                                <input type="text" placeholder="年 / 月 / 日 - 年 / 月 / 日" aria-label="年 / 月 / 日 - 年 / 月 / 日" id="date-range" class="form-control-neumorphic form-control-sm flatpickr" style="width: 250px;" value="<?= htmlspecialchars($startDate && $endDate ? $startDate . ' to ' . $endDate : '') ?>">
                             </div>
                             <button type="submit" class="btn btn-neumorphic btn-circle">
-                                <i class="fa-solid fa-calendar-check"></i>
+                                <i class="bi bi-calendar3-range-fill"></i>
                             </button>
                         </form>
                     </div>
@@ -223,12 +216,13 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             狀態 :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '可使用'])) ?>" class="btn btn-neumorphic btn-circle <?= ($statusFilter == '可使用') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-check"></i>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => ($statusFilter == '可使用') ? '已停用' : '可使用'])) ?>" class="btn btn-neumorphic btn-circle">
+                            <i class="fa-solid <?= ($statusFilter == '可使用') ? 'fa-ban' : 'fa-check' ?>"></i>
                         </a>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['status' => '已停用'])) ?>" class="btn btn-neumorphic btn-circle <?= ($statusFilter == '已停用') ? 'active' : '' ?>">
-                            <i class="fa-solid fa-ban"></i>
-                        </a>
+                        <!-- 更新優惠券狀態按鈕 -->
+                        <button class="btn btn-neumorphic btn-circle" onclick="showUpdateModal()">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -247,7 +241,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <th>起始日期</th>
                             <th>結束日期</th>
                             <th>狀態</th>
-                            <th class="func-col">功能</th>
+                            <th class="func-col">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -272,7 +266,17 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                                 <td><?= number_format($coupon["coupon_num"]) ?></td>
                                 <td><?= htmlspecialchars($coupon["start_date"]) ?></td>
                                 <td><?= htmlspecialchars($coupon["end_date"]) ?></td>
-                                <td><?= htmlspecialchars($coupon["status"]) ?></td>
+                                <td>
+                                    <?php
+                                    if ($coupon["status"] === '可使用') {
+                                        echo '<i class="bi bi-check-circle me-2"></i>' . htmlspecialchars($coupon["status"]);
+                                    } else if ($coupon["status"] === '已停用') {
+                                        echo '<i class="bi bi-ban me-2"></i>' . htmlspecialchars($coupon["status"]);
+                                    } else {
+                                        echo 'Invalid status type';
+                                    }
+                                    ?>
+                                </td>
                                 <td class="func-col">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
                                         <button type="button" class="btn btn-neumorphic btn-circle" onclick="showCouponDetails(<?= $coupon['id'] ?>)">
@@ -291,25 +295,98 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     </tbody>
                 </table>
             </div>
+            <!-- 頁碼 -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <!-- 跳轉到最前頁的按鈕 -->
+                    <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>" aria-label="First">
+                            <span aria-hidden="true" class="fw-semibold">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- 維持5個按鈕 -->
+                    <?php
+                    $startPage = max(1, $page - 2);
+                    $endPage = min($totalPages, $page + 2);
+
+                    if ($endPage - $startPage < 4) {
+                        if ($startPage == 1) {
+                            $endPage = min(5, $totalPages);
+                        } else {
+                            $startPage = max(1, $totalPages - 4);
+                        }
+                    }
+
+                    for ($i = $startPage; $i <= $endPage; $i++) : ?>
                         <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
                             <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>">
                                 <?= $i ?>
                             </a>
                         </li>
                     <?php endfor; ?>
+
+                    <!-- 跳轉到最後頁的按鈕 -->
+                    <li class="page-item <?= ($page == $totalPages) ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>" aria-label="Last">
+                            <span aria-hidden="true" class="fw-semibold">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
     </main>
+
+    <!--Show Details Modal -->
+    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel"><i class="fa-solid fa-eye me-2"></i>優惠券詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="couponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fa-solid fa-trash me-2"></i>刪除優惠券</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody id="deleteCouponDetails">
+                            <!-- 優惠券詳情將在這裡顯示 -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-neumorphic" id="confirmDeleteButton" onclick="deleteCoupon()">
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Add Coupon Modal -->
     <div class="modal fade coupon-modal" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCouponModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addCouponModalLabel">新增優惠券</h5>
+                    <h5 class="modal-title" id="addCouponModalLabel"><i class="fa-solid fa-circle-plus me-2"></i>新增優惠券
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -380,36 +457,19 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-neumorphic" onclick="addCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認新增</span>
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認新增</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!--Show Details Modal -->
-    <div class="modal fade coupon-modal" id="couponModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="couponModalLabel">優惠券詳情</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody id="couponDetails">
-                            <!-- 優惠券詳情將在這裡顯示 -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- Edit Modal -->
     <div class="modal fade coupon-modal" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">編輯優惠券</h5>
+                    <h5 class="modal-title" id="editModalLabel"><i class="fa-solid fa-pen-to-square me-2"></i>編輯優惠券</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -485,46 +545,130 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-neumorphic" onclick="updateCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認修改</span>
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認修改</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Delete Modal -->
-    <div class="modal fade coupon-modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+    <!-- Update all Status Modal -->
+    <div class="modal fade coupon-modal" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">刪除優惠券</h5>
+                    <h5 class="modal-title" id="updateStatusModalLabel"><i class="fa-solid fa-rotate me-2"></i>更新優惠券狀態
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody id="deleteCouponDetails">
-                            <!-- 優惠券詳情將在這裡顯示 -->
-                        </tbody>
-                    </table>
+                    是否確認更新全部優惠券狀態
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-neumorphic" id="confirmDeleteButton" onclick="deleteCoupon()">
-                        <span class="px-2 py-1"><i class="fa-solid fa-circle-check me-2"></i>確認刪除</span>
+                    <button type="button" class="btn btn-neumorphic" onclick="updateAllCouponStatuses()">
+                        <span class="px-2 py-1 fw-bold"><i class="fa-solid fa-circle-check me-2"></i>確認更新</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- js -->
+    <!-- 共用 JS -->
     <?php include("../js.php") ?>
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- js -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             flatpickr(".flatpickr", {
                 dateFormat: "Y-m-d"
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#date-range", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                defaultDate: ["<?= htmlspecialchars($startDate) ?>", "<?= htmlspecialchars($endDate) ?>"],
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('start-date-hidden').value = instance.formatDate(selectedDates[0], "Y-m-d");
+                        document.getElementById('end-date-hidden').value = instance.formatDate(selectedDates[1], "Y-m-d");
+                    } else {
+                        document.getElementById('start-date-hidden').value = "";
+                        document.getElementById('end-date-hidden').value = "";
+                    }
+                }
+            });
+        });
+
+        // 新增優惠券模態框
+        const addCouponStartDate = document.getElementById('addCouponStartDate');
+        const addCouponEndDate = document.getElementById('addCouponEndDate');
+        const addCouponStatus = document.getElementById('addCouponStatus');
+
+        function updateCouponStatus() {
+            const today = new Date().toISOString().split('T')[0];
+            const startDate = addCouponStartDate.value;
+            const endDate = addCouponEndDate.value;
+
+            if (startDate <= today && endDate >= today) {
+                addCouponStatus.value = '可使用';
+            } else {
+                addCouponStatus.value = '已停用';
+            }
+        }
+
+        addCouponStartDate.addEventListener('change', updateCouponStatus);
+        addCouponEndDate.addEventListener('change', updateCouponStatus);
+
+        // 編輯優惠券模態框
+        const editCouponStartDate = document.getElementById('editCouponStartDate');
+        const editCouponEndDate = document.getElementById('editCouponEndDate');
+        const editCouponStatus = document.getElementById('editCouponStatus');
+
+        function updateEditCouponStatus() {
+            const today = new Date().toISOString().split('T')[0];
+            const startDate = editCouponStartDate.value;
+            const endDate = editCouponEndDate.value;
+
+            if (startDate <= today && endDate >= today) {
+                editCouponStatus.value = '可使用';
+            } else {
+                editCouponStatus.value = '已停用';
+            }
+        }
+
+        editCouponStartDate.addEventListener('change', updateEditCouponStatus);
+        editCouponEndDate.addEventListener('change', updateEditCouponStatus);
+
+        // 監聽折扣輸入變化
+        document.getElementById('addCouponDiscount').addEventListener('input', function() {
+            const discountValue = parseFloat(this.value);
+            const categorySelect = document.getElementById('addCouponCategory');
+            const maxDiscountAmountInput = document.getElementById('addCouponMaxDiscountAmount');
+            if (!isNaN(discountValue)) {
+                if (discountValue > 1) {
+                    categorySelect.value = '金額折抵';
+                    maxDiscountAmountInput.value = discountValue;
+                } else if (discountValue >= 0 && discountValue <= 1) {
+                    categorySelect.value = '%數折扣';
+                }
+            }
+        });
+
+        document.getElementById('editCouponDiscount').addEventListener('input', function() {
+            const discountValue = parseFloat(this.value);
+            const categorySelect = document.getElementById('editCouponCategory');
+            const maxDiscountAmountInput = document.getElementById('editCouponMaxDiscountAmount');
+            if (!isNaN(discountValue)) {
+                if (discountValue > 1) {
+                    categorySelect.value = '金額折抵';
+                    maxDiscountAmountInput.value = discountValue;
+                } else if (discountValue >= 0 && discountValue <= 1) {
+                    categorySelect.value = '%數折扣';
+                }
+            }
         });
 
         function showCouponDetails(couponId) {
@@ -605,21 +749,17 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             const minCost = form.min_cost;
             const maxDiscountAmount = form.max_discount_amount;
             const couponNum = form.coupon_num;
-
             let isValid = true;
-
             // 重置所有自定義錯誤訊息
             discount.setCustomValidity("");
             minCost.setCustomValidity("");
             maxDiscountAmount.setCustomValidity("");
             couponNum.setCustomValidity("");
-
             // 檢查折扣是否為數字且最多兩位小數
             if (!/^\d+(\.\d{1,2})?$/.test(discount.value)) {
                 discount.setCustomValidity('折扣必須是數字且最多兩位小數');
                 isValid = false;
             }
-
             // 檢查使用低消金額、最高折抵金額、數量是否為正整數
             if (!/^\d+$/.test(minCost.value) || minCost.value <= 0) {
                 minCost.setCustomValidity('使用低消金額必須是正整數');
@@ -633,7 +773,6 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 couponNum.setCustomValidity('數量必須是正整數');
                 isValid = false;
             }
-
             // 如果有任何一個欄位無效，則回傳 false
             return isValid;
         }
@@ -678,6 +817,25 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             } else {
                 form.reportValidity(); // 顯示錯誤訊息
             }
+        }
+
+        // 一鍵更新優惠券狀態
+        function showUpdateModal() {
+            $('#updateStatusModal').modal('show');
+        }
+
+        function updateAllCouponStatuses() {
+            $.ajax({
+                url: 'update-all-coupons.php',
+                type: 'POST',
+                success: function(response) {
+                    // alert('所有優惠券狀態已更新');
+                    location.reload();
+                },
+                error: function() {
+                    alert('更新失敗');
+                }
+            });
         }
     </script>
 </body>
