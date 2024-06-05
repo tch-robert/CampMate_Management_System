@@ -1,5 +1,5 @@
 <?php
-include("session_check_login.php");
+
 require_once("../db_connect.php");
 
 if(!isset($_POST["name"])){
@@ -11,23 +11,20 @@ if(!isset($_POST["name"])){
     exit;
 }
 
-// if(!isset($_POST["name"])){
-//     echo "請循正常管道進入";
-//     exit;
-// }
+
 
 $camp_id = $_GET["camp_id"];
+$area_id = $_GET["area_id"];
 
 // $name=$_POST["name"];
 $pic_name=$_FILES["file"]["name"];
+$path = "./upload/$pic_name";
 
 if(empty($pic_name)){
     echo "請上傳圖片";
-    header("location: cg_img_upload.php?camp_id=$camp_id");
+    header("location: area_img_upload.php?camp_id=$camp_id&area_id=$area_id");
     exit;
 }
-
-$path = "./upload/$pic_name";
 
 if($_FILES["file"]["error"]==0){
     if(move_uploaded_file($_FILES["file"]["tmp_name"], "./upload/".$_FILES["file"]["name"])){
@@ -39,11 +36,11 @@ if($_FILES["file"]["error"]==0){
 
 
 
-$sql= "INSERT INTO images( campground_id, path) 
-VALUES ('$camp_id', '$path')";
+$sql= "INSERT INTO images( camp_area_id, path) 
+VALUES ('$area_id', '$path')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "id: $camp_id 營地的 $pic_name 輸入成功";
+    echo "id: $area_id 營區 $pic_name 輸入成功";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
@@ -51,4 +48,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 
-header("location: cg_img_upload.php?camp_id=$camp_id");
+header("location: area_img_upload.php?camp_id=$camp_id&area_id=$area_id");

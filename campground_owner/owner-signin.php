@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["owner"])) {
-    header("location: .php");
+    header("location: ../campground/campground_list.php");
     exit;
 }
 ?>
@@ -61,7 +61,7 @@ if (isset($_SESSION["owner"])) {
         <div class="login-panel">
             <img src="../images/logo-search-grid-1x.png" alt="" class="logo">
             <h1 class="h2 mt-2 text-center">營地主登入</h1>
-            <form action="doLogin.php" method="post">
+            <form action="doLoginOwner.php" method="post">
                 <div class="input-area form-signin">
                     <div class="form-floating">
                         <input type="email" class="form-control" id="floatingEamil" placeholder="" name="email">
@@ -85,7 +85,7 @@ if (isset($_SESSION["owner"])) {
                     </label>
                 </div>
                 <div class="d-grid mb-2">
-                    <a class="btn btn-warning" type="submit">登入</a>
+                    <button class="btn btn-warning" type="submit">登入</button>
                 </div>
                 <div class="d-grid mb-2">
                     <a class="btn btn-warning" href="owner-signup.php"><i class="fa-solid fa-user-plus"></i> 註冊</a>

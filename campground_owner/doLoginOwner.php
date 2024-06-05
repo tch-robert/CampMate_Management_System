@@ -25,10 +25,13 @@ if(empty($password)){
 
 
 $password=md5($password);
+echo $email;
+echo $password."<br>";
 
-$sql="SELECT * FROM campground_owner WHERE email = '$email' AND password = '$password' AND valid=1";
+$sql="SELECT * FROM campground_owner WHERE email='$email' AND password = '$password' AND valid=1";
 $result=$conn->query($sql);
 $ownerCount=$result->num_rows;
+echo $sql;
 
 if($ownerCount==0){
     $errorMsg="Email或密碼錯誤";
@@ -48,9 +51,10 @@ unset($_SESSION["errorMsg"]);
 unset($_SESSION["errorTimes"]);
 
 $_SESSION["owner"]=[
+    "id"=>$row["id"],
     "name"=>$row["name"],
     "email"=>$row["email"],
     "phone"=>$row["phone"]
 ];
 
-header("location: owners.php");
+header("location: ../campground/campground_list.php");
