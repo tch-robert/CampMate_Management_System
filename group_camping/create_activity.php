@@ -27,17 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<title>建立揪團</title>
+<?php include("../index.php") ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php include("../css.php") ?>
-    <title>建立揪團</title>
-</head>
-
-<body>
+<main class="main-content">
     <div class="container">
         <h1 class="mt-4">我要揪團</h1>
         <form action="create_activity.php" method="post" class="mb-3">
@@ -67,18 +60,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" class="form-control" id="organizer_email" name="organizer_email" required>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-calendar-check"></i> 建立揪團
-            </button>
-            <a href="activities_list.php" class="btn btn-secondary ms-2">
-                <i class="fa-solid fa-calendar-xmark"></i> 取消揪團
-            </a>
+            <div class="d-flex">
+                <button type="submit" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-calendar-check"></i> 建立揪團
+                </button>
+                <a href="activities_list.php" class="btn btn-neumorphic ms-2">
+                    <i class="fa-solid fa-calendar-xmark"></i> 取消揪團
+                </a>
+            </div>
         </form>
-
     </div>
-
-    <?php include("../js.php") ?>
-</body>
-
-</html>
+</main>
