@@ -5,7 +5,7 @@ $activity_id = $_GET['id'];
 
 $sql = "SELECT a.*, u.username, u.email 
         FROM activities a 
-        JOIN users u ON a.organizer_id = u.id 
+        JOIN users u ON a.organizer_email = u.email 
         WHERE a.activity_id=$activity_id";
 
 $result = $conn->query($sql);

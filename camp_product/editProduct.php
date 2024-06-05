@@ -4,6 +4,12 @@ require_once("../db_connect.php");
 // 取得從商品列表傳來的product_id值
 $product_id = $_GET["product_id"];
 
+$styleSql = "SELECT * FROM product_style WHERE product_id='$product_id'";
+$styleResult = $conn->query($styleSql);
+$styleRows = $styleResult->fetch_all(MYSQLI_ASSOC);
+
+// print_r($styleRows);
+
 //抓取product資料表中的所有資料
 $productsql = "SELECT product.*, product_category_relate.category_id, product_category.category_name FROM product 
 JOIN product_category_relate ON product.product_id = product_category_relate.product_id 
@@ -91,86 +97,153 @@ foreach ($L2Rows as $row) {
 </head>
 
 <body>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">新增分類</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="./addCategory.php?product_id=<?= $product_id ?>" method="post">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <select class="form-select" name="parent_name" id="" required>
+                                <option value="" selected disabled>選擇要新增到哪個類別中</option>
+                                <?php foreach ($L1Rows as $level1) : ?>
+                                    <option value="<?= $level1['category_name'] ?>">
+                                        <?= $level1['category_name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-group-text" for="">分類名稱</div>
+                            <input class="form-control" type="text" name="category_name" placeholder="輸入分類名稱" required>
+                        </div>
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">確認新增</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <h1 class="my-5">編輯商品</h1>
         <form class="mb-5" action="./doEditProduct.php?product_id=<?= $product_id ?>" method="post" enctype="multipart/form-data">
             <div>
                 <!-- 新增商品的表單區域 -->
-                <div class="row justify-content-end mb-4">
-                    <h3>基本資訊</h3>
+                <div class="row justify-content-end mb-4 shadow rounded p-3">
+                    <h3 class="mb-3">基本資訊</h3>
+                    <hr>
                     <div class="col-11">
-                        <div class="mb-3">
-                            <label for="mainPic" class="h6 form-label">商品主要行銷圖片</label>
+                        <div class="mb-4">
+                            <label for="mainPic" class="minTitle h5 form-label">商品主要行銷圖片</label>
+                            <div class="row">
+                                <div class="col-2 position-relative border rounded mb-2">
+                                    <div class="ratio ratio-1x1">
+                                        <img src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
+                                    </div>
+                                </div>
+                            </div>
                             <!-- 輸入新檔案 -->
                             <input id="mainPic" name="mainPic" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp">
                             <div class="form-text">若要更改行銷圖片，請上傳要更新的圖片（單張）</div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="normalPic" class="h6 form-label">商品圖片</label>
+                        <div class="mb-4">
+                            <label for="normalPic" class="minTitle h5 form-label">商品圖片</label>
+                            <div class="row gap-3">
+                                <!-- 其餘圖片的顯示 -->
+                                <?php if (count($mainPicRow) == 0) : ?>
+                                <?php else : ?>
+                                    <?php for ($i = 1; $i < count($mainPicRow); $i++) : ?>
+                                        <div class="col-2 position-relative border rounded mb-2">
+                                            <div class="ratio ratio-1x1">
+                                                <img src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
+                                            </div>
+                                        </div>
+                                    <?php endfor; ?>
+                                <?php endif; ?>
+                            </div>
                             <!-- 輸入新檔案 -->
-                            <input id="normalPic" name="normalPic[]" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp" multiple>
+                            <input id="normalPic" name="normalPic[]" class="form-control" type="file" accept=".jpg,.jpeg,.png,.avif,.webp" multiple max="2">
                             <div class="form-text">若要更改商品圖片，請上傳要更新的圖片（最多9張）</div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="productName" class="h6 form-label">商品名稱</label>
+                        <div class="mb-4">
+                            <label for="productName" class="minTitle h5 form-label">商品名稱</label>
                             <input id="productName" name="productName" class="form-control" type="text" value="<?= $productRow["product_name"] ?>">
                         </div>
-                        <div class="mb-3">
-                            <label for="productCate" class="h6 form-label">商品分類</label>
-                            <select class="form-control" name="productCate" id="productCate">
-                                <option value="" selected disabled hidden><?= $productRow["category_name"] ?></option>
-                                <?php foreach ($L1Rows as $level1) : ?>
-                                    <optgroup label="<?= $level1['category_name'] ?>">
-                                        <?php
-                                        $parentId = $level1['category_id'];
-                                        if (isset($L2Grouped[$parentId])) {
-                                            foreach ($L2Grouped[$parentId] as $level2) : ?>
-                                                <option value="<?= $level2['category_name'] ?>">
-                                                    <?= $level2['category_name'] ?>
-                                                </option>
-                                        <?php endforeach;
-                                        } ?>
-                                    </optgroup>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="mb-4">
+                            <label for="productCate" class="minTitle h5 form-label">商品分類</label>
+                            <div class="input-group">
+                                <select class="form-control" name="productCate" id="productCate">
+                                    <option value="" selected disabled hidden><?= $productRow["category_name"] ?></option>
+                                    <?php foreach ($L1Rows as $level1) : ?>
+                                        <optgroup label="<?= $level1['category_name'] ?>">
+                                            <?php
+                                            $parentId = $level1['category_id'];
+                                            if (isset($L2Grouped[$parentId])) {
+                                                foreach ($L2Grouped[$parentId] as $level2) : ?>
+                                                    <option value="<?= $level2['category_name'] ?>">
+                                                        <?= $level2['category_name'] ?>
+                                                    </option>
+                                            <?php endforeach;
+                                            } ?>
+                                        </optgroup>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary input-group-" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    新增分類
+                                </button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="h6" for="">商品款式</label>
+                        <div class="mb-4">
+                            <label class="minTitle h5" for="">商品款式</label>
                             <div id="stylesContainer">
-                                <div class="form-text"></div>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
-                                    <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
-                                </div>
+                                <?php foreach ($styleRows as $style) : ?>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" name="productStyles[]" placeholder="<?= $style["style_name"] ?>" value="<?= $style["style_name"] ?>">
+                                        <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                             <div>
-                                <button class="btn btn-outline-primary add-style-btn" type="button">新增款式</button>
+                                <button class="btn btn-outline-primary add-style-btn" type="button"><i class="fa-solid fa-plus"></i> 新增款式</button>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="productDes" class="h6 form-label">商品描述</label>
+                        <div class="mb-4">
+                            <label for="productDes" class="minTitle h5 form-label">商品描述</label>
                             <textarea id="productDes" name="productDes" class="textAreaDis form-control"><?= $productRow["product_description"] ?></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="row justify-content-end mb-4">
-                    <h3>重點規格</h3>
+                <div class="row justify-content-end mb-4 shadow rounded p-3">
+                    <h3 class="mt-3">詳細規格</h3>
+                    <hr>
                     <div class="col-11">
-                        <div class="mb-3">
-                            <label for="productBrief" class="h6 form-label">規格簡述</label>
-                            <textarea class="textAreaBreif form-control" name="productBrief" id="productBrief"><?= $productRow["product_brief"] ?></textarea>
+                        <div class="mb-4">
+                            <label for="productBrief" class="minTitle h5 form-label">規格</label>
+                            <textarea class="textAreaBreif form-control" name="productSpec" id="productSpec"><?= $productRow["product_specifications"] ?></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="row justify-content-end mb-4">
-                    <h3>租賃資訊</h3>
+                <div class="row justify-content-end mb-4 shadow rounded p-3">
+                    <h3 class="mt-3">租賃資訊</h3>
+                    <hr>
                     <div class="col-11">
-                        <div class="mb-3">
-                            <label for="productPrice" class="h6 form-label">租賃單價（每日）</label>
+                        <div class="mb-4">
+                            <label for="productPrice" class="minTitle h5 form-label">租賃單價（每日）</label>
                             <input id="productPrice" class="form-control" type="number" name="productPrice" value="<?= $productRow["product_price"] ?>">
                         </div>
                     </div>
@@ -184,6 +257,7 @@ foreach ($L2Rows as $row) {
         </form>
     </div>
 
+
     <!-- 把共通的js叫入 -->
     <?php include("../js.php") ?>
 
@@ -192,7 +266,7 @@ foreach ($L2Rows as $row) {
             $(document).on('click', '.add-style-btn', function() {
                 var newStyleInput = `
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="productStyles[]" placeholder="款式名">
+                    <input type="text" class="form-control" name="productStyles[]" placeholder="新增款式名">
                     <button class="input-group-append btn btn-outline-primary deleteInput" type="button">刪除</button>
                 </div>`;
                 $('#stylesContainer').append(newStyleInput);
