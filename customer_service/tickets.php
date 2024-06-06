@@ -120,12 +120,10 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
         .pagination-shadow .page-item .page-link:hover {
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: #007bff;
         }
 
         .pagination-shadow .page-item.active .page-link {
             color: white;
-            background-color: #007bff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
@@ -134,9 +132,9 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
 <body>
     <?php include("../index.php") ?>
     <main class="main-content">
-        <div class="container">
+        <div class="container ">
             <h2><?= $pageTitle ?></h2>
-            <div class="py-2 mb-3">
+            <div class="py-2 mb-3 mt-3">
                 <div class="d-flex justify-content-between">
                     <div>
                         <?php if (!empty($search)) : ?>
@@ -147,10 +145,12 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                         <form action="" method="get">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search..." name="search" value="<?= $search ?>">
-                                <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <!-- 自動回第一頁 -->
+                                <input type="hidden" name="page" value="1"> 
+                                <button class="btn btn_color2" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
-                        <a class="btn btn-warning" href="create_ticket.php"><i class="fa-solid fa-plus"></i></a>
+                        <a class="btn btn_color2" href="create_ticket.php"><i class="fa-solid fa-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -158,9 +158,7 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                 <div>共 <?= $allTicketCount ?> 單</div>
                 <div>
                     排序:
-                    <div class="btn-group">
-                        
-                        <!-- <a href="?page=<?= $page ?>&order=2&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 2 ? 'active' : '' ?>">編號<i class="fa-solid fa-arrow-up-1-9"></i></a> -->
+                    <div class="btn-group btn_color">
                         <a href="?page=<?= $page ?>&order=3&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 3 ? 'active' : '' ?>">尚未回覆</a>
                         <a href="?page=<?= $page ?>&order=4&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 4 ? 'active' : '' ?>">已回覆</a>
                         <a href="?page=<?= $page ?>&order=1&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 1 ? 'active' : '' ?>"><i class="fa-solid fa-arrows-rotate"></i></a>
@@ -169,7 +167,8 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
             </div>
             <div class="">
                 <form id="categoryForm" action="" method="get" class="form-inline ">
-                    <input type="hidden" name="page" value="<?= $page ?>">
+                    <!-- 自動回第一頁 -->
+                    <input type="hidden" name="page" value="1">
                     <input type="hidden" name="order" value="<?= $order ?>">
                     <input type="hidden" name="search" value="<?= $search ?>">
                     <label class="text-nowrap">客服單分類：</label>
@@ -207,17 +206,51 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                                 <td><?= $user["reply"] ?></td>
                                 <td class="text-truncate"><?= $user["status"] ?></td>
                                 <td><?= $user["createtime"] ?></td>
-                                <td><a class="btn btn-warning" href="ticket.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
+                                <td><a class="btn btn_color2" href="ticket.php?id=<?= $user["id"] ?>"><i class="fa-solid fa-eye"></i></a></td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
                 </table>
                 <?php if ($pageCount > 1) : ?>
-                    <nav aria-label="Page ">
+                    <nav aria-label="Page navigation example">
                         <ul class="pagination pagination-shadow">
-                            <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                                <li class="page-item <?= $i == $page ? 'active' : '' ?>"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>&search=<?= $search ?>&category=<?= $category ?>"><?= $i ?></a></li>
-                            <?php endfor; ?>
+                            <?php
+                            // 分页逻辑
+                            if ($page > 1) {
+                                echo '<li class="page-item"><a class="page-link" href="?page=' . ($page - 1) . '&order=' . $order . '&search=' . $search . '&category=' . $category . '">&laquo;</a></li>';
+                            }
+
+                            if ($pageCount <= 5) {
+                                for ($i = 1; $i <= $pageCount; $i++) {
+                                    echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="?page=' . $i . '&order=' . $order . '&search=' . $search . '&category=' . $category . '">' . $i . '</a></li>';
+                                }
+                            } else {
+                                $start = max(1, $page - 1);
+                                $end = min($pageCount, $page + 1);
+
+                                if ($start > 1) {
+                                    echo '<li class="page-item"><a class="page-link" href="?page=1&order=' . $order . '&search=' . $search . '&category=' . $category . '">1</a></li>';
+                                    if ($start > 2) {
+                                        echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                                    }
+                                }
+
+                                for ($i = $start; $i <= $end; $i++) {
+                                    echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="?page=' . $i . '&order=' . $order . '&search=' . $search . '&category=' . $category . '">' . $i . '</a></li>';
+                                }
+
+                                if ($end < $pageCount) {
+                                    if ($end < $pageCount - 1) {
+                                        echo '<li class="page-item disabled"><a class="page-link" href="#">...</a></li>';
+                                    }
+                                    echo '<li class="page-item"><a class="page-link" href="?page=' . $pageCount . '&order=' . $order . '&search=' . $search . '&category=' . $category . '">' . $pageCount . '</a></li>';
+                                }
+                            }
+
+                            if ($page < $pageCount) {
+                                echo '<li class="page-item"><a class="page-link" href="?page=' . ($page + 1) . '&order=' . $order . '&search=' . $search . '&category=' . $category . '">&raquo;</a></li>';
+                            }
+                            ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
@@ -226,6 +259,7 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
             <?php endif; ?>
         </div>
     </main>
+    <?php include("btn_css.php")?>
     <?php include("../js.php") ?>
 </body>
 

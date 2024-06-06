@@ -61,7 +61,7 @@
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
+                    <a class="btn btn_color2" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -96,7 +96,7 @@
                                     <label for="" class="form-label">*地址</label>
                                     <input type="text" class="form-control" name="address">
                                 </div>
-                                <button class="btn btn-warning" type="submit">送出</button>
+                                <button class="btn btn_color2 mt-3" type="submit">送出</button>
                             </form>
                         </div>
                     </div>
@@ -104,6 +104,7 @@
             </div>
         </div>
     </main>
+    <?php include("btn_css.php") ?>
     <?php include("../js.php") ?>
 </body>
 
