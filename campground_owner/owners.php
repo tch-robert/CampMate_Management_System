@@ -114,13 +114,15 @@ if (isset($_GET["page"])) {
         .pagination-shadow .page-item .page-link:hover {
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: #007bff;
         }
 
         .pagination-shadow .page-item.active .page-link {
             color: white;
-            background-color: #007bff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn_color{
+            background-color: #9ba45c;
+            /* color: #fff; */
         }
     </style>
 
@@ -134,20 +136,21 @@ if (isset($_GET["page"])) {
             <h2><?= $pageTitle ?></h2>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between">
-                    <div>
+                    <div class="btn_color">
                         <?php if (isset($_GET["search"])): ?>
-                            <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a class="btn " href="owners.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-3">
                         <form action="">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search..." name="search">
-                                <button class="btn btn-warning" type="submit"><i
+                                <input type="text" class="form-control " placeholder="Search..." name="search">
+                                <input type="hidden" name="page" value="1">
+                                <button class="btn btn_color2" type="submit"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
-                        <a class="btn btn-warning" href="create-owner.php"><i class="fa-solid fa-user-plus"></i></a>
+                        <a class="btn btn_color2" href="create-owner.php"><i class="fa-solid fa-user-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -158,24 +161,24 @@ if (isset($_GET["page"])) {
                 <?php if (isset($_GET["page"])): ?>
                     <div>
                         排序:
-                        <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1"
-                                class="btn btn-warning <?php if ($order == 1)
+                        <div class="btn-group btn_color">
+                            <a href="?page=1&order=1"
+                                class="btn <?php if ($order == 1)
                                     echo "active"; ?>">id<i
                                     class="fa-solid fa-arrow-down-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=2"
-                                class="btn btn-warning <?php if ($order == 2)
+                            <a href="?page=1&order=2"
+                                class="btn <?php if ($order == 2)
                                     echo "active"; ?>">id<i
                                     class="fa-solid fa-arrow-up-1-9"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=3"
-                                class="btn btn-warning <?php if ($order == 3)
+                            <a href="?page=1&order=3"
+                                class="btn <?php if ($order == 3)
                                     echo "active"; ?>">姓名<i
                                     class="fa-solid fa-arrow-down-a-z"></i></a>
 
-                            <a href="?page=<?= $page ?>&order=4"
-                                class="btn btn-warning <?php if ($order == 4)
+                            <a href="?page=1&order=4"
+                                class="btn <?php if ($order == 4)
                                     echo "active"; ?>">姓名<i
                                     class="fa-solid fa-arrow-up-a-z"></i></a>
                         </div>
@@ -200,19 +203,46 @@ if (isset($_GET["page"])) {
                                 <td><?= $user["name"] ?></td>
                                 <td><?= $user["email"] ?></td>
                                 <td><?= $user["phone"] ?></td>
-                                <td><a class="btn btn-warning" href="owner.php?id=<?= $user["id"] ?>"><i
+                                <td class="btn_color"><a class="btn" href="owner.php?id=<?= $user["id"] ?>"><i
                                             class="fa-solid fa-eye"></i></a></td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
                 </table>
                 <?php if (isset($_GET["page"])): ?>
-                    <nav aria-label="Page ">
+                    <nav aria-label="Page navigation">
                         <ul class="pagination pagination-shadow">
-                            <?php for ($i = 1; $i <= $pageCount; $i++): ?>
-                                <li class="page-item"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a>
-                                </li>
-                            <?php endfor; ?>
+                            <?php if ($page > 1) : ?>
+                                <li class="page-item"><a class="page-link" href="?page=<?= $page - 1 ?>&order=<?= $order ?>">&laquo;</a></li>
+                            <?php endif; ?>
+
+                            <?php if ($pageCount <= 3) : ?>
+                                <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
+                                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a></li>
+                                <?php endfor; ?>
+                            <?php else : ?>
+                                <?php if ($page > 2) : ?>
+                                    <li class="page-item"><a class="page-link" href="?page=1&order=<?= $order ?>">1</a></li>
+                                    <?php if ($page > 3) : ?>
+                                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+
+                                <?php for ($i = max(1, $page - 1); $i <= min($page + 1, $pageCount); $i++) : ?>
+                                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a></li>
+                                <?php endfor; ?>
+
+                                <?php if ($page < $pageCount - 1) : ?>
+                                    <?php if ($page < $pageCount - 2) : ?>
+                                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                                    <?php endif; ?>
+                                    <li class="page-item"><a class="page-link" href="?page=<?= $pageCount ?>&order=<?= $order ?>"><?= $pageCount ?></a></li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php if ($page < $pageCount) : ?>
+                                <li class="page-item"><a class="page-link" href="?page=<?= $page + 1 ?>&order=<?= $order ?>">&raquo;</a></li>
+                            <?php endif; ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
@@ -222,6 +252,9 @@ if (isset($_GET["page"])) {
 
         </div>
     </main>
+    <!-- button的css -->
+     <?php include("btn_css.php"); ?>
+  
     <!-- js -->
     <?php include ("../js.php") ?>
 
