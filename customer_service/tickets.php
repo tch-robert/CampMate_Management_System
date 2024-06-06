@@ -160,7 +160,7 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                     排序:
                     <div class="btn-group btn_color">
                         <a href="?page=<?= $page ?>&order=3&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 3 ? 'active' : '' ?>">尚未回覆</a>
-                        <a href="?page=<?= $page ?>&order=4&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 4 ? 'active' : '' ?>">已回覆</a>
+                        <a href="?page=<?= $page ?>&order=4&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 4 ? 'active' : '' ?>">待處理</a>
                         <a href="?page=<?= $page ?>&order=1&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 1 ? 'active' : '' ?>"><i class="fa-solid fa-arrows-rotate"></i></a>
                     </div>
                 </div>
