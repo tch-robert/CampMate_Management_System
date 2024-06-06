@@ -1,40 +1,50 @@
 <?php
 require_once("../db_connect.php");
 
-if(!isset($_POST["id"])){
-    echo "請循正常管道進入此頁";
-    exit;
-}
 
 $id=$_POST["id"];
-$title=$_POST["title"];
-$description=$_POST["description"];
-$user_id=$_POST["user_id"];
 $reply=$_POST["reply"];
 $status=$_POST["status"];
-$createtime=$_POST["createtime"];
 $closetime=date('Y-m-d H:i:s');
 
 
-if(empty($reply) || empty($status)){
-    echo "請填入必要欄位";
+if(empty($reply)){
+    $data=[
+        "status"=>0,
+        "message"=>"請回覆客服內容"
+    ];
+    echo json_encode($data);
+    exit;
+}
+if(empty($status)){
+    $data=[
+        "status"=>0,
+        "message"=>"請點選回覆狀態"
+    ];
+    echo json_encode($data);
     exit;
 }
 
 
-$sql="UPDATE ticket SET reply='$reply', status='$status', closetime='$closetime' WHERE id=$id";
 
-if($conn->query($sql) === TRUE){
-    $last_id = $conn->insert_id;
-    echo "新資料輸入成功， ID 為 $last_id";
+$sql = "UPDATE ticket SET reply=?, status=?, closetime=? WHERE id=?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssi", $reply, $status, $closetime, $id);
+
+if($stmt->execute()){
+    $data = [
+        "status" => 1,
+        "message" => "已回覆 , 客服單 ID 為 $id"
+    ];
 }else{
-    echo"Error: " . $sql . "<br>" . $conn->error;
+    $data = [
+        "status" => 0,
+        "message" => "Error: " . $stmt->error
+    ];
 }
-if($conn->query($sql) === TRUE){
-    echo "更新成功";
-}else {
-    echo "更新資料錯誤: " . $conn->error;
-}
-header("location: ticket.php?id=".$id);
 
+$stmt->close();
 $conn->close();
+
+echo json_encode($data);
+exit;
