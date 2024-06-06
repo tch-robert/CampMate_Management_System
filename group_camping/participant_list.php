@@ -4,13 +4,29 @@ require_once("../db_connect.php");
 $activity_id = $_GET['activity_id'];
 
 // 獲取參加對應活動的用戶資訊
-$sql = "SELECT users.id AS user_id, users.username, users.email, activity_participants.joined_at
-        FROM activity_participants
-        JOIN users ON activity_participants.user_id = users.id
-        WHERE activity_participants.activity_id = ?
-        AND activity_participants.status = 'joined'";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $activity_id);
+if (isset($_GET["search"])) :
+    $search =  $_GET["search"];
+    $pageTitle = "有關 \"" . $search . "\" 的結果";
+    $sql = "SELECT users.id AS user_id, users.username, users.email, activity_participants.joined_at
+    FROM activity_participants
+    JOIN users ON activity_participants.user_id = users.id
+    WHERE activity_participants.activity_id = ?
+    AND activity_participants.status = 'joined'
+    AND username LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("is", $activity_id, $search);
+else :
+    $pageTitle = "參加名單";
+    $sql = "SELECT users.id AS user_id, users.username, users.email, activity_participants.joined_at
+    FROM activity_participants
+    JOIN users ON activity_participants.user_id = users.id
+    WHERE activity_participants.activity_id = ?
+    AND activity_participants.status = 'joined'";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $activity_id);
+
+endif;
+
 $stmt->execute();
 $result = $stmt->get_result();
 $userCount = $result->num_rows;
@@ -22,14 +38,30 @@ $userCount = $result->num_rows;
 
 <main class="main-content">
     <div class="container">
-        <h1 class="mt-4">參加名單</h1>
+        <h1 class="mt-4"><?= $pageTitle ?></h1>
         <div class="d-flex justify-content-between mb-3">
-            <div class="mt-2 mx-2">
-                共 <?= $userCount ?> 名團員
+            <div class="d-flex justify-content-start gap-3">
+                <form action="" method="get" class=" m-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control-neumorphic" placeholder="Search" name="search">
+                        <input type="hidden" name="activity_id" value="<?= $activity_id ?>">
+                        <button class="btn btn-neumorphic" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
+                <?php if (isset($_GET["search"])) : ?>
+                    <a href="participant_list.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
+                        <i class="fa-solid fa-right-from-bracket"></i> 返回名單
+                    </a>
+                <?php endif; ?>
             </div>
-            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic ms-2">
-                <i class="fa-solid fa-door-open"></i> 返回揪團
-            </a>
+            <div class="d-flex justify-content-end gap-2">
+                <div class="mt-2">
+                    共 <?= $userCount ?> 名團員
+                </div>
+                <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-door-open"></i> 返回揪團
+                </a>
+            </div>
         </div>
         <table class="table table-bordered table-wrapper">
             <thead>

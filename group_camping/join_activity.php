@@ -50,7 +50,7 @@ endif;
         <form action="join_activity.php" method="post">
             <input type="hidden" name="activity_id" value="<?= $activity_id; ?>">
             <div class="form-group mb-3">
-                <label for="user_email">使用者 Email:</label>
+                <label for="user_email">請輸入 Email:</label>
                 <input type="email" class="form-control" id="user_email" name="user_email" required>
             </div>
 
