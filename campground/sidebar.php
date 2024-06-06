@@ -22,11 +22,12 @@
         </ul>
         </div>
     </li>
+    <li class="border-top my-3"></li>
     <li class="mb-1">
         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed " data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
         個人資料管理
         </button>
-        <div class="collapse" id="dashboard-collapse" style="">
+        <div class="collapse show" id="dashboard-collapse" >
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="owner-data.php" class="link-body-emphasis d-inline-flex text-decoration-none rounded" >個人資料修改</a></li>
         </ul>
@@ -35,3 +36,4 @@
     </ul>
     
 </div>
+<div class="sidebar_right"></div>

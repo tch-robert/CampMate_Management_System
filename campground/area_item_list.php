@@ -107,7 +107,7 @@ $itemCount = $result->num_rows;
 
     <body>
         <?php include("title.php") ?>
-        <div class="d-flex">
+        <div class="d-flex container-fluid">
             <?php include("sidebar.php") ?>
             <!-- 列表 -->
             
