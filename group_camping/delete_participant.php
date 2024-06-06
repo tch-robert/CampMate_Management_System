@@ -35,13 +35,9 @@ require_once("../db_connect.php");
 // header("Location: participant_list.php?activity_id=" . $activity_id);
 // exit();
 
-
-
-
-
 require_once("../db_connect.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") :
     $activity_id = $_POST['activity_id'];
     $user_id = $_POST['user_id'];
 
@@ -49,14 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $activity_id, $user_id);
 
-    if ($stmt->execute()) {
+    if ($stmt->execute()) :
         echo "成功移除團員";
-    } else {
+    else :
         echo "移除團員錯誤: " . $conn->error;
-    }
+    endif;
 
     $stmt->close();
     $conn->close();
     header("Location: participant_list.php?activity_id=" . $activity_id);
     exit();
-}
+endif;

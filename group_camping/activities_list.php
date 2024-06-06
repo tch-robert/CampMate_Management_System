@@ -78,7 +78,7 @@ $userCount = $result->num_rows;
         <!-- 搜尋、建立揪團 -->
 
         <?php if ($result->num_rows > 0) : ?>
-            <table class='table table-bordered table-wrap'>
+            <table class='table table-bordered table-wrapper'>
                 <thead class='thead-light text-nowrap'>
                     <tr class="text-center">
                         <th>揪團 ID</th>

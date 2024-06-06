@@ -31,7 +31,7 @@ $result = $stmt->get_result();
                     確認要移除該團員嗎?
                 </div>
                 <div class="modal-footer">
-                    <a href="delete_activity.php?activity_id=<?= $row["activity_id"] ?>" class="btn btn-neumorphic">確認</a>
+                    <a href="delete_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">確認</a>
                     <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
