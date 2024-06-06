@@ -34,8 +34,8 @@ $userCount = $result->num_rows;
 <main class="main-content">
     <div class="container">
         <h1 class="mt-4"><?= $pageTitle ?></h1>
-        <div class="d-flex justify-content-between">
-            <div class="d-flex justify-content-start gap-3 mb-3">
+        <div class="d-flex justify-content-between  mb-3">
+            <div class="d-flex justify-content-start gap-3">
                 <form action="" class="m-0">
                     <div class="input-group">
                         <input type="text" class="form-control-neumorphic" placeholder="Search" name="search">
@@ -53,32 +53,19 @@ $userCount = $result->num_rows;
                     </a>
                 <?php endif; ?>
             </div>
-            <div>
-                <div class="d-flex justify-content-between mb-3">
-                    <div class="mt-2 mx-2">
-                        共 <?= $userCount ?> 個揪團
-                    </div>
-                    <?php if (!isset($_GET["search"])) : ?>
-                        <!-- <a href=" my_activities.php" class="btn btn-primary">
-                        <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                        </a> -->
-                    <?php else : ?>
-                    <?php endif; ?>
-                    <div>
-                    </div>
-                    <a href="../index.php" class="btn btn-neumorphic">
-                        <i class="fa-solid fa-house"></i> 返回首頁
-                    </a>
-
-
+            <div class="d-flex justify-content-between gap-2">
+                <div class="mt-2">
+                    共 <?= $userCount ?> 個揪團
                 </div>
-
+                <a href="../index.php" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-house"></i> 返回首頁
+                </a>
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->
 
         <?php if ($result->num_rows > 0) : ?>
-            <table class='table table-bordered table-wrap'>
+            <table class='table table-bordered table-wrapper'>
                 <thead class='thead-light text-nowrap'>
                     <tr class="text-center">
                         <th>揪團 ID</th>
