@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") :
     }
 
     $conn->close();
-    header("location: activities_list.php");
+// header("location: activities_list.php");
 else :
     $activity_id = $_GET['activity_id'];
 endif;
@@ -54,16 +54,5 @@ endif;
                 <i class="fa-solid fa-calendar-check"></i> 提交資料
             </button>
         </form>
-
-        <!-- <form action="join_activity.php" method="post">
-            <input type="hidden" name="activity_id" value="<?= $activity_id; ?>">
-            <div class="form-group mb-3">
-                <label for="user_email">使用者 Email:</label>
-                <input type="email" class="form-control" id="user_email" name="user_email" required>
-            </div>
-            <button type="submit" class="btn btn-neumorphic">
-                <i class="fa-solid fa-calendar-check"></i> 提交資料
-            </button>
-        </form> -->
     </div>
 </main>

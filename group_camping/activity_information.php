@@ -3,21 +3,36 @@ require_once("../db_connect.php");
 
 $activity_id = $_GET['activity_id'];
 
-$sql = "SELECT a.*, u.username, u.email 
-        FROM activities a 
-        JOIN users u ON a.organizer_email = u.email 
-        WHERE a.activity_id=$activity_id";
+// 獲取活動資訊
+$sql_activity = "SELECT a.*, u.username, u.email 
+                 FROM activities a 
+                 JOIN users u ON a.organizer_email = u.email 
+                 WHERE a.activity_id = ?";
+$stmt_activity = $conn->prepare($sql_activity);
+$stmt_activity->bind_param("i", $activity_id);
+$stmt_activity->execute();
+$result_activity = $stmt_activity->get_result();
 
-$result = $conn->query($sql);
+if ($result_activity->num_rows == 1) :
+    $row = $result_activity->fetch_assoc();
+else :
+    exit("找不到活動");
+endif;
 
-if ($result->num_rows == 1) {
-    $row = $result->fetch_assoc();
-} else {
-    echo "找不到活動";
-    exit;
-}
+// 獲取參加人數
+$sql_participants = "SELECT COUNT(*) as participant_count 
+                     FROM activity_participants 
+                     WHERE activity_id = ? AND status = ?";
+$stmt_participants = $conn->prepare($sql_participants);
+$stmt_participants->bind_param("is", $activity_id, $status);
+$status = 'joined';
+$stmt_participants->execute();
+$result_participants = $stmt_participants->get_result();
+$row_participants = $result_participants->fetch_assoc();
+$userCount = $row_participants['participant_count'];
 
 $conn->close();
+
 ?>
 
 <title>揪團資訊</title>
@@ -35,7 +50,7 @@ $conn->close();
                     確認要刪除揪團資訊嗎?
                 </div>
                 <div class="modal-footer">
-                    <a href="delete_activity.php?activity_id=<?= $row["activity_id"] ?>" class="btn btn-neumorphic">確認</a>
+                    <a href="delete_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">確認</a>
                     <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -56,7 +71,7 @@ $conn->close();
             <tbody>
                 <tr>
                     <th class="text-nowrap">揪團 ID</th>
-                    <td><?= $row['activity_id']; ?></td>
+                    <td><?= $activity_id ?></td>
                 </tr>
                 <tr>
                     <th class="text-nowrap">建立時間</th>
@@ -90,11 +105,15 @@ $conn->close();
                     <th>結束日期</th>
                     <td><?= $row['end_date']; ?></td>
                 </tr>
+                <tr>
+                    <th>參加人數</th>
+                    <td><?= $userCount ?></td>
+                </tr>
             </tbody>
         </table>
         <div class="d-flex justify-content-between">
             <div class="d-flex gap-2">
-                <a href="join_activity.php?activity_id=<?= $row['activity_id']; ?>" class="btn btn-neumorphic">
+                <a href="join_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-user-plus"></i> 我要參加
                 </a>
                 <a href="participant_list.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
@@ -102,7 +121,7 @@ $conn->close();
                 </a>
             </div>
             <div class="d-flex gap-2">
-                <a href="edit_activity.php?activity_id=<?= $row['activity_id'] ?>" class="btn btn-neumorphic">
+                <a href="edit_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-pen-to-square"></i> 編輯揪團
                 </a>
                 <button type="button" class="btn btn-neumorphic" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">

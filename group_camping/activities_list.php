@@ -26,7 +26,6 @@ endif;
 $result = $conn->query($sql);
 // $rows = $result->fetch_all(MYSQLI_ASSOC); // 將資料轉為關聯式陣列
 $userCount = $result->num_rows;
-
 ?>
 
 <title>揪團列表</title>

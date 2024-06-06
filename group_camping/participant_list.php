@@ -4,7 +4,7 @@ require_once("../db_connect.php");
 $activity_id = $_GET['activity_id'];
 
 // 獲取參加對應活動的用戶資訊
-$sql = "SELECT users.id AS user_id, users.username, users.email
+$sql = "SELECT users.id AS user_id, users.username, users.email, activity_participants.joined_at
         FROM activity_participants
         JOIN users ON activity_participants.user_id = users.id
         WHERE activity_participants.activity_id = ?
@@ -50,16 +50,23 @@ $result = $stmt->get_result();
         <table class="table table-bordered table-wrapper">
             <thead>
                 <tr>
+                    <th>項次</th>
                     <th>團員名稱</th>
                     <th>團員 Email</th>
+                    <th>加入時間</th>
                     <th>移除團員</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()) : ?>
+                <?php
+                $i = 1;
+                while ($row = $result->fetch_assoc()) :
+                ?>
                     <tr>
+                        <td><?= $i++; ?></td>
                         <td><?= $row['username'] ?></td>
                         <td><?= $row['email'] ?></td>
+                        <td><?= $row['joined_at'] ?></td>
                         <td>
                             <form action="delete_participant.php" method="post" class="d-flex justify-content-center align-items-center">
                                 <input type="hidden" name="activity_id" value="<?= $activity_id ?>">
@@ -76,6 +83,11 @@ $result = $stmt->get_result();
                 <?php endwhile; ?>
             </tbody>
         </table>
+        <div class="d-flex justify-content-start">
+            <a href="join_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
+                <i class="fa-solid fa-user-plus"></i> 我要參加
+            </a>
+        </div>
     </div>
 </main>
 
