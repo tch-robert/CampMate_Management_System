@@ -49,7 +49,7 @@ if (isset($_GET["page"])) {
 <html lang="en">
 
 <head>
-    <title>Users</title>
+    <title>會員資料</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -110,12 +110,12 @@ if (isset($_GET["page"])) {
         .pagination-shadow .page-item .page-link:hover {
             color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: #007bff;
+            
         }
 
         .pagination-shadow .page-item.active .page-link {
             color: white;
-            background-color: #007bff;
+            
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
@@ -128,6 +128,7 @@ if (isset($_GET["page"])) {
             <h3><?= $pageTitle ?></h3>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between ">
+                    
                     <div>
                         <?php if (isset($_GET["search"])) : ?>
                             <a class="btn btn-warning" href="users.php"><i class="fa-solid fa-arrow-left"></i></a>
@@ -156,8 +157,9 @@ if (isset($_GET["page"])) {
                             <a href="?page=<?= $page ?>&order=1" class="btn btn-warning">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
                             <a href="?page=<?= $page ?>&order=2" class="btn btn-warning">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
                         </div>
-                    <?php endif; ?>
+                    
                     </div>
+                    <?php endif; ?>
             </div>
             <?php if ($result->num_rows > 0) : ?>
                 <table class="table table-custom table-hover">

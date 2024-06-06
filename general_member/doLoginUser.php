@@ -10,28 +10,37 @@ if(!isset($_POST["username"])){
 $username=$_POST["username"];
 $password=$_POST["password"];
 
-if(empty($usernsme)){
+
+
+
+if(empty($username)){
     $errorMsg="請輸入使用者帳號";
     $_SESSION["errorMsg"]=$errorMsg;
-    header("location: signin.php");
+    // echo $errorMsg;
+    // exit;
+    header("location: sign_in.php");
     exit;
+
 }
 if(empty($password)){
     $errorMsg="請輸入密碼";
     $_SESSION["errorMsg"]=$errorMsg;
-    header("location: signin.php");
+    // echo $errorMsg;
+    // exit;
+    header("location: sign_in.php");
     exit;
 }
 
+// echo "$username, $password";
 
-$password=md5($password);
-echo $usernsme;
-echo $password."<br>";
+$sql="SELECT * FROM users WHERE valid=1 AND username = '$username'  AND password='$password'";
+$result = $conn->query($sql);
 
-$sql="SELECT * FROM users WHERE username='$username' AND password = '$password' AND valid=1";
-$result=$conn->query($sql);
-$ownerCount=$result->num_rows;
-echo $sql;
+
+// $sql="SELECT * FROM users WHERE username = '$username' AND password = '$password' WHERE valid=1";
+// $result=$conn->query($sql);
+$userCount=$result->num_rows;
+// echo $sql;
 
 if($userCount==0){
     $errorMsg="帳號或密碼錯誤";
@@ -41,20 +50,10 @@ if($userCount==0){
         $_SESSION["errorTimes"]++;
     }
     $_SESSION["errorMsg"]=$errorMsg;
-    header("location: signin.php");
+    header("location: sign_in.php");
     exit;
 }
-
 $row=$result->fetch_assoc();
 // var_dump($row);
-unset($_SESSION["errorMsg"]);
-unset($_SESSION["errorTimes"]);
 
-$_SESSION["users"]=[
-    "id"=>$row["id"],
-    "name"=>$row["name"],
-    "email"=>$row["email"],
-    "phone"=>$row["phone"]
-];
-
-header("location:../general_member/users.php");
+header("location: ../chart/chart.php");
