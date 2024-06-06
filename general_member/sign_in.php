@@ -24,11 +24,12 @@
 
     <body>
         <div class="vh-100 d-flex justify-content-center align-items-center">
-            <form action="">
+            <!-- <img src="../images/logo-search-grid-1x.png" alt="" class="logo"> -->
+            <form action="doLoginUser.php" method="post">
                 <div class="input-area">
                     <div class="from-floating">
-                        <label for="" class="form-label word">帳號</label>
-                        <input type="text" class="form-control" name="account">
+                        <label for="" class="form-label word">使用者帳號</label>
+                        <input type="text" class="form-control" name="username">
                     </div>
                     <div class="from-floating">
                         <label for="floatingInput"class="form-label word">密碼</label>

@@ -174,10 +174,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <div class="filter-font">
                             ID :
                         </div>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => ($order == 'id_asc') ? 'id_desc' : 'id_asc'])) ?>"
+                        <a href="?<?= http_build_query(array_merge($_GET, ['order' => ($order == 'id_desc') ? 'id_asc' : 'id_desc'])) ?>"
                             class="btn btn-neumorphic btn-circle">
                             <i
-                                class="fa-solid <?= ($order == 'id_asc') ? 'fa-arrow-up-9-1' : 'fa-arrow-down-1-9' ?>"></i>
+                                class="fa-solid <?= ($order == 'id_desc') ? 'fa-arrow-up-9-1' : 'fa-arrow-down-1-9' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -187,7 +187,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <a href="?<?= http_build_query(array_merge($_GET, ['order' => ($order == 'name_asc') ? 'name_desc' : 'name_asc'])) ?>"
                             class="btn btn-neumorphic btn-circle">
                             <i
-                                class="fa-solid <?= ($order == 'name_asc') ? 'fa-arrow-up-z-a' : 'fa-arrow-down-a-z' ?>"></i>
+                                class="fa-solid <?= ($order == 'name_asc') ? 'fa-arrow-down-a-z' : 'fa-arrow-up-z-a' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -197,7 +197,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <a href="?<?= http_build_query(array_merge($_GET, ['category' => ($categoryFilter == '%數折扣') ? '金額折抵' : '%數折扣'])) ?>"
                             class="btn btn-neumorphic btn-circle">
                             <i
-                                class="fa-solid <?= ($categoryFilter == '%數折扣') ? 'fa-dollar-sign' : 'fa-percent' ?>"></i>
+                                class="fa-solid <?= ($categoryFilter == '%數折扣') ? 'fa-percent' : 'fa-dollar-sign' ?>"></i>
                         </a>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -229,7 +229,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         </div>
                         <a href="?<?= http_build_query(array_merge($_GET, ['status' => ($statusFilter == '可使用') ? '已停用' : '可使用'])) ?>"
                             class="btn btn-neumorphic btn-circle">
-                            <i class="fa-solid <?= ($statusFilter == '可使用') ? 'fa-ban' : 'fa-check' ?>"></i>
+                            <i class="fa-solid <?= ($statusFilter == '可使用') ? 'fa-check' : 'fa-ban' ?>"></i>
                         </a>
                         <!-- 更新優惠券狀態按鈕 -->
                         <button class="btn btn-neumorphic btn-circle" onclick="showUpdateModal()">
@@ -240,7 +240,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             </div>
             <!-- 優惠券管理列表 -->
             <div class="table-wrapper">
-                <table class="table table-bordered table-fixed neumorphic-table">
+                <table class="table table-hover table-bordered table-fixed neumorphic-table">
                     <thead>
                         <tr class="text-nowrap">
                             <th class="id-col">ID</th>
