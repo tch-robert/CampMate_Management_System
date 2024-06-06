@@ -44,21 +44,15 @@ endif;
 
 
 ?>
-<!doctype html>
-<html lang="en">
 
-<head>
-    <title>編輯揪團</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <?php include("../css.php") ?>
-</head>
+<title>編輯揪團</title>
+<?php include("../index.php") ?>
 
-<body>
+<main class="main-content">
     <div class="container">
         <h1 class="mt-4">編輯揪團</h1>
         <form action="" method="post">
-            <table class='table table-bordered'>
+            <table class='table table-bordered table-wrapper'>
                 <tbody>
                     <tr>
                         <th>揪團 ID</th>
@@ -108,16 +102,15 @@ endif;
                     </tr>
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-pen-to-square"></i> 確認變更
-            </button>
-            <a href="activity_information.php?activity_id=<?= $activity_id ?>" class="btn btn-secondary ms-2">
-                <i class="fa-solid fa-xmark"></i> 取消變更
-            </a>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-pen-to-square"></i> 確認變更
+                </button>
+                <a href="activity_information.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-xmark"></i> 取消變更
+                </a>
+            </div>
+
         </form>
     </div>
-
-    <?php include("../js.php") ?>
-</body>
-
-</html>
+</main>

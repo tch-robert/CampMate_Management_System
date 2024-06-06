@@ -18,7 +18,7 @@ else :
             WHERE a.valid = 1 
             GROUP BY a.activity_id";
     // $result = $conn->query($sql);
-    $pageTitle = "揪團列表";
+    $pageTitle = "揪團列表beta";
 endif;
 $result = $conn->query($sql);
 // $rows = $result->fetch_all(MYSQLI_ASSOC); // 將資料轉為關聯式陣列
@@ -26,7 +26,10 @@ $userCount = $result->num_rows;
 
 ?>
 
-<title>揪團列表</title>
+
+
+<title>揪團列表beta</title>
+
 <?php include("../index.php") ?>
 
 <main class="main-content">
@@ -67,16 +70,13 @@ $userCount = $result->num_rows;
                     <a href="../index.php" class="btn btn-neumorphic">
                         <i class="fa-solid fa-house"></i> 返回首頁
                     </a>
-
-
                 </div>
-
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->
 
         <?php if ($result->num_rows > 0) : ?>
-            <table class='table table-bordered table-wrap'>
+            <table class='table table-bordered neumorphic-table'>
                 <thead class='thead-light text-nowrap'>
                     <tr class="text-center">
                         <th>揪團 ID</th>
@@ -99,7 +99,7 @@ $userCount = $result->num_rows;
                             <td><?= $row["start_date"] ?></td>
                             <td><?= $row["end_date"] ?></td>
                             <td class="text-center">有 <?= $row["participant_count"] ?> 個人參加!</td>
-                            <td class="">
+                            <td class="d-flex justify-content-center align-items-center my-auto">
                                 <a href='activity_information.php?activity_id=<?= $row["activity_id"] ?>' class='btn btn-neumorphic'>
                                     <i class='fa-solid fa-circle-info'></i>
                                 </a>
