@@ -18,77 +18,32 @@ $address = $_POST["address"];
 $now = date('Y-m-d H:i:s');
 
 // Check if email already exists
-$sqlCheckOwner = "SELECT * FROM campground_owner WHERE email = ?";
-$stmtCheck = $conn->prepare($sqlCheckOwner);
-$stmtCheck->bind_param("s", $email);
-$stmtCheck->execute();
-$resultCheck = $stmtCheck->get_result();
+$sqlCheckOwner = "SELECT * FROM campground_owner WHERE email = '$email'";
+$resultCheck = $conn->query($sqlCheckOwner);
 
 if ($resultCheck->num_rows > 0) {
     echo json_encode([
         "status" => 0,
         "message" => "此email已經有人註冊"
     ]);
-    $stmtCheck->close();
     exit;
 }
-$stmtCheck->close();
 
 // Validate required fields
-if (empty($name)) {
+if (empty($name) || empty($email) || empty($phone) || empty($password) || empty($pay_account) || empty($address)) {
     echo json_encode([
         "status" => 0,
-        "message" => "請輸入姓名"
-    ]);
-    exit;
-}
-
-if (empty($email)) {
-    echo json_encode([
-        "status" => 0,
-        "message" => "請輸入Email"
-    ]);
-    exit;
-}
-
-if (empty($phone)) {
-    echo json_encode([
-        "status" => 0,
-        "message" => "請輸入電話"
-    ]);
-    exit;
-}
-
-if (empty($password)) {
-    echo json_encode([
-        "status" => 0,
-        "message" => "請輸入密碼"
-    ]);
-    exit;
-}
-
-if (empty($pay_account)) {
-    echo json_encode([
-        "status" => 0,
-        "message" => "請輸入收款帳號"
-    ]);
-    exit;
-}
-
-if (empty($address)) {
-    echo json_encode([
-        "status" => 0,
-        "message" => "請輸入地址"
+        "message" => "請填入必要欄位"
     ]);
     exit;
 }
 
 $password = md5($password);
 
-$stmt = $conn->prepare("INSERT INTO campground_owner (name, email, phone, password, pay_account, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssisss", $name, $email, $phone, $password, $pay_account, $address, $now);
+$sql = "INSERT INTO campground_owner (name, email, phone, password, pay_account, address, created_at)
+VALUES ('$name', '$email', '$phone', '$password', '$pay_account', '$address', '$now')";
 
-if ($stmt->execute()) {
+if ($conn->query($sql) === TRUE) {
     $last_id = $conn->insert_id;
     echo json_encode([
         "status" => 1,
@@ -97,12 +52,12 @@ if ($stmt->execute()) {
 } else {
     echo json_encode([
         "status" => 0,
-        "message" => "Error: " . $stmt->error
+        "message" => "Error: " . $sql . "<br>" . $conn->error
     ]);
 }
 
-$stmt->close();
 $conn->close();
 
 exit;
 ?>
+
