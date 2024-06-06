@@ -74,7 +74,7 @@ foreach ($L2Rows as $row) {
         }
 
         .textAreaBreif {
-            height: 150px;
+            height: 180px;
             resize: none;
         }
 
@@ -155,9 +155,9 @@ foreach ($L2Rows as $row) {
                                 <div class="mb-4">
                                     <label for="mainPic" class="minTitle h5 form-label">商品主要行銷圖片</label>
                                     <div class="row">
-                                        <div class="col-2 position-relative border rounded mb-3 mt-2">
+                                        <div class="col-2 position-relative border rounded mb-3 mt-2 p-0">
                                             <div class="ratio ratio-1x1">
-                                                <img src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
+                                                <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -173,9 +173,9 @@ foreach ($L2Rows as $row) {
                                         <?php if (count($mainPicRow) == 0) : ?>
                                         <?php else : ?>
                                             <?php for ($i = 1; $i < count($mainPicRow); $i++) : ?>
-                                                <div class="col-2 position-relative border rounded mb-3 mt-2">
+                                                <div class="col-2 position-relative border rounded mb-3 mt-2 p-0">
                                                     <div class="ratio ratio-1x1">
-                                                        <img src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
+                                                        <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
                                                     </div>
                                                 </div>
                                             <?php endfor; ?>
