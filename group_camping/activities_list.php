@@ -3,19 +3,22 @@ require_once("../db_connect.php");
 
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_id, activity_name, description, location, start_date, end_date 
-            FROM activities 
-            WHERE location LIKE '%$search%' 
-            AND valid = 1";
+    $sql = "SELECT a.activity_id, a.activity_name, a.description, a.location, a.start_date, a.end_date,
+            COUNT(ap.user_id) AS participant_count
+            FROM activities a
+            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id
+            WHERE location LIKE '%$search%'
+            AND a.valid = 1
+            GROUP BY a.activity_id";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
     // $sql = "SELECT * FROM activities WHERE valid = 1";
     $sql = "SELECT a.activity_id, a.activity_name, a.description, a.location, a.start_date, a.end_date,
-            COUNT(ap.user_id) AS participant_count 
-            FROM activities a 
-            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id 
-            WHERE a.valid = 1 
+            COUNT(ap.user_id) AS participant_count
+            FROM activities a
+            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id
+            WHERE a.valid = 1
             GROUP BY a.activity_id";
     // $result = $conn->query($sql);
     $pageTitle = "揪團列表";
