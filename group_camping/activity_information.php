@@ -20,18 +20,11 @@ if ($result->num_rows == 1) {
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<title>揪團資訊</title>
+<?php include("../index.php") ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php include("../css.php") ?>
-    <title>揪團詳細資訊</title>
-</head>
-
-<body>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<main class="main-content">
+    <div class="modal neumorphic-modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -42,8 +35,8 @@ $conn->close();
                     確認要刪除揪團資訊嗎?
                 </div>
                 <div class="modal-footer">
-                    <a href="delete_activity.php?activity_id=<?= $row["activity_id"] ?>" class="btn btn-danger">確認</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <a href="delete_activity.php?activity_id=<?= $row["activity_id"] ?>" class="btn btn-neumorphic">確認</a>
+                    <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
@@ -55,11 +48,11 @@ $conn->close();
         <div class="d-flex justify-content-between mb-3">
             <div>
             </div>
-            <a href="activities_list.php" class="btn btn-secondary">
+            <a href="activities_list.php" class="btn btn-neumorphic">
                 <i class="fa-solid fa-door-open"></i> 返回列表
             </a>
         </div>
-        <table class='table table-bordered'>
+        <table class='table table-bordered table-wrapper '>
             <tbody>
                 <tr>
                     <th class="text-nowrap">揪團 ID</th>
@@ -100,25 +93,22 @@ $conn->close();
             </tbody>
         </table>
         <div class="d-flex justify-content-between">
-            <div>
-                <a href="join_activity.php?activity_id=<?= $row['activity_id']; ?>" class="btn btn-primary">
+            <div class="d-flex gap-2">
+                <a href="join_activity.php?activity_id=<?= $row['activity_id']; ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-user-plus"></i> 我要參加
                 </a>
-                <a href="participant_list.php?activity_id=<?= $activity_id ?>" class="btn btn-primary ms-2">
+                <a href="participant_list.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-address-book"></i> 參加名單
                 </a>
             </div>
-            <div>
-                <a href="edit_activity.php?activity_id=<?= $row['activity_id'] ?>" class="btn btn-secondary me-2">
+            <div class="d-flex gap-2">
+                <a href="edit_activity.php?activity_id=<?= $row['activity_id'] ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-pen-to-square"></i> 編輯揪團
                 </a>
-                <button class="btn btn-danger" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <button class="btn btn-neumorphic" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
                     <i class="fa-solid fa-trash-can"></i> 刪除揪團
                 </button>
             </div>
         </div>
     </div>
-    <?php include("../js.php") ?>
-</body>
-
-</html>
+</main>

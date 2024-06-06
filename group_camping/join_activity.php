@@ -20,23 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<title>參加揪團</title>
+<?php include("../index.php") ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php include("../css.php") ?>
-    <title>參加揪團</title>
-</head>
-
-<body>
+<main class="main-content">
     <div class="container">
         <h1 class="mt-4">參加揪團</h1>
         <div class="d-flex justify-content-between mb-3">
             <div>
             </div>
-            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-secondary ms-2">
+            <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic ms-2">
                 <i class="fa-solid fa-door-open"></i> 返回揪團
             </a>
         </div>
@@ -47,14 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="user_id">使用者 ID:</label>
                 <input type="number" class="form-control" id="user_id" name="user_id" required>
             </div>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-neumorphic">
                 <i class="fa-solid fa-calendar-check"></i> 提交資料
             </button>
         </form>
-
     </div>
-
-    <?php include("../js.php") ?>
-</body>
-
-</html>
+</main>
