@@ -13,6 +13,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $activity_id);
 $stmt->execute();
 $result = $stmt->get_result();
+$userCount = $result->num_rows;
 
 ?>
 
@@ -20,28 +21,11 @@ $result = $stmt->get_result();
 <?php include("../index.php") ?>
 
 <main class="main-content">
-    <div class="modal neumorphic-modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalLabel">Warning!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    確認要移除該團員嗎?
-                </div>
-                <div class="modal-footer">
-                    <a href="delete_activity.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">確認</a>
-                    <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- modal -->
     <div class="container">
         <h1 class="mt-4">參加名單</h1>
         <div class="d-flex justify-content-between mb-3">
-            <div>
+            <div class="mt-2 mx-2">
+                共 <?= $userCount ?> 名團員
             </div>
             <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic ms-2">
                 <i class="fa-solid fa-door-open"></i> 返回揪團
@@ -71,12 +55,28 @@ $result = $stmt->get_result();
                             <form action="delete_participant.php" method="post" class="d-flex justify-content-center align-items-center">
                                 <input type="hidden" name="activity_id" value="<?= $activity_id ?>">
                                 <input type="hidden" name="user_id" value="<?= $row['user_id'] ?>">
-                                <!-- <button type="submit" class="btn btn-neumorphic">
-                                    <i class="fa-solid fa-user-minus"></i>
-                                </button> -->
                                 <button type="button" class="btn btn-neumorphic" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     <i class="fa-solid fa-user-minus"></i> 移除團員
                                 </button>
+
+                                <div class="modal neumorphic-modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteModalLabel">Warning!</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                確認要移除該團員嗎?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-neumorphic">確認</button>
+                                                <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- delete modal -->
                             </form>
                         </td>
                     </tr>
