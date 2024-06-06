@@ -85,7 +85,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="owner.php?id=<?= $id ?>" class="btn btn-warning">
+                    <a href="owner.php?id=<?= $id ?>" class="btn btn_color2">
                         <i class="fa-solid fa-arrow-left"></i> 返回
                     </a>
                 </div>
@@ -137,7 +137,7 @@ if ($result->num_rows > 0) {
                                         </td>
                                     </tr>
                                 </table>
-                                <button class="btn btn-warning" type="submit">送出</button>
+                                <button class="btn btn_color2" type="submit">送出</button>
                             </form>
                         </div>
                     </div>
@@ -145,6 +145,9 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </main>
+
+    <!-- button的css -->
+    <?php include("btn_css.php"); ?>
 
     <!-- Bootstrap JavaScript Libraries -->
     <?php include("../js.php") ?>

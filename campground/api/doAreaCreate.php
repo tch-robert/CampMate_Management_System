@@ -34,14 +34,14 @@ if(empty($area_category)){
     exit;
 }
 
-if(empty($price_per_day)){
-    $data=[
-        "status" => 403,
-        "message"=> "請輸入價格"
-    ];
-    echo json_encode($data);
-    exit;
-}
+// if(empty($price_per_day)){
+//     $data=[
+//         "status" => 403,
+//         "message"=> "請輸入價格"
+//     ];
+//     echo json_encode($data);
+//     exit;
+// }
 
 
 

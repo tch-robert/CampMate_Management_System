@@ -105,7 +105,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
+                    <a class="btn btn_color2" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -147,7 +147,7 @@ if ($result->num_rows > 0) {
                                     </tr>
                                 </table>
                                 <div class="py-2 d-flex justify-content-between">
-                                    <a class="btn btn-warning" href="owner-edit.php?id=<?= $row["id"] ?>" title="編輯營地主">編輯 <i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn_color2" href="owner-edit.php?id=<?= $row["id"] ?>" title="編輯營地主">編輯 <i class="fa-solid fa-pen-to-square"></i></a>
 
                                     <button class="btn btn-danger" title="刪除營地主" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除 <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
@@ -160,6 +160,10 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </main>
+
+
+    <!-- button的css -->
+    <?php include("btn_css.php"); ?>
 
     <?php include("../js.php") ?>
 </body>

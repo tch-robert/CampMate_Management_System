@@ -103,7 +103,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客服單列表</a>
+                    <a class="btn btn_color2" href="tickets.php"><i class="fa-solid fa-arrow-left"></i> 回客服單列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -149,7 +149,7 @@ if ($result->num_rows > 0) {
                                     </tr>
                                 </table>
                                 <div class="py-2 d-flex justify-content-between">
-                                    <a class="btn btn-warning" href="ticket-edit.php?id=<?= $row["id"] ?>" title="回覆客訴單">回覆 <i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn_color2" href="ticket-edit.php?id=<?= $row["id"] ?>" title="回覆客訴單">回覆 <i class="fa-solid fa-pen-to-square"></i></a>
 
                                     <button class="btn btn-danger" title="刪除客訴單" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除 <i class="fa-solid fa-trash-can"></i></button>
                                 </div>
@@ -162,7 +162,7 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </main>
-
+    <?php include("btn_css.php") ?>
     <?php include("../js.php") ?>
 </body>
 
