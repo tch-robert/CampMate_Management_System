@@ -1,85 +1,69 @@
 <?php
 require_once("../db_connect.php");
 
-$sqlAll = "SELECT * FROM ticket WHERE valid = 1";
+
+// 每頁顯示的數量
+$perPage = 5;
+
+// 獲取搜索和篩選的條件
+$search = isset($_GET["search"]) ? $_GET["search"] : '';
+$category = isset($_GET["category"]) ? $_GET["category"] : '';
+
+// 得到分頁和篩選的訊息
+$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+$order = isset($_GET["order"]) ? $_GET["order"] : 1;
+$firstItem = ($page - 1) * $perPage;
+$pageTitle = "客服單列表 / 第 $page 頁";
+
+// 排序條件
+$orderClause = "ORDER BY id ASC";
+switch ($order) {
+    case 2:
+        $orderClause = "ORDER BY id DESC";
+        break;
+    case 3:
+        $orderClause = "ORDER BY status ASC";
+        break;
+    case 4:
+        $orderClause = "ORDER BY status DESC";
+        break;
+}
+
+// 搜索和篩選的條件
+$searchClause = !empty($search) ? "AND (title LIKE '%$search%' OR description LIKE '%$search%')" : '';
+$categoryClause = !empty($category) ? "AND title LIKE '%$category%'" : '';
+
+// 取得所有符合條件的值
+$sqlAll = "SELECT * FROM ticket WHERE valid = 1 $searchClause $categoryClause";
 $resultAll = $conn->query($sqlAll);
 $allTicketCount = $resultAll->num_rows;
 
-if (isset($_GET["search"])) {
-    $search = $_GET["search"];
-    $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE title LIKE '%$search%' AND valid = 1";
-    $pageTitle = "$search 的搜尋結果";
-} else if (isset($_GET["page"]) && isset($_GET["order"])) {
-    $page = $_GET["page"];
-    $perPage = 5;
-    $firstItem = ($page - 1) * $perPage;
-    $pageCount = ceil($allTicketCount / $perPage);
+// 計算總頁數
+$pageCount = ceil($allTicketCount / $perPage);
 
-    $order = $_GET["order"];
-
-    switch ($order) {
-        case 1:
-            $orderClause = "ORDER BY id ASC";
-            break;
-        case 2:
-            $orderClause = "ORDER BY id DESC";
-            break;
-        case 3:
-            $orderClause = "ORDER BY status ASC";
-            break;
-        case 4:
-            $orderClause = "ORDER BY status DESC";
-            break;
-    }
-    $sql = "SELECT * FROM ticket WHERE valid=1
-    $orderClause LIMIT $firstItem, $perPage";
-    $pageTitle = "客服單列表 第 $page 頁";
-} else {
-    $sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status FROM ticket WHERE valid = 1";
-    $pageTitle = "客服單列表";
-    header("location: tickets.php?page=1&order=1");
-}
-
+// 获取当前页的客服单数据
+$sql = "SELECT id, title, description, user_id, reply, createtime, closetime, status 
+        FROM ticket 
+        WHERE valid = 1 $searchClause $categoryClause 
+        $orderClause 
+        LIMIT $firstItem, $perPage";
 $result = $conn->query($sql);
 $rows = $result->fetch_all(MYSQLI_ASSOC);
-$ticketCount = $result->num_rows;
-if (isset($_GET["page"])) {
-    $ticketCount = $allTicketCount;
-}
 
-// //處理表單提交的數據顯示
-// if($_SERVER["REQUEST_METHOD"] == "POST"){
-//     $selectCategory = $_POST["category"];
 
-//     //根據標題的分類篩選
-//     if ($selectCategory) {
-//         $sql = "SELECT id, title, description, user_id, reply, createtime, status FROM ticket WHERE title LIKE ? AND valid = 1";
-//         $stmt = $conn->prepare($sql);
-//         $searchTerm = '%' . $selectCategory . '%';
-//         $stmt->bind_param("s", $searchTerm);
-//     } else {
-//         $sql = "SELECT id, title, description, user_id, reply, createtime, status FROM ticket WHERE valid = 1";
-//         $stmt = $conn->prepare($sql);
-//     }
+$pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
 
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $rows = $result->fetch_all(MYSQLI_ASSOC);
-//     $ticketCount = $result->num_rows;
-//     $stmt->close();
-//     $conn->close();
-// }
+
 
 ?>
+
 <!doctype html>
 <html lang="zh-Hant">
 
 <head>
     <title><?= $pageTitle ?></title>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- css -->
     <?php include("../css.php") ?>
     <style>
         .aside-a-active {
@@ -150,20 +134,19 @@ if (isset($_GET["page"])) {
 <body>
     <?php include("../index.php") ?>
     <main class="main-content">
-        <!-- 這裡將顯示動態加載的內容 -->
         <div class="container">
-            <h1><?= $pageTitle ?></h1>
+            <h2><?= $pageTitle ?></h2>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <?php if (isset($_GET["search"])) : ?>
+                        <?php if (!empty($search)) : ?>
                             <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-3">
-                        <form action="">
+                        <form action="" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search..." name="search">
+                                <input type="text" class="form-control" placeholder="Search..." name="search" value="<?= $search ?>">
                                 <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
@@ -172,35 +155,34 @@ if (isset($_GET["page"])) {
                 </div>
             </div>
             <div class="pb-2 d-flex justify-content-between">
+                <div>共 <?= $allTicketCount ?> 單</div>
                 <div>
-                    共 <?= $ticketCount ?> 單
-                </div>
-                <?php if (isset($_GET["page"])) : ?>
-                    <div>
-                        排序:
-                        <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning <?php if ($order == 1) echo "active"; ?>">編號<i class="fa-solid fa-arrow-down-1-9"></i></a>
-
-                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning <?php if ($order == 2) echo "active"; ?>">編號<i class="fa-solid fa-arrow-up-1-9"></i></a>
-
-                            <a href="?page=<?= $page ?>&order=3" class="btn btn-warning <?php if ($order == 3) echo "active"; ?>">尚未回覆</a>
-
-                            <a href="?page=<?= $page ?>&order=4" class="btn btn-warning <?php if ($order == 4) echo "active"; ?>">已回覆</a>
-                        </div>
+                    排序:
+                    <div class="btn-group">
+                        
+                        <!-- <a href="?page=<?= $page ?>&order=2&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 2 ? 'active' : '' ?>">編號<i class="fa-solid fa-arrow-up-1-9"></i></a> -->
+                        <a href="?page=<?= $page ?>&order=3&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 3 ? 'active' : '' ?>">尚未回覆</a>
+                        <a href="?page=<?= $page ?>&order=4&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 4 ? 'active' : '' ?>">已回覆</a>
+                        <a href="?page=<?= $page ?>&order=1&search=<?= $search ?>&category=<?= $category ?>" class="btn btn-warning <?= $order == 1 ? 'active' : '' ?>"><i class="fa-solid fa-arrows-rotate"></i></a>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
-            <!-- <form method="POST" action="" id="filterForm">
-                <label for="category">客服分類:</label>
-                <select name="category" id="category" onchange="submitForm()">
-                    <option value="" href="tickets.php" <?= $selectCategory == '' ? 'selected' : '' ?>>所有分類</option>
-                    <option value="營地相關" <?= $selectCategory == '營地相關' ? 'selected' : '' ?>>營地相關</option>
-                    <option value="用品租借相關" <?= $selectCategory == '用品租借相關' ? 'selected' : '' ?>>用品租借相關</option>
-                    <option value="網站操作相關" <?= $selectCategory == '網站操作相關' ? 'selected' : '' ?>>網站操作相關</option>
-                    <option value="費用相關" <?= $selectCategory == '費用相關' ? 'selected' : '' ?>>費用相關</option>
-                    <option value="其他" <?= $selectCategory == '其他' ? 'selected' : '' ?>>其他</option>
-                </select>
-            </form> -->
+            <div class="">
+                <form id="categoryForm" action="" method="get" class="form-inline ">
+                    <input type="hidden" name="page" value="<?= $page ?>">
+                    <input type="hidden" name="order" value="<?= $order ?>">
+                    <input type="hidden" name="search" value="<?= $search ?>">
+                    <label class="text-nowrap">客服單分類：</label>
+                    <select class="form-control" name="category" onchange="this.form.submit()">
+                        <option value="">所有</option>
+                        <option value="營地相關" <?= $category == '營地相關' ? 'selected' : '' ?>>營地相關</option>
+                        <option value="用品租借相關" <?= $category == '用品租借相關' ? 'selected' : '' ?>>用品租借相關</option>
+                        <option value="網站操作相關" <?= $category == '網站操作相關' ? 'selected' : '' ?>>網站操作相關</option>
+                        <option value="費用相關" <?= $category == '費用相關' ? 'selected' : '' ?>>費用相關</option>
+                        <option value="其他" <?= $category == '其他' ? 'selected' : '' ?>>其他</option>
+                    </select>
+                </form>
+            </div>
             <?php if ($result->num_rows > 0) : ?>
                 <table class="table table-custom table-hover">
                     <thead>
@@ -230,29 +212,21 @@ if (isset($_GET["page"])) {
                         <?php endforeach ?>
                     </tbody>
                 </table>
-                <?php if (isset($_GET["page"])) : ?>
+                <?php if ($pageCount > 1) : ?>
                     <nav aria-label="Page ">
                         <ul class="pagination pagination-shadow">
                             <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                                <li class="page-item"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a></li>
+                                <li class="page-item <?= $i == $page ? 'active' : '' ?>"><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>&search=<?= $search ?>&category=<?= $category ?>"><?= $i ?></a></li>
                             <?php endfor; ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
             <?php else : ?>
-                沒有客訴單
+                沒有相關客訴單
             <?php endif; ?>
-
         </div>
     </main>
-    <!-- js -->
     <?php include("../js.php") ?>
-    <!-- <script>
-        // 用於自動篩選
-        function submitForm() {
-            document.getElementById('filterForm').submit();
-        }
-    </script> -->
 </body>
 
 </html>

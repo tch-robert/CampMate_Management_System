@@ -131,7 +131,7 @@ if (isset($_GET["page"])) {
     <main class="main-content">
         <!-- 這裡將顯示其他頁面的內容 -->
         <div class="container">
-            <h1><?= $pageTitle ?></h1>
+            <h2><?= $pageTitle ?></h2>
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-between">
                     <div>
