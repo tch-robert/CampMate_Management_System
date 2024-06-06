@@ -97,7 +97,7 @@ $userCount = $result->num_rows;
                     <?php endwhile; ?>
                 </tbody>
             <?php else : ?>
-                沒有關於<?= $search ?>的活動
+                目前沒有揪團，點擊 "我要揪團" 開始露營吧!
             <?php endif; ?>
             </table>
     </div>
