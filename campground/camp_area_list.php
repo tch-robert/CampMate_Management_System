@@ -87,6 +87,7 @@ $campCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <hr>
                 <div class="mb-3">
                     <a href="camp_area_search.php" class="btn btn-primary">返回營區列表</a>
                 </div>
@@ -103,7 +104,7 @@ $campCount = $result->num_rows;
                     <form action="">
                         <div class="input-group">
                             <input type="hidden" value="<?=$camp_id?>" name="camp_id">
-                            <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
+                            <input type="text" class="form-control" placeholder="輸入營區名稱..." name="search">
                             <button class="btn btn-primary" type="submit">搜尋</button>
                         </div>
                         
@@ -144,7 +145,7 @@ $campCount = $result->num_rows;
                         <ul class="pagination">
                             <?php for($i=1; $i<=$pageCount; $i++):?>
                             <li class="page-item"><a class="page-link 
-                            <?php if($i==$page)echo 'active'?>" href="?page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
+                            <?php if($i==$page)echo 'active'?>" href="?camp_id=<?=$camp_id?>&page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
                             </li>
                             <?php endfor; ?>
                         </ul>

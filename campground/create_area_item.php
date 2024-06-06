@@ -56,10 +56,10 @@ $area_id = $_GET["area_id"];
         <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
-            <div class="container">
+            <div class="container  ms-5">
                 <h4 class="mb-3">請輸入商品資料</h4>
                 <form action="doCreateItem.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post" enctype="multipart/form-data">
-                <div class="row" style="" >
+                <div class="row p-4" style="" >
                 
                         <div class="col-12 mb-3">
                         

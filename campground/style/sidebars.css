@@ -2,6 +2,7 @@ body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
   background-color: #baad9c;
+
 }
 
 html {
@@ -67,6 +68,13 @@ main {
   background-color: rgb(38, 35, 35);
   height: 70px;
   color: white;
+  position: fixed;
+  width: 100vw;
+  z-index: 5;
+}
+.title_space{
+  height: 70px;
+  width: 80vw;
 }
 
 .card{
@@ -76,4 +84,24 @@ main {
 .card-body{
   padding: 50px;
   
+}
+.container{
+  align-items: start;
+}
+
+.sidebar{
+  height: calc(100vh - 70px);
+  background-color: rgb(153, 137, 122);
+  color: rgb(240, 222, 222);
+  position: fixed;
+  top: 70px;
+  z-index: 5;
+}
+.sidebar_right{
+  height: calc(100vh - 70px);
+  width: 280px;
+}
+
+span{
+  color: rgb(240, 222, 222);
 }

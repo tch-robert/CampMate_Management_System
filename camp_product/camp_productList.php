@@ -214,7 +214,8 @@ for ($i = 0; $i < count($rows); $i++) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- 把共通的css叫入 -->
-    <?php include("../css.php") ?>
+    <?php include("../css_neumorphic.php") ?>
+    <?php include("../index_modular/index_css.php") ?>
 
     <style>
         /* 商品列表頁面css */
@@ -286,11 +287,12 @@ for ($i = 0; $i < count($rows); $i++) {
 </head>
 
 <body>
+    <?php include("../index_modular/index_header_aside.php") ?>
     <main class="main-content row justify-content-center">
         <div class="col-lg-10">
             <!-- 頁面大標題＆新增商品 -->
             <div class="d-flex justify-content-between align-items-center my-4">
-                <h1 class="my-5">我的商品</h1>
+                <h1 class="">我的商品</h1>
                 <a href="./addProduct.php" class="addP btn btn-primary shadow">
                     <i class="fa-solid fa-plus"></i> 新增商品
                 </a>
@@ -636,6 +638,8 @@ for ($i = 0; $i < count($rows); $i++) {
     <!-- 把共通的js叫入 -->
     <?php include("../js.php") ?>
 
+    <?php include("../index_modular/index_js.php") ?>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const viewP = document.querySelectorAll(".viewP");
@@ -649,6 +653,7 @@ for ($i = 0; $i < count($rows); $i++) {
             });
         })
     </script>
+
 </body>
 
 </html>

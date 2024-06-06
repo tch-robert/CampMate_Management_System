@@ -43,10 +43,10 @@ include("session_check_login.php");
         <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
-            <div class="container">
+            <div class="container ms-5">
                 <h4 class="mb-3">請填寫營地基本資料</h4>
 
-                <div class="row" style="" >
+                <div class="row p-4" style="" >
                 <!-- 第一頁 -->
                         <div class="col-12 mb-3">
                         <label for="campground_name" class="form-label ">*營地名稱</label>

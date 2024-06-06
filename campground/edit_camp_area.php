@@ -123,6 +123,7 @@ if($result->num_rows > 0){
                                         <option value="雨棚區" <?php if($row["area_category"]=="雨棚區"){echo "selected";} ?>>雨棚區</option>
                                         <option value="森林區" <?php if($row["area_category"]=="森林區"){echo "selected";} ?>>森林區</option>
                                         <option value="泥土區" <?php if($row["area_category"]=="泥土區"){echo "selected";} ?>>泥土區</option>
+                                        <option value="固定式帳棚" <?php if($row["area_category"]=="固定式帳棚"){echo "selected";} ?>>固定式帳棚</option>
                                     </select>
                                     </td>
                                 </tr>

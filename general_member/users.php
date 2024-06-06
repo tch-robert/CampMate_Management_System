@@ -56,94 +56,161 @@ if (isset($_GET["page"])) {
 
     <?php include("../css.php") ?>
     <style>
-        .pagination{
-            color: red;
+        .aside-a-active {
+            transform: translate(-3px, -3px);
+        }
+
+        .aside-i-active {
+            color: #9ba45c;
+            background: linear-gradient(145deg, #ffefda, #d7c9b8) !important;
+            box-shadow: 2px 2px 8px #baae9f,
+                -2px -2px 8px #fffff9 !important;
+        }
+
+        .table-custom {
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .table-custom thead th {
+            border: none;
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table-custom tbody tr {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-custom tbody tr td {
+            background-color: white;
+            border: none;
+        }
+
+        .pagination-shadow {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination-shadow .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination-shadow .page-item .page-link {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #000;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s, color 0.3s;
+        }
+
+        .pagination-shadow .page-item .page-link:hover {
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #007bff;
+        }
+
+        .pagination-shadow .page-item.active .page-link {
+            color: white;
+            background-color: #007bff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="py-3 mb-1">
+    <?php include("../index.php") ?>
+    <main class="main-content">
+        <div class="container">
             <h3><?= $pageTitle ?></h3>
-            <div class="d-flex justify-content-between gap-1">
-                <div>
-                    <?php if (isset($_GET["search"])) : ?>
-                        <a class="btn btn-success" href="users.php"><i class="fa-solid fa-angles-left"></i></a>
-                    <?php endif; ?>
-                </div>
-                <div class="d-flex gap-3">
-                    <div style="font-size: 15pt;">共 <?= $usercount ?>人</div>
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search..." name="search">
-                            <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </form>
-                    <a class="btn btn-success" href="create_users.php"><i class="fa-solid fa-user-plus"></i></a>
-                </div>
-            </div>
-            <?php if (isset($_GET["page"])) : ?>
-                <div>
-                    排序:
-                    <div class="btn-group">
-                        <a href="?page=<?= $page ?>&order=1" class="btn btn-success">id<i class="fa-solid fa-arrow-down-short-wide"></i></a>
-                        <a href="?page=<?= $page ?>&order=2" class="btn btn-success">id<i class="fa-solid fa-arrow-down-wide-short"></i></a>
+            <div class="py-2 mb-3">
+                <div class="d-flex justify-content-between ">
+                    <div>
+                        <?php if (isset($_GET["search"])) : ?>
+                            <a class="btn btn-warning" href="users.php"><i class="fa-solid fa-arrow-left"></i></a>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
-                </div>
-        </div>
-    </div>
-    <?php if ($result->num_rows > 0) : ?>
-        <table class="table table-success table-striped">
-            <thead>
-                <th scope="col">id</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Create Time</th>
-                <th scope="col"></th>
-            </thead>
-            <tbody>
-                <?php foreach ($rows as $user) : ?>
-                    <tr>
-                        <td scope="row"><?= $user["id"] ?></td>
-                        <td scope="row"><?= $user["username"] ?></td>
-                        <td scope="row"><?= $user["email"] ?></td>
-                        <td scope="row"><?= $user["phone"] ?></td>
-                        <td scope="row"><?= $user["created_at"] ?></td>
-                        <td scope="row">
-                            <div class="py-1 ">
-                                <a class="btn btn-primary" href="user.php?id=<?= $user["id"] ?>" title="預覽使用者"><i class="fa-regular fa-eye"></i></a>
-                                <a href="user-delete.php?id=<?= $user["id"] ?>" class="btn btn-danger"><i class="fa-solid fa-trash" title="刪除使用者"></i></a>
+                    <div class="d-flex gap-3">
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search..." name="search">
+                                <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
-
-
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php if (isset($_GET["page"])) : ?>
-            <div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination  mb-2">
-                        <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                            <li class="page-item 
-                        <?php if ($i == $page) echo "active" ?>
-                        "><a class="page-link" href="?page=<?= $i?>&order=<?= $order ?>"><?= $i ?></a></li>
-                        <?php endfor; ?>
-                    </ul>
-                </nav>
+                        </form>
+                        <a class="btn btn-warning" href="create_users.php"><i class="fa-solid fa-user-plus"></i></a>
+                    </div>
+                </div>
             </div>
-            
-        <?php endif; ?>
-    <?php else : ?>
-        沒有使用者資料
-    <?php endif; ?>
-    </div>
+            <div class="pb-2 d-flex justify-content-between">
+                <div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+                    共 <?= $usercount ?>人
+                </div>
+                <?php if (isset($_GET["page"])) : ?>
+                    <div>
+                        排序:
+                        <div class="btn-group">
+                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
+                        </div>
+                    <?php endif; ?>
+                    </div>
+            </div>
+            <?php if ($result->num_rows > 0) : ?>
+                <table class="table table-custom table-hover">
+                    <thead>
+                        <th scope="col">id</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Create Time</th>
+                        <th scope="col"></th>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($rows as $user) : ?>
+                            <tr>
+                                <td scope="row"><?= $user["id"] ?></td>
+                                <td scope="row"><?= $user["username"] ?></td>
+                                <td scope="row"><?= $user["email"] ?></td>
+                                <td scope="row"><?= $user["phone"] ?></td>
+                                <td scope="row"><?= $user["created_at"] ?></td>
+                                <td scope="row">
+                                    <div class="py-1 ">
+                                        <a class="btn btn-warning" href="user.php?id=<?= $user["id"] ?>" title="預覽使用者"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="user-delete.php?id=<?= $user["id"] ?>" class="btn btn-danger"><i class="fa-solid fa-trash" title="刪除使用者"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php if (isset($_GET["page"])) : ?>
+                    <div>
+                        <nav aria-label="Page ">
+                            <ul class="pagination  pagination-shadow">
+                                <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
+                                    <li class="page-item 
+                        <?php if ($i == $page) echo "active" ?>
+                        "><a class="page-link" href="?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a></li>
+                                <?php endfor; ?>
+                            </ul>
+                        </nav>
+                    </div>
+
+                <?php endif; ?>
+            <?php else : ?>
+                沒有使用者資料
+            <?php endif; ?>
+        </div>
+    </main>
+
+
+
+
+    <?php include("../js.php") ?>
 </body>
 
 </html>

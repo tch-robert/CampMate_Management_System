@@ -3,19 +3,22 @@ require_once("../db_connect.php");
 
 if (isset($_GET["search"])) :
     $search = $_GET["search"];
-    $sql = "SELECT activity_id, activity_name, description, location, start_date, end_date 
-            FROM activities 
-            WHERE location LIKE '%$search%' 
-            AND valid = 1";
+    $sql = "SELECT a.activity_id, a.activity_name, a.description, a.location, a.start_date, a.end_date,
+            COUNT(ap.user_id) AS participant_count
+            FROM activities a
+            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id
+            WHERE location LIKE '%$search%'
+            AND a.valid = 1
+            GROUP BY a.activity_id";
     // $result = $conn->query($sql);
     $pageTitle = "有關 \"" . $search . "\" 的結果";
 else :
     // $sql = "SELECT * FROM activities WHERE valid = 1";
     $sql = "SELECT a.activity_id, a.activity_name, a.description, a.location, a.start_date, a.end_date,
-            COUNT(ap.user_id) AS participant_count 
-            FROM activities a 
-            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id 
-            WHERE a.valid = 1 
+            COUNT(ap.user_id) AS participant_count
+            FROM activities a
+            LEFT JOIN activity_participants ap ON a.activity_id = ap.activity_id
+            WHERE a.valid = 1
             GROUP BY a.activity_id";
     // $result = $conn->query($sql);
     $pageTitle = "揪團列表";
@@ -23,7 +26,6 @@ endif;
 $result = $conn->query($sql);
 // $rows = $result->fetch_all(MYSQLI_ASSOC); // 將資料轉為關聯式陣列
 $userCount = $result->num_rows;
-
 ?>
 
 <title>揪團列表</title>
@@ -32,8 +34,8 @@ $userCount = $result->num_rows;
 <main class="main-content">
     <div class="container">
         <h1 class="mt-4"><?= $pageTitle ?></h1>
-        <div class="d-flex justify-content-between">
-            <div class="d-flex justify-content-start gap-3 mb-3">
+        <div class="d-flex justify-content-between  mb-3">
+            <div class="d-flex justify-content-start gap-3">
                 <form action="" class="m-0">
                     <div class="input-group">
                         <input type="text" class="form-control-neumorphic" placeholder="Search" name="search">
@@ -51,32 +53,19 @@ $userCount = $result->num_rows;
                     </a>
                 <?php endif; ?>
             </div>
-            <div>
-                <div class="d-flex justify-content-between mb-3">
-                    <div class="mt-2 mx-2">
-                        共 <?= $userCount ?> 個揪團
-                    </div>
-                    <?php if (!isset($_GET["search"])) : ?>
-                        <!-- <a href=" my_activities.php" class="btn btn-primary">
-                        <i class="fa-solid fa-calendar-check"></i> 我的揪團
-                        </a> -->
-                    <?php else : ?>
-                    <?php endif; ?>
-                    <div>
-                    </div>
-                    <a href="../index.php" class="btn btn-neumorphic">
-                        <i class="fa-solid fa-house"></i> 返回首頁
-                    </a>
-
-
+            <div class="d-flex justify-content-between gap-2">
+                <div class="mt-2">
+                    共 <?= $userCount ?> 個揪團
                 </div>
-
+                <a href="../index.php" class="btn btn-neumorphic">
+                    <i class="fa-solid fa-house"></i> 返回首頁
+                </a>
             </div>
         </div>
         <!-- 搜尋、建立揪團 -->
 
         <?php if ($result->num_rows > 0) : ?>
-            <table class='table table-bordered table-wrap'>
+            <table class='table table-bordered table-wrapper'>
                 <thead class='thead-light text-nowrap'>
                     <tr class="text-center">
                         <th>揪團 ID</th>
