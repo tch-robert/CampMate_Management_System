@@ -24,8 +24,9 @@ if (isset($_GET["statusPage"])) {
     $sameUrl = $sameUrl . "&statusPage=" . $_GET["statusPage"];
 }
 if (isset($_GET["search"])) {
-    $sameUrl = $sameUrl . "&search=" . $_GET["search"];
+    $sameUrl = $sameUrl . "&search=" . urlencode($_GET["search"]);
 }
+
 
 //確認有沒有收到viewMode的參數 沒有就賦予 有就抓下來
 if (!isset($_GET["viewMode"])) {
@@ -42,39 +43,127 @@ if (!isset($_GET["statusPage"])) {
 }
 
 
+
 if (isset($_GET["statusPage"])) {
     //依據status page篩選不同的內容
     switch ($status_page_id) {
         case 0:
-            $AllSql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC";
-            $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC 
-            LIMIT $start,$eachPageCount";
+            $AllSql = "SELECT * FROM product WHERE product_valid=1 AND product_status=0 ORDER BY product_status DESC, create_date DESC";
+            if (isset($_GET["filter"])) {
+                $filter = $_GET["filter"];
+
+                switch ($filter) {
+                    case 1:
+                        $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY product_price ASC 
+                        LIMIT $start,$eachPageCount";
+                        echo "hi";
+                        break;
+                    case 2:
+                        $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY product_price DESC 
+                        LIMIT $start,$eachPageCount";
+                        break;
+                }
+                break;
+            } else {
+                $sql = "SELECT * FROM product WHERE product_status=0 AND product_valid=1 ORDER BY create_date DESC 
+                LIMIT $start,$eachPageCount";
+            }
+
             break;
         case 1:
-            $AllSql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC";
-            $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC 
-            LIMIT $start,$eachPageCount";
+            $AllSql = "SELECT * FROM product WHERE product_valid=1 AND product_status=1 ORDER BY product_status DESC, create_date DESC";
+            if (isset($_GET["filter"])) {
+                $filter = $_GET["filter"];
+
+                switch ($filter) {
+                    case 1:
+                        $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY product_price ASC 
+                        LIMIT $start,$eachPageCount";
+                        break;
+                    case 2:
+                        $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY product_price DESC 
+                        LIMIT $start,$eachPageCount";
+                        break;
+                }
+                break;
+            } else {
+                $sql = "SELECT * FROM product WHERE product_status=1 AND product_valid=1 ORDER BY create_date DESC 
+                LIMIT $start,$eachPageCount";
+            }
+
             break;
         case 2:
             //抓取product資料表的資料 限制在valid是1列
             $AllSql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
-            $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC 
-            LIMIT $start,$eachPageCount";
+            if (isset($_GET["filter"])) {
+                $filter = $_GET["filter"];
+
+                switch ($filter) {
+                    case 1:
+                        $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY  product_price ASC 
+                        LIMIT $start,$eachPageCount";
+                        break;
+                    case 2:
+                        $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY  product_price DESC 
+                        LIMIT $start,$eachPageCount";
+                        break;
+                }
+                break;
+            } else {
+                $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC 
+                LIMIT $start,$eachPageCount";
+            }
+
             break;
     }
 } else if (isset($_GET["search"])) {
     $search = $_GET["search"];
     $AllSql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1";
-    $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1 LIMIT $start,$eachPageCount";
+    if (isset($_GET["filter"])) {
+        $filter = $_GET["filter"];
+
+        switch ($filter) {
+            case 1:
+                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
+                ORDER BY product_price ASC 
+                LIMIT $start,$eachPageCount";
+                break;
+            case 2:
+                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
+                ORDER BY product_price DESC 
+                LIMIT $start,$eachPageCount";
+                break;
+        }
+    } else {
+        $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1 LIMIT $start,$eachPageCount";
+    }
 } else {
     $AllSql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
-    $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC
-    LIMIT $start,$eachPageCount";
+    if (isset($_GET["filter"])) {
+        $filter = $_GET["filter"];
+
+        switch ($filter) {
+            case 1:
+                $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC 
+                ORDER BY product_price ASC 
+                LIMIT $start,$eachPageCount";
+                break;
+            case 2:
+                $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC 
+                ORDER BY product_price DESC 
+                LIMIT $start,$eachPageCount";
+                break;
+        }
+    } else {
+        $sql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC
+        LIMIT $start,$eachPageCount";
+    }
 }
 $allResult = $conn->query($AllSql);
 $allRows = $allResult->fetch_all(MYSQLI_ASSOC);
 $countRows = count($allRows);
 $pageNum = ceil($countRows / $eachPageCount);
+$lastPageNum = $countRows % $eachPageCount;
 
 $result = $conn->query($sql);
 $rows = $result->fetch_all(MYSQLI_ASSOC);
@@ -88,6 +177,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 $sqlImg = "SELECT id,product_id,product_mainPic,path FROM images WHERE product_mainPic=1";
 $resultImg = $conn->query($sqlImg);
 $imgRows = $resultImg->fetch_all(MYSQLI_ASSOC);
+
 
 //將images內的path 塞進product抓下來的關聯式陣列
 $pathArr = [];
@@ -112,12 +202,6 @@ for ($i = 0; $i < count($rows); $i++) {
     $rows[$i]["p_status_name"] = $staArr[$rows[$i]["product_status"]];
 }
 ?>
-
-<!-- <pre> -->
-<?php
-// print_r($rows);
-?>
-<!-- </pre> -->
 
 
 <!doctype html>
@@ -166,12 +250,33 @@ for ($i = 0; $i < count($rows); $i++) {
             object-fit: contain;
         }
 
+        .infoBox {
+            max-width: 600px;
+        }
+
         .productInfo {
             height: 120px;
         }
 
         .productBox {
             height: 100%;
+        }
+
+        .caretIcon {
+            & a {
+                height: 10px;
+            }
+
+            & i {
+                /* height: 10px; */
+                /* line-height: 10px; */
+                font-size: 20px;
+            }
+
+            & div {
+
+                height: 10px;
+            }
         }
 
         .imgTable {
@@ -181,13 +286,11 @@ for ($i = 0; $i < count($rows); $i++) {
 </head>
 
 <body>
-    <?php include("../index.php") ?>
-
-    <main class="main-content">
-        <div class="container">
+    <main class="main-content row justify-content-center">
+        <div class="col-lg-10">
             <!-- 頁面大標題＆新增商品 -->
             <div class="d-flex justify-content-between align-items-center my-4">
-                <h1>我的商品</h1>
+                <h1 class="my-5">我的商品</h1>
                 <a href="./addProduct.php" class="addP btn btn-primary shadow">
                     <i class="fa-solid fa-plus"></i> 新增商品
                 </a>
@@ -246,55 +349,60 @@ for ($i = 0; $i < count($rows); $i++) {
                 <div class="d-flex justify-content-between mb-3">
                     <h4>
                         <?php if (isset($_GET["search"]) && !empty($search)) echo "<span class=\"fs-3\">$search</span> 的搜尋結果，" ?>
-                        共 <?= count($allRows) ?> 件商品
+                        總共 <?= $countRows ?> 件商品
                         <span class="fs-5">
-                            <?php if ($countRows > $eachPageCount) echo ", 每頁" . $eachPageCount . "件"; ?>
+                            <?php if ($countRows > $eachPageCount) echo ", 此頁顯示" . count($rows) . "件"; ?>
                         </span>
                     </h4>
 
-                    <!-- 檢視方式切換 -->
-                    <?php if (isset($_GET["statusPage"])) {
-                        switch ($status_page_id) {
-                            case 2:
-                                $statusNum = "statusPage=2";
-                                break;
-                            case 1:
-                                $statusNum = "statusPage=1";
-                                break;
-                            case 0:
-                                $statusNum = "statusPage=0";
-                                break;
-                        }
+                    <?php
+                    $statusNum = isset($_GET["statusPage"]) ? "&statusPage=" . $status_page_id : "&statusPage=2";
+
+                    $searchQuery = isset($_GET["search"]) ? "&search=" . urlencode($_GET["search"]) : "";
+
+                    $viewModeNum = isset($_GET["viewMode"]) ? "&viewMode=" . $viewMode : "&viewMode=1";
+
+                    $pageQuery = isset($_GET["page"]) ? "&page=" . $page : "&page=1";
+
+                    $filterQuery = isset($_GET["filter"]) ? "&filter=" . $filter : "";
+
+                    if (isset($_GET["search"])) {
+                        $filterUrl = $viewModeNum . $searchQuery;
                     } else {
-                        $statusNum = "statusPage=2";
-                    } ?>
+                        $filterUrl = $statusNum . $viewModeNum . $searchQuery;
+                    }
+                    ?>
 
-                    <div class="btn-group">
-                        <a href="./camp_productList.php?
-                <?php if (isset($_GET["search"])) {
-                } else {
-                    echo "$statusNum&";
-                }  ?>
-                viewMode=1
-                <?php if (isset($_GET["search"])) echo "&search=$search" ?>
-                " class="btn btn-outline-primary 
-                <?php if ($viewMode == 1) echo "active" ?>
-                ">
-                            <i class="fa-solid fa-bars"></i>
-                        </a>
+                    <div class="d-flex">
+                        <div class="dropdown me-3">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-sort"></i>
+                                排序
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="./camp_productList.php?filter=1<?= $filterUrl ?>
+                                    ">
+                                        <i class="fa-solid fa-angles-up"></i> 價格
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="./camp_productList.php?filter=2<?= $filterUrl ?>">
+                                        <i class="fa-solid fa-angles-down"></i> 價格
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <a href="./camp_productList.php?
-                <?php if (isset($_GET["search"])) {
-                } else {
-                    echo "$statusNum&";
-                }  ?>
-                viewMode=2
-                <?php if (isset($_GET["search"])) echo "&search=$search" ?>
-                " class="btn btn-outline-primary 
-                <?php if ($viewMode == 2) echo "active" ?>
-                ">
-                            <i class=" fa-solid fa-grip"></i>
-                        </a>
+                        <div class="btn-group">
+                            <a href="./camp_productList.php?viewMode=1<?= $statusNum . $pageQuery . $searchQuery . $filterQuery ?>" class="btn btn-outline-primary <?php if ($viewMode == 1) echo "active" ?>">
+                                <i class="fa-solid fa-bars"></i>
+                            </a>
+
+                            <a href="./camp_productList.php?viewMode=2<?= $statusNum . $pageQuery . $searchQuery . $filterQuery ?>" class="btn btn-outline-primary <?php if ($viewMode == 2) echo "active" ?>">
+                                <i class=" fa-solid fa-grip"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -325,7 +433,7 @@ for ($i = 0; $i < count($rows); $i++) {
                                         </div>
                                     </td>
 
-                                    <td class="px-3 viewP" data-id="<?= $product["product_id"] ?>">
+                                    <td class="infoBox px-3 viewP" data-id="<?= $product["product_id"] ?>">
                                         <div class="productInfo d-flex flex-column justify-content-between">
                                             <div>
                                                 <!-- 商品狀態 -->
@@ -502,19 +610,19 @@ for ($i = 0; $i < count($rows); $i++) {
                 <ul class="pagination my-4">
                     <li class="page-item">
                         <a class="page-link" href="
-                    <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $sameUrl : '#' ?>
+                    <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $statusNum . $viewModeNum . $searchQuery . $filterQuery : '#' ?>
                     " aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
-                        <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i ?><?= $sameUrl ?>">
+                        <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i . $statusNum . $viewModeNum . $searchQuery . $filterQuery ?>">
                                 <?= $i ?>
                             </a></li>
                     <?php endfor; ?>
                     <li class="page-item">
                         <a class="page-link" href="
-                    <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $sameUrl : '#' ?>
+                    <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $statusNum . $viewModeNum . $searchQuery . $filterQuery : '#' ?>
                     " aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -522,12 +630,12 @@ for ($i = 0; $i < count($rows); $i++) {
                 </ul>
             </nav>
         </div>
-
-
         <!-- 這裡將顯示動態加載的內容 -->
     </main>
-    <!-- js -->
+
+    <!-- 把共通的js叫入 -->
     <?php include("../js.php") ?>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const viewP = document.querySelectorAll(".viewP");
@@ -540,13 +648,6 @@ for ($i = 0; $i < count($rows); $i++) {
                 });
             });
         })
-    </script>
-
-    <!-- 把共通的js叫入 -->
-    <?php include("../js.php") ?>
-
-    <script>
-
     </script>
 </body>
 
