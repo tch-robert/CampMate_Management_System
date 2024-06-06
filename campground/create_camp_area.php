@@ -55,10 +55,10 @@ $camp_id = $_GET["camp_id"];
         <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
-            <div class="container">
+            <div class="container ms-5">
                 <h4 class="mb-3">請輸入營區資料</h4>
 
-                <div class="row" style="" >
+                <div class="row p-4" style="" >
                 <!-- 第一頁 -->
                         <div class="col-12 mb-3">
                         <label for="area_name" class="form-label ">*營區名稱</label>
@@ -78,6 +78,7 @@ $camp_id = $_GET["camp_id"];
                             <option value="雨棚區">雨棚區</option>
                             <option value="森林區">森林區</option>
                             <option value="泥土區">泥土區</option>
+                            <option value="固定式帳棚">固定式帳棚</option>
                         </select>
                         <div class="text-danger" id="error2"></div>
                         </div>

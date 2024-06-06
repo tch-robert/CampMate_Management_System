@@ -145,7 +145,7 @@ $campCount = $result->num_rows;
                         <ul class="pagination">
                             <?php for($i=1; $i<=$pageCount; $i++):?>
                             <li class="page-item"><a class="page-link 
-                            <?php if($i==$page)echo 'active'?>" href="?page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
+                            <?php if($i==$page)echo 'active'?>" href="?camp_id=<?=$camp_id?>&page=<?=$i?>&order=<?=$order?>"><?=$i?></a>
                             </li>
                             <?php endfor; ?>
                         </ul>

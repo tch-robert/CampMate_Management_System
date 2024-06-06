@@ -1,6 +1,6 @@
 
 
-<div class="sidebar p-3" style="width: 280px;">
+<div class="sidebar" style="width: 280px;">
     <a href="campground_list.php" class="d-flex justify-content-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
     
     
