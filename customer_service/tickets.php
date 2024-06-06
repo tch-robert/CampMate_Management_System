@@ -176,7 +176,7 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                     <select class="form-control" name="category" onchange="this.form.submit()">
                         <option value="">所有</option>
                         <option value="營地相關" <?= $category == '營地相關' ? 'selected' : '' ?>>營地相關</option>
-                        <option value="租借用品相關" <?= $category == '租借用品相關' ? 'selected' : '' ?>>租借用品相關</option>
+                        <option value="用品租借相關" <?= $category == '用品租借相關' ? 'selected' : '' ?>>用品租借相關</option>
                         <option value="網站操作相關" <?= $category == '網站操作相關' ? 'selected' : '' ?>>網站操作相關</option>
                         <option value="費用相關" <?= $category == '費用相關' ? 'selected' : '' ?>>費用相關</option>
                         <option value="其他" <?= $category == '其他' ? 'selected' : '' ?>>其他</option>
