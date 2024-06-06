@@ -105,7 +105,7 @@ $conn->close();
                 <a href="edit_activity.php?activity_id=<?= $row['activity_id'] ?>" class="btn btn-neumorphic">
                     <i class="fa-solid fa-pen-to-square"></i> 編輯揪團
                 </a>
-                <button class="btn btn-neumorphic" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <button type="button" class="btn btn-neumorphic" title="刪除揪團" data-bs-toggle="modal" data-bs-target="#deleteModal">
                     <i class="fa-solid fa-trash-can"></i> 刪除揪團
                 </button>
             </div>
