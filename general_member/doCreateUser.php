@@ -5,7 +5,6 @@ if(!isset($_POST["username"])){
     exit;
 }
 
-$photo=$_POST["photo"];
 $username=$_POST["username"];
 $password=$_POST["password"];
 $id_number=$_POST["id_number"];
