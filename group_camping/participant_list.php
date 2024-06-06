@@ -55,7 +55,7 @@ $userCount = $result->num_rows;
                 <?php endif; ?>
             </div>
             <div class="d-flex justify-content-end gap-2">
-                <div class="mt-2">
+                <div class="mt-3">
                     共 <?= $userCount ?> 名團員
                 </div>
                 <a href="activity_information.php?activity_id=<?= $activity_id; ?>" class="btn btn-neumorphic">
