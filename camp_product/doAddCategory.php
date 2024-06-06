@@ -1,9 +1,16 @@
 <?php
 require_once("../db_connect.php");
 
-$product_id = $_GET["product_id"];
+if (!isset($_POST["category_name"]) || !isset($_POST["parent_name"])) {
+    echo "請循正常管道進入";
+    exit;
+}
+
+$process = $_POST["process"];
+$product_id = $_POST["product_id"];
 $parent_name = $_POST["parent_name"];
 $category_name = $_POST["category_name"];
+
 
 // echo $parent_name, $category_name;
 
@@ -35,10 +42,14 @@ if ($conn->query($classSql) === TRUE) {
     echo "分類關聯表 寫入失敗 <br>";
 }
 
-if (isset($_GET["product_id"])) {
-    header("location: ./addProduct.php?product_id=$product_id");
-} else {
-    header("location: ./addProduct.php");
+switch ($process) {
+    case 1:
+        header("location: ./addProduct.php");
+
+        break;
+    case 2:
+        header("location: ./editProduct.php?product_id=$product_id");
+        break;
 }
 
 $conn->close();

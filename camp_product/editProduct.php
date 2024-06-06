@@ -1,6 +1,13 @@
 <?php
 require_once("../db_connect.php");
 
+if (!isset($_GET["product_id"])) {
+    echo "請循正常管道進入";
+    exit;
+}
+
+$process = 2;
+
 // 取得從商品列表傳來的product_id值
 $product_id = $_GET["product_id"];
 
@@ -17,6 +24,8 @@ JOIN product_category ON product_category_relate.category_id = product_category.
 WHERE product.product_id='$product_id'";
 $productResult = $conn->query($productsql);
 $productRow = $productResult->fetch_assoc();
+
+
 
 //選取指定商品的images 並且以mainPic倒序 因此mainPic=1會被排列在第一個
 $mainPicSql = "SELECT product_id, product_mainPic, path FROM images 
@@ -53,6 +62,7 @@ foreach ($L2Rows as $row) {
     $L2Grouped[$parentId][] = $row;
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -103,7 +113,45 @@ foreach ($L2Rows as $row) {
     <main class="main-content row justify-content-center">
         <div class="col-lg-9">
 
-            <?php include("./addCateModal.php") ?>
+            <!-- Modal -->
+            <div class="modal fade" id="addCateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">新增分類</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="./doAddCategory.php" method="post">
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <select class="form-select" name="parent_name" id="" required>
+                                        <option value="" selected disabled>選擇要新增到哪個類別中</option>
+                                        <?php foreach ($L1Rows as $level1) : ?>
+                                            <option value="<?= $level1['category_name'] ?>">
+                                                <?= $level1['category_name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-text" for="">分類名稱</div>
+                                    <input class="form-control" type="text" name="category_name" placeholder="輸入分類名稱" required>
+                                </div>
+
+                                <input class="d-none" type="number" name="product_id" value="<?= $product_id ?>">
+                                <input class="d-none" type="number" name="process" value="<?= $process ?>">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">確認新增</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <!-- Modal -->
             <div class="modal fade" id="manageCateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

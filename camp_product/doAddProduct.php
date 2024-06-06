@@ -29,8 +29,7 @@ $product_valid = 1;
 $now = date('Y-m-d H:i:s');
 
 // 輸出表單數據進行調試
-// print_r($product_style);
-// exit;
+
 // foreach ($product_style as $style) {
 //     echo $style;
 // }
@@ -43,6 +42,8 @@ $now = date('Y-m-d H:i:s');
 // echo "Product Price: $product_price<br>";
 // echo "Product Status: $product_status<br>";
 // echo "Now: $now<br>";
+// echo "在這";
+// exit;
 
 
 $productSql = "INSERT INTO product (product_name, product_description, product_price, product_specifications, product_status, create_date, product_valid) VALUES ('$product_name', '$product_description', '$product_price', '$product_specifications', '$product_status', '$now', '$product_valid')";
@@ -55,7 +56,9 @@ if ($conn->query($productSql) === TRUE) {
 }
 $product_id = $conn->insert_id;
 
-$searchCateSql = "SELECT * FROM product_category WHERE category_name='$product_category'";
+
+$searchCateSql = "SELECT * FROM product_category WHERE category_id='$product_category'";
+
 $searchCateResult = $conn->query($searchCateSql);
 $searchCateRow = $searchCateResult->fetch_assoc();
 print_r($searchCateRow);
@@ -113,9 +116,14 @@ $normalPicArr = [];
 foreach ($normalPic["error"] as $value) {
     $normalPicArr[] = "$value";
 }
-if (!in_array(1, $normalPic)) {
-    if (isset($normalPic["error"])) {
-        echo "沒有商品圖片";
+
+// print_r($normalPicArr);
+// echo $product_id;
+
+
+if (!in_array(1, $normalPicArr)) {
+    if ($normalPic["error"] == 4) {
+        echo "沒有上傳圖片";
     } else {
         $mainPic_num = 0;
         foreach ($normalPic["name"] as $key => $value) {
@@ -124,21 +132,22 @@ if (!in_array(1, $normalPic)) {
             } else {
                 echo "upload normalPic 失敗 <br>";
             }
-            // echo $product_id, $mainPic_num, $value;
+            echo $product_id, $mainPic_num, $value . "<br>";
 
             $normalPicSql = "INSERT INTO images (product_id, product_mainPic, path) 
         VALUES ('$product_id', '$mainPic_num', '$value')";
 
             if ($conn->query($normalPicSql) === TRUE) {
-                echo $value . "normalPic 資訊寫入 images資料表 成功 <br>";
+                echo "normalPic 資訊寫入 images資料表 成功 <br>";
             } else {
-                echo $value . "normalPic 資訊寫入 images資料表 失敗 <br>";
+                echo "normalPic 資訊寫入 images資料表 失敗 <br>";
             }
         }
     }
 } else {
     echo "取得上傳 multifile 錯誤 <br>";
 }
+
 
 header("location: ./camp_productList.php");
 
