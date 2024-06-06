@@ -152,9 +152,9 @@ foreach ($L2Rows as $row) {
             </div>
 
             <div class="container">
-                <div class="position-raletive">
+                <div class="position-raletive my-4">
                     <a class="btn btn-primary me-3 position-absolute left-0" href="./camp_productList.php"><i class="fa-solid fa-caret-left"></i> 商品列表</a>
-                    <h1 class="my-5 text-center">商品資訊</h1>
+                    <h1 class="text-center">商品資訊</h1>
                 </div>
                 <form class="mb-5" action="./doEditProduct.php?product_id=<?= $product_id ?>" method="post" enctype="multipart/form-data">
                     <div>
@@ -217,10 +217,10 @@ foreach ($L2Rows as $row) {
                                 <div class="mb-5">
                                     <div class="d-flex gap-2 mb-2">
                                         <label for="productCate" class="minTitle h5 form-label">商品分類</label>
-                                        <a class="cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" href="">
+                                        <button type="button" class="cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#manageCateModal">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                             管理
-                                        </a>
+                                        </button>
                                     </div>
                                     <div class=" border rounded p-3">
                                         <div class="fs-5">

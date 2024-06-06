@@ -292,7 +292,7 @@ for ($i = 0; $i < count($rows); $i++) {
         <div class="col-lg-10">
             <!-- 頁面大標題＆新增商品 -->
             <div class="d-flex justify-content-between align-items-center my-4">
-                <h1 class="my-5">我的商品</h1>
+                <h1 class="">我的商品</h1>
                 <a href="./addProduct.php" class="addP btn btn-primary shadow">
                     <i class="fa-solid fa-plus"></i> 新增商品
                 </a>

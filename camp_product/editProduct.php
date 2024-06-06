@@ -102,48 +102,32 @@ foreach ($L2Rows as $row) {
 
     <main class="main-content row justify-content-center">
         <div class="col-lg-9">
+
+            <?php include("./addCateModal.php") ?>
+
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="manageCateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">新增分類</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">分類管理</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="./doAddCategory.php?product_id=<?= $product_id ?>" method="post">
-                            <div class="modal-body">
-                                <div class="input-group mb-3">
-                                    <select class="form-select" name="parent_name" id="" required>
-                                        <option value="" selected disabled>選擇要新增到哪個類別中</option>
-                                        <?php foreach ($L1Rows as $level1) : ?>
-                                            <option value="<?= $level1['category_name'] ?>">
-                                                <?= $level1['category_name'] ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-
-                                <div class="input-group">
-                                    <div class="input-group-text" for="">分類名稱</div>
-                                    <input class="form-control" type="text" name="category_name" placeholder="輸入分類名稱" required>
-                                </div>
-
-
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                <button type="submit" class="btn btn-primary">確認新增</button>
-                            </div>
-                        </form>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary">儲存</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="container">
-                <div class="position-raletive">
+                <div class="position-raletive my-4">
                     <a class="btn btn-primary me-3 position-absolute left-0" href="./camp_productList.php"><i class="fa-solid fa-caret-left"></i> 商品列表</a>
-                    <h1 class="my-5 text-center">編輯商品</h1>
+                    <h1 class="text-center">編輯商品</h1>
                 </div>
                 <form class="mb-5" action="./doEditProduct.php?product_id=<?= $product_id ?>" method="post" enctype="multipart/form-data">
                     <div>
@@ -193,10 +177,10 @@ foreach ($L2Rows as $row) {
                                 <div class="mb-4">
                                     <div class="d-flex gap-2">
                                         <label for="productCate" class="minTitle h5 form-label">商品分類</label>
-                                        <a class="cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" href="">
+                                        <button type="button" class="cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#manageCateModal">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                             管理
-                                        </a>
+                                        </button>
                                     </div>
                                     <div class="input-group">
                                         <select class="form-control" name="productCate" id="productCate">
@@ -215,7 +199,7 @@ foreach ($L2Rows as $row) {
                                                 </optgroup>
                                             <?php endforeach; ?>
                                         </select>
-                                        <button type="button" class="btn btn-outline-primary input-group-" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <button type="button" class="btn btn-outline-primary input-group-" data-bs-toggle="modal" data-bs-target="#addCateModal">
                                             <i class="fa-solid fa-circle-plus"></i>
                                             新增分類
                                         </button>
