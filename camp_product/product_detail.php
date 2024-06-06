@@ -174,7 +174,7 @@ foreach ($L2Rows as $row) {
                                     <div class="row">
                                         <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white">
                                             <div class="ratio ratio-1x1">
-                                                <img src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
+                                                <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@ foreach ($L2Rows as $row) {
                                             <?php for ($i = 1; $i < count($mainPicRow); $i++) : ?>
                                                 <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white">
                                                     <div class="ratio ratio-1x1">
-                                                        <img src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
+                                                        <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
                                                     </div>
                                                 </div>
                                             <?php endfor; ?>
