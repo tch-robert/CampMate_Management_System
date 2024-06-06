@@ -131,17 +131,17 @@ if (isset($_GET["page"])) {
                     
                     <div>
                         <?php if (isset($_GET["search"])) : ?>
-                            <a class="btn btn-warning" href="users.php"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a class="btn btn_color2" href="users.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-3">
                         <form action="">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search..." name="search">
-                                <button class="btn btn-warning" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <button class="btn btn_color2" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
                         </form>
-                        <a class="btn btn-warning" href="create_users.php"><i class="fa-solid fa-user-plus"></i></a>
+                        <a class="btn btn_color2" href="create_users.php"><i class="fa-solid fa-user-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -154,8 +154,8 @@ if (isset($_GET["page"])) {
                     <div>
                         排序:
                         <div class="btn-group">
-                            <a href="?page=<?= $page ?>&order=1" class="btn btn-warning">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
-                            <a href="?page=<?= $page ?>&order=2" class="btn btn-warning">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=1" class="btn btn_color2">id<i class="fa-solid fa-arrow-down-1-9"></i></a>
+                            <a href="?page=<?= $page ?>&order=2" class="btn btn_color2">id<i class="fa-solid fa-arrow-up-1-9"></i></a>
                         </div>
                     
                     </div>
@@ -181,7 +181,7 @@ if (isset($_GET["page"])) {
                                 <td scope="row"><?= $user["created_at"] ?></td>
                                 <td scope="row">
                                     <div class="py-1 ">
-                                        <a class="btn btn-warning" href="user.php?id=<?= $user["id"] ?>" title="預覽使用者"><i class="fa-solid fa-eye"></i></a>
+                                        <a class="btn btn_color2" href="user.php?id=<?= $user["id"] ?>" title="預覽使用者"><i class="fa-solid fa-eye"></i></a>
                                         <a href="user-delete.php?id=<?= $user["id"] ?>" class="btn btn-danger"><i class="fa-solid fa-trash" title="刪除使用者"></i></a>
                                     </div>
                                 </td>
@@ -211,7 +211,7 @@ if (isset($_GET["page"])) {
 
 
 
-
+    <?php include("btn_css.php") ?>
     <?php include("../js.php") ?>
 </body>
 

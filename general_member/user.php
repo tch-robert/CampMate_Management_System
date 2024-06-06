@@ -84,7 +84,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="users.php" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> 回使用者列表</a>
+                    <a href="users.php" class="btn btn_color2"><i class="fa-solid fa-arrow-left"></i> 回使用者列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -125,7 +125,7 @@ if ($result->num_rows > 0) {
                                 </tr>
                             </table>
                             <div class="py-2 d-flex justify-content-between">
-                                <a class="btn btn-warning" href="user-edit.php?id=<?= $row["id"] ?>" title="編輯使用者"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a class="btn btn_color2" href="user-edit.php?id=<?= $row["id"] ?>" title="編輯使用者"><i class="fa-solid fa-pen-to-square"></i></a>
                             </div>
                         </div>
                     </div>
@@ -133,6 +133,7 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </main>
+    <?php include("btn_css.php") ?>
     <?php include("../js.php") ?>
 </body>
 

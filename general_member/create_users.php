@@ -63,7 +63,7 @@ require_once("../db_connect.php");
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="users.php" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> 回使用者列表</a>
+                    <a href="users.php" class="btn btn_color2"><i class="fa-solid fa-arrow-left"></i> 回使用者列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -99,7 +99,7 @@ require_once("../db_connect.php");
                                     <label for="" class="form-label">Email</label>
                                     <input type="text" class="form-control" name="email">
                                 </div>
-                                <button class="btn btn-warning" type="submit">送出</button>
+                                <button class="btn btn_color2" type="submit">送出</button>
                             </form>
                         </div>
                     </div>
@@ -108,7 +108,7 @@ require_once("../db_connect.php");
 
         </div>
     </main>
-
+    <?php include("btn_css.php") ?>
 </body>
 
 </html>

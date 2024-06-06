@@ -87,7 +87,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a href="user.php?id=<?= $row["id"] ?>" class="btn btn-warning"><i class="fa-solid fa-arrow-left"></i> 回使用者</a>
+                    <a href="user.php?id=<?= $row["id"] ?>" class="btn btn_color2"><i class="fa-solid fa-arrow-left"></i> 回使用者</a>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -143,7 +143,7 @@ if ($result->num_rows > 0) {
                                         </td>
                                     </tr>
                                 </table>
-                                <button class="btn btn-warning" type="submit">送出</button>
+                                <button class="btn btn_color2" type="submit">送出</button>
                             </form>
                         </div>
                     </div>
@@ -153,6 +153,7 @@ if ($result->num_rows > 0) {
 
         </div>
     </main>
+    <?php include("btn_css.php") ?>
 
 </body>
 
