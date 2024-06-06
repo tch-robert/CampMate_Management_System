@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
                                 </tr>
                                 <tr>
                                     <th>ID Number</th>
-                                    <td><?= $row["password"] ?></td>
+                                    <td><?= $row["id_number"] ?></td>
                                 </tr>
                                 <tr>
                                     <th>Birth Date</th>

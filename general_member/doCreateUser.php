@@ -49,7 +49,7 @@ $sql="INSERT INTO users (photo, username, password, id_number, birth_date, phone
 VALUES ('$photo','$username','$password','$id_number', '$birth_date','$phone','$email', '$now', 1)";
 // echo $sql;
 
-// 做一個註冊成功的彈窗
+
 
 if ($conn->query($sql) ===TRUE) { 
     $last_id = $conn->insert_id;
@@ -57,6 +57,5 @@ if ($conn->query($sql) ===TRUE) {
 }else{
     echo "Error:" .$sql . "<br>" . $conn->error;
 }
-
+header("location: user.php?id=$id");
 $conn->close();
-header("laction: users.php");
