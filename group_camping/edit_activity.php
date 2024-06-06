@@ -102,8 +102,29 @@ endif;
                     </tr>
                 </tbody>
             </table>
+
+            <div class="modal neumorphic-modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="editModalLabel">Notification</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            確認變更資訊嗎?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-neumorphic">
+                                <i class="fa-solid fa-pen-to-square"></i> 確認
+                            </button>
+                            <button type="button" class="btn btn-neumorphic" data-bs-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-neumorphic">
+                <button type="button" class="btn btn-neumorphic" data-bs-toggle="modal" data-bs-target="#editModal">
                     <i class="fa-solid fa-pen-to-square"></i> 確認變更
                 </button>
                 <a href="activity_information.php?activity_id=<?= $activity_id ?>" class="btn btn-neumorphic">
