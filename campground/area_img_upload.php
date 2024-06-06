@@ -45,6 +45,7 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
         <link rel="stylesheet" href="./style/sidebars.css">
         <script src="./style/sidebars.js"></script>
         
+        
         <style>
             .c_img{
                 border-radius: 10px;
@@ -66,6 +67,10 @@ $pageTitle=$rowCamp["campground_name"]." > ".$rowArea["area_name"]." > "."圖片
                 <div class="card">
                 <div class="card-body">
                 <h4 class="mb-3"><?=$pageTitle?></h4>
+                <hr>
+                <div class="mb-3">
+                    <a href="camp_area.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
+                </div>
                     <form action="doUploadArea.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" method="post"  enctype="multipart/form-data">
 
                     

@@ -92,17 +92,20 @@ if(!empty($geoloaction)){
             <?php include("sidebar.php") ?>
 
             <div class="container">
-            <div class="py-2">
-                <a href="campground_list.php" class="btn btn-primary">
-                <i class="fa-solid fa-backward"></i>
-                    回營地列表
-                </a>
-            </div>
+            
             <div class="row justified-content-center">
                 <div class="col-lg-12">
-                    <?php if($campExist):?>
+                    
                         <div class="card">
                         <div class="card-body">
+                        <div class="py-2">
+                            <a href="campground_list.php" class="btn btn-primary">
+                            <i class="fa-solid fa-backward"></i>
+                                回營地列表
+                            </a>
+                        </div>
+                        <hr>
+                        <?php if($campExist):?>
                             <div class="d-flex justify-content-end">
                             <a class="btn btn-primary" title="編輯營地" href="cg_img_upload.php?camp_id=<?=$row['id']?>">營地圖片 <i class="fa-regular fa-image"></i></a>
                             </div>

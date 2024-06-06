@@ -12,12 +12,16 @@ $area_id = $_GET["area_id"];
 $item_id = $_GET["item_id"];
 
 
-$item_ame = $_POST["item_name"];
+$item_name = $_POST["item_name"];
 $status = $_POST["status"];
 $itemPrice = $_POST["itemPrice"];
 $pic_name=$_FILES["file"]["name"];
 
 $path = "./upload/$pic_name";
+
+echo $item_name;
+echo $status;
+echo $itemPrice;
 
 if($_FILES["file"]["error"]==0){
     if(move_uploaded_file($_FILES["file"]["tmp_name"], "./upload/".$_FILES["file"]["name"])){
@@ -28,15 +32,15 @@ if($_FILES["file"]["error"]==0){
 }
 
 
-if(empty($pic_name)){
-    echo "請上傳圖片";
-    header("location: edit_item.php?camp_id=$camp_id&area_id=$area_id&item_id=$item_id");
-    exit;
-}
+// if(empty($pic_name)){
+//     echo "請上傳圖片";
+//     header("location: edit_item.php?camp_id=$camp_id&area_id=$area_id&item_id=$item_id");
+//     exit;
+// }
 
 
 
-$sql="UPDATE area_item SET item_name='$item_ame', price= '$itemPrice', path= '$path' WHERE id=$item_id";
+$sql="UPDATE area_item SET item_name='$item_name', price= '$itemPrice', path= '$path' WHERE id=$item_id";
 
 // echo $sql;
 

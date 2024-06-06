@@ -4,7 +4,6 @@ $resultOwner = $conn->query($sqlOwner);
 $rowOwner = $resultOwner->fetch_assoc();
 
 ?>
-
 <div class="title d-flex justify-content-between align-items-center">
     <div class="d-flex ms-3">
         <i class="fa-solid fa-tower-observation m-1"></i>
@@ -15,3 +14,4 @@ $rowOwner = $resultOwner->fetch_assoc();
     </div>
     
 </div>
+<div class="title_space"></div>

@@ -19,7 +19,7 @@ if(isset($_GET["search"])){
     $sql="SELECT camp_area_item.*, area_item.item_name AS itemName, area_item.price AS itemPrice, area_item.path AS itemPath, camp_area.area_name AS areaName FROM camp_area_item 
     JOIN area_item ON camp_area_item.item_id = area_item.id 
     JOIN camp_area ON camp_area_item.area_id = camp_area.id
-    WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 AND itemName LIKE '%$search%'
+    WHERE camp_area_item.area_id = $area_id AND area_item.valid=1 AND area_item.item_name LIKE '%$search%'
     ";
     $pageTitle="$search 的搜尋結果";
 }else if(isset($_GET["page"]) && isset($_GET["order"])){
@@ -116,21 +116,27 @@ $itemCount = $result->num_rows;
             <div class="card">
             <div class="card-body">
             <h4 class="mb-3"><?=$pageTitle?></h4>
+            <hr>
             <div class="mb-3">
-                    <a href="camp_area_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回</a>
+                    <?php if(isset($_GET["search"])): ?>
+                        <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
+                    <?php else: ?>
+                        <a href="camp_area_list.php?camp_id=<?=$camp_id?>" class="btn btn-primary">返回列表</a>
+                    <?php endif; ?>
+                    
                 </div>
                 <div class="mb-3">
                 <a class="btn btn-primary" href="create_area_item.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>">新增 <i class="fa-solid fa-plus"></i></a>
             </div>
             <?php if($result->num_rows > 0): ?>
             
-            <?php if(isset($_GET["search"])): ?>
-                        <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">返回列表</a>
-                        <?php endif; ?>
+            
             <div class="py-2 mb-3">
                 <div class="d-flex justify-content-center gap-3 mb-2">
                     <form action="">
                         <div class="input-group">
+                            <input type="hidden" value="<?=$camp_id?>" name="camp_id">
+                            <input type="hidden" value="<?=$area_id?>" name="area_id">
                             <input type="text" class="form-control" placeholder="輸入營地名稱..." name="search">
                             <button class="btn btn-primary" type="submit">搜尋</button>
                         </div>
@@ -143,7 +149,7 @@ $itemCount = $result->num_rows;
             <table class="table table-hover mb-3" >
                 <thead>
                     <tr>
-                        <th class="text-center"></th>
+                        <th class="text-center">編號</th>
                         <th >商品名稱 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==3){echo "4";}else{echo "3";}?>"><i class="fa-solid fa-sort"></i></a></th>
                         <th>商品價格 <a href="?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&page=<?=$page?>&order=<?php if($order==1){echo "2";}else{echo "1";}?>"><i class="fa-solid fa-sort"></i></a></th>
                         <th>商品圖</th>
@@ -161,17 +167,17 @@ $itemCount = $result->num_rows;
                         <td><?=$item["itemPrice"]?></td>
                         <td>
                             
-                                <img class="object-fit-cover" src="<?=$item['itemPath']?>" alt="">
+                            <img class="object-fit-cover" src="<?=$item['itemPath']?>" alt="">
                             
                         </td>
                         <td><?=$item["status"]?></td>
                         
                         <td class="text-center">
                         <a href="edit_item.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item["item_id"]?>" class="btn btn-primary">
-                            編輯<i class="fa-solid fa-pen-to-square"></i>
+                            編輯 <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         </td>
-                        <td class="text-center"><a class="btn btn-primary" href="campground.php?id=<?=$camp["id"]?>"><i class="fa-solid fa-magnifying-glass"></i></a></td>
+                        <td class="text-center"><a class="btn btn-primary" href="item_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item["item_id"]?>">進入 <i class="fa-solid fa-image"></i></a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

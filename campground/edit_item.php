@@ -18,6 +18,8 @@ WHERE camp_area_item.item_id = $item_id AND area_item.valid=1";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 
+$item_name = $row["itemName"];
+
 
 $sqlCamp =  "SELECT campground_info.*, camp_area.area_name AS areaName FROM campground_info 
 JOIN camp_area ON campground_info.id = camp_area.campground_id 
@@ -31,7 +33,7 @@ $area_name = $rowCamp["areaName"];
 
 if($result->num_rows > 0){
     $areaExist=true;
-    $title=$camp_name." > ".$area_name;
+    $title=$camp_name." > ".$area_name." > ".$item_name ;
 }else{
     $areaExist=false;
     $title="商品不存在";
@@ -75,24 +77,7 @@ if($result->num_rows > 0){
     </head>
 
     <body>
-        <!-- Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteModalLabel">確認刪除</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                確認刪除營區?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <a href="camp_area_delete.php?camp_id=<?=$camp_id?>&area_id=<?=$row["id"]?>" class="btn btn-danger">確認</a>
-            </div>
-            </div>
-        </div>
-        </div>
+       
         <?php include("title.php") ?>
         <div class="d-flex">
             <?php include("sidebar.php") ?>
@@ -105,16 +90,14 @@ if($result->num_rows > 0){
                         <div class="card">
                         <div class="card-body">
                         <h4 class="mb-3"><?=$title?></h4>
-                        <div class="py-2">
+                        <hr>
+                        <div class="mb-3">
                             <a href="area_item_list.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>" class="btn btn-primary">
                             <i class="fa-solid fa-backward"></i>
                                 回商品列表
                             </a>
                         </div>
-                            <div class="d-flex justify-content-end">
-                            <a class="btn btn-primary" title="商品圖片" href="item_img_upload.php?camp_id=<?=$camp_id?>&area_id=<?=$row['id']?>">上傳商品圖片 <i class="fa-regular fa-image"></i></a>
-                            </div>
-
+                            
                             <form action="doUpdateItem.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>" method="post" enctype="multipart/form-data">
                             <table class="table table-hover mb-3">
                                 <tr>
@@ -157,8 +140,32 @@ if($result->num_rows > 0){
                                 </tr>
 
                             </table>
-                            <button class="btn btn-primary" type="submit">修改完成</button>
+
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-primary" type="submit">修改完成</button>
+                                <a href="" title="刪除商品" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">刪除商品 <i class="fa-solid fa-trash-can"></i></a>
+                            </div>
+                            
                             </form>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">確認刪除</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    確認刪除商品?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <a href="doDeleteItem.php?camp_id=<?=$camp_id?>&area_id=<?=$area_id?>&item_id=<?=$item_id?>" class="btn btn-danger" >確認</a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                            
                             <?php else : ?>
                                 <h1>商品不存在</h1>

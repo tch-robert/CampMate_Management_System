@@ -94,6 +94,7 @@ $campCount = $result->num_rows;
                 <div class="card">
                 <div class="card-body">
                 <h4 class="mb-3"><?=$pageTitle?></h4>
+                <hr>
                 <?php if($result->num_rows > 0): ?>
                 <?php if(isset($_GET["search"])): ?>
                     <a href="camp_area_search.php" class="btn btn-primary">返回列表</a>

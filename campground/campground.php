@@ -15,20 +15,22 @@ $row = $result->fetch_assoc();
 if($result->num_rows > 0){
     $campExist=true;
     $title=$row["campground_name"];
+
+    $geoloaction = $row["geolocation"];
+    if(!empty($geoloaction)){
+        $geoArr = preg_split("/[\s,]+/", $geoloaction);
+        $longitude = $geoArr[0];
+        $latitude = $geoArr[1];
+    }else{
+        $longitude = "";
+        $latitude = "";
+    }
+
 }else{
     $campExist=false;
     $title="營地不存在";
 }
 
-$geoloaction = $row["geolocation"];
-if(!empty($geoloaction)){
-    $geoArr = preg_split("/[\s,]+/", $geoloaction);
-    $longitude = $geoArr[0];
-    $latitude = $geoArr[1];
-}else{
-    $longitude = "";
-    $latitude = "";
-}
 
 
 ?>
@@ -97,6 +99,7 @@ if(!empty($geoloaction)){
                                 回營地列表
                             </a>
                         </div>
+                        <hr>
                             <div class="d-flex justify-content-end">
                             <a class="btn btn-primary" title="編輯營地" href="cg_img_upload.php?camp_id=<?=$row['id']?>">營地圖片 <i class="fa-regular fa-image"></i></a>
                             </div>
