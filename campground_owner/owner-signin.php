@@ -85,10 +85,10 @@ if (isset($_SESSION["owner"])) {
                     </label>
                 </div>
                 <div class="d-grid mb-2">
-                    <button class="btn btn-warning" type="submit">登入</button>
+                    <button class="btn btn_color2" type="submit">登入</button>
                 </div>
                 <div class="d-grid mb-2">
-                    <a class="btn btn-warning" href="owner-signup.php"><i class="fa-solid fa-user-plus"></i> 註冊</a>
+                    <a class="btn btn_color2" href="owner-signup.php"><i class="fa-solid fa-user-plus"></i> 註冊</a>
                 </div>
             </form>
         </div>
@@ -97,6 +97,7 @@ if (isset($_SESSION["owner"])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <?php include("btn_css.php") ?>
 </body>
 
 </html>

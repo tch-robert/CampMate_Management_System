@@ -138,7 +138,7 @@ $pageTitle = !empty($search) ? "$search 的搜尋結果" : $pageTitle;
                 <div class="d-flex justify-content-between">
                     <div>
                         <?php if (!empty($search)) : ?>
-                            <a class="btn btn-warning" href="tickets.php"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a class="btn btn_color2" href="tickets.php"><i class="fa-solid fa-arrow-left"></i></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-3">
