@@ -1,6 +1,8 @@
 <?php
 require_once("../db_connect.php");
 
+$process = 1;
+
 //選取商品類別level1階層選取
 $L1Sql = "SELECT product_category.*, product_category_class.parent_id FROM product_category 
 JOIN product_category_class ON product_category.category_id = product_category_class.category_id 
@@ -27,6 +29,7 @@ foreach ($L2Rows as $row) {
     $L2Grouped[$parentId][] = $row;
 }
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -65,7 +68,44 @@ foreach ($L2Rows as $row) {
     <main class="main-content row justify-content-center">
         <div class="col-lg-9">
 
-            <?php include("./addCateModal.php") ?>
+            <!-- Modal -->
+            <div class="modal fade" id="addCateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">新增分類</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="./doAddCategory.php" method="post">
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <select class="form-select" name="parent_name" id="" required>
+                                        <option value="" selected disabled>選擇要新增到哪個類別中</option>
+                                        <?php foreach ($L1Rows as $level1) : ?>
+                                            <option value="<?= $level1['category_name'] ?>">
+                                                <?= $level1['category_name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="input-group-text" for="">分類名稱</div>
+                                    <input class="form-control" type="text" name="category_name" placeholder="輸入分類名稱" required>
+                                </div>
+
+                                <input class="d-none" type="number" name="process" value="<?= $process ?>">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">確認新增</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <div class="container">
                 <div class="position-raletive my-4">
@@ -112,7 +152,7 @@ foreach ($L2Rows as $row) {
                                                     $parentId = $level1['category_id'];
                                                     if (isset($L2Grouped[$parentId])) {
                                                         foreach ($L2Grouped[$parentId] as $level2) : ?>
-                                                            <option value="<?= $level2['category_name'] ?>">
+                                                            <option value="<?= $level2['category_id'] ?>">
                                                                 <?= $level2['category_name'] ?>
                                                             </option>
                                                     <?php endforeach;

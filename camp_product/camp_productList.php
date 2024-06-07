@@ -43,8 +43,28 @@ if (!isset($_GET["statusPage"])) {
 }
 
 
+if (isset($_GET["search"])) {
+    $search = $_GET["search"];
+    $AllSql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1";
+    if (isset($_GET["filter"])) {
+        $filter = $_GET["filter"];
 
-if (isset($_GET["statusPage"])) {
+        switch ($filter) {
+            case 1:
+                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
+                ORDER BY product_price ASC 
+                LIMIT $start,$eachPageCount";
+                break;
+            case 2:
+                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
+                ORDER BY product_price DESC 
+                LIMIT $start,$eachPageCount";
+                break;
+        }
+    } else {
+        $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1 LIMIT $start,$eachPageCount";
+    }
+} else if (isset($_GET["statusPage"])) {
     //依據status page篩選不同的內容
     switch ($status_page_id) {
         case 0:
@@ -115,27 +135,6 @@ if (isset($_GET["statusPage"])) {
             }
 
             break;
-    }
-} else if (isset($_GET["search"])) {
-    $search = $_GET["search"];
-    $AllSql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1";
-    if (isset($_GET["filter"])) {
-        $filter = $_GET["filter"];
-
-        switch ($filter) {
-            case 1:
-                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
-                ORDER BY product_price ASC 
-                LIMIT $start,$eachPageCount";
-                break;
-            case 2:
-                $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1  
-                ORDER BY product_price DESC 
-                LIMIT $start,$eachPageCount";
-                break;
-        }
-    } else {
-        $sql = "SELECT * FROM product WHERE product_name Like '%$search%' AND product_valid=1 LIMIT $start,$eachPageCount";
     }
 } else {
     $AllSql = "SELECT * FROM product WHERE product_valid=1 ORDER BY product_status DESC, create_date DESC";
@@ -371,7 +370,7 @@ for ($i = 0; $i < count($rows); $i++) {
                     if (isset($_GET["search"])) {
                         $filterUrl = $viewModeNum . $searchQuery;
                     } else {
-                        $filterUrl = $statusNum . $viewModeNum . $searchQuery;
+                        $filterUrl = $statusNum . $viewModeNum;
                     }
                     ?>
 
@@ -612,19 +611,19 @@ for ($i = 0; $i < count($rows); $i++) {
                 <ul class="pagination my-4">
                     <li class="page-item">
                         <a class="page-link" href="
-                    <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $statusNum . $viewModeNum . $searchQuery . $filterQuery : '#' ?>
+                    <?= $page > 1 ? "./camp_productList.php?page=" . ($page - 1) . $statusNum . $viewModeNum  . $filterQuery . $searchQuery : '#' ?>
                     " aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $pageNum; $i++) : ?>
-                        <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i . $statusNum . $viewModeNum . $searchQuery . $filterQuery ?>">
+                        <li class="page-item"><a class="page-link" href="./camp_productList.php?page=<?= $i . $statusNum . $viewModeNum  . $filterQuery . $searchQuery ?>">
                                 <?= $i ?>
                             </a></li>
                     <?php endfor; ?>
                     <li class="page-item">
                         <a class="page-link" href="
-                    <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $statusNum . $viewModeNum . $searchQuery . $filterQuery : '#' ?>
+                    <?= ($page < $pageNum) ? "./camp_productList.php?page=" . ($page + 1) . $statusNum . $viewModeNum  . $filterQuery . $searchQuery : '#' ?>
                     " aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
