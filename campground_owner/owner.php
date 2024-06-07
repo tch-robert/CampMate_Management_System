@@ -105,7 +105,7 @@ if ($result->num_rows > 0) {
         <div class="container profile-container">
             <div class="py-4 d-flex justify-content-center">
                 <div class="col-lg-6">
-                    <a class="btn btn_color2" href="owners.php"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
+                    <a class="btn btn_color2" href="http://localhost/campmate/campground_owner/owners.php?page=1&order=1"><i class="fa-solid fa-arrow-left"></i> 回營地主列表</a>
                 </div>
             </div>
             <div class="row justify-content-center">
