@@ -1,16 +1,22 @@
 <?php
 require_once("../db_connect.php");
 
-// 取得從商品列表傳來的product_id值
+
+//取得從商品列表傳來的product_id值
 $product_id = $_GET["product_id"];
 
+
+//依據product_id 指定我們要搜尋的商品款式
 $styleSql = "SELECT * FROM product_style WHERE product_id='$product_id'";
 $styleResult = $conn->query($styleSql);
 $styleRows = $styleResult->fetch_all(MYSQLI_ASSOC);
 
-// print_r($styleRows);
 
 //抓取product資料表中的所有資料
+//並且join product_category_relate & product_category_class 兩個表單
+//為了取得product_category_relate中 與product_id對應的category_id
+//依據caategory_id 去取得product_category中 對應的category_name
+//一樣依據取得的category_id 去取得product_category_class中 對應的parent_id
 $productsql = "SELECT product.*, 
 product_category_relate.category_id, 
 product_category.category_name,
@@ -23,7 +29,9 @@ WHERE product.product_id='$product_id'";
 $productResult = $conn->query($productsql);
 $productRow = $productResult->fetch_assoc();
 
+//印出productRow中 對應的parent_id
 $parent_id = $productRow["parent_id"];
+
 
 $cateSql = "SELECT * FROM product_category WHERE category_id='$parent_id'";
 $cateResult = $conn->query($cateSql);
@@ -137,7 +145,7 @@ foreach ($L2Rows as $row) {
                                 <div class="mb-5">
                                     <label for="mainPic" class="minTitle h5 form-label">商品主要行銷圖片</label>
                                     <div class="row">
-                                        <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white">
+                                        <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white p-0">
                                             <div class="ratio ratio-1x1">
                                                 <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[0]["path"] ?>" alt="">
                                             </div>
