@@ -225,7 +225,7 @@ foreach ($L2Rows as $row) {
                                 <div class="mb-4">
                                     <div class="d-flex gap-2">
                                         <label for="productCate" class="minTitle h5 form-label">商品分類</label>
-                                        <button type="button" class="cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#manageCateModal">
+                                        <button type="button" class="d-none cateBtn btn btn-primary align-self-center mb-2" style="--bs-btn-padding-y: .1rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#manageCateModal">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                             管理
                                         </button>

@@ -156,7 +156,7 @@ foreach ($L2Rows as $row) {
                                     <?php else : ?>
                                         <div class="row gap-3">
                                             <?php for ($i = 1; $i < count($mainPicRow); $i++) : ?>
-                                                <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white">
+                                                <div class="col-2 position-relative border rounded mb-3 mt-2 bg-white p-0">
                                                     <div class="ratio ratio-1x1">
                                                         <img class="object-fit-contain" src="./product_image/<?= $mainPicRow[$i]["path"] ?>" alt="">
                                                     </div>
