@@ -16,26 +16,24 @@ $styleRows = $styleResult->fetch_all(MYSQLI_ASSOC);
 //並且join product_category_relate & product_category_class 兩個表單
 //為了取得product_category_relate中 與product_id對應的category_id
 //依據caategory_id 去取得product_category中 對應的category_name
-//一樣依據取得的category_id 去取得product_category_class中 對應的parent_id
+//依據前一行取得的category_id 去取得product_category_class中 對應的parent_id
+//依據前一行取得的parent_id 去取得product_category中 對應的category_name
+//由於我們的product_category被引用了兩次 所以在第二次引用的時候 建議給他一個別名 這邊給他parent_category作為別名 **同時記得SELECT的選取也要修改成別名**
 $productsql = "SELECT product.*, 
 product_category_relate.category_id, 
 product_category.category_name,
-product_category_class.parent_id 
+product_category_class.parent_id, 
+parent_category.category_name AS parent_name
 FROM product 
 JOIN product_category_relate ON product.product_id = product_category_relate.product_id 
 JOIN product_category ON product_category_relate.category_id = product_category.category_id 
 JOIN product_category_class ON product_category_relate.category_id = product_category_class.category_id 
-WHERE product.product_id='$product_id'";
+LEFT JOIN product_category AS parent_category ON product_category_class.parent_id = parent_category.category_id 
+WHERE product.product_id='$product_id'
+";
 $productResult = $conn->query($productsql);
 $productRow = $productResult->fetch_assoc();
 
-//印出productRow中 對應的parent_id
-$parent_id = $productRow["parent_id"];
-
-
-$cateSql = "SELECT * FROM product_category WHERE category_id='$parent_id'";
-$cateResult = $conn->query($cateSql);
-$cateRow = $cateResult->fetch_assoc();
 
 //選取指定商品的images 並且以mainPic倒序 因此mainPic=1會被排列在第一個
 $mainPicSql = "SELECT product_id, product_mainPic, path FROM images 
@@ -58,7 +56,8 @@ $L1Rows = $L1Result->fetch_all(MYSQLI_ASSOC);
 $L2Sql = "SELECT product_category.*, product_category_class.parent_id FROM product_category 
 JOIN product_category_class ON product_category.category_id = product_category_class.category_id 
 WHERE product_category_class.parent_id IS NOT NULL  
-ORDER BY product_category.category_id ASC";
+ORDER BY product_category.category_id ASC
+";
 $L2Result = $conn->query($L2Sql);
 $L2Rows = $L2Result->fetch_all(MYSQLI_ASSOC);
 
@@ -72,6 +71,7 @@ foreach ($L2Rows as $row) {
     $L2Grouped[$parentId][] = $row;
 }
 ?>
+
 
 
 <!doctype html>
@@ -198,7 +198,7 @@ foreach ($L2Rows as $row) {
                                     <div class=" border rounded p-3">
                                         <div class="fs-5">
                                             <span class="border rounded p-2">
-                                                <?= $cateRow["category_name"] ?>
+                                                <?= $productRow["parent_name"] ?>
                                             </span>
                                             <i class="fa-solid fa-angles-right"></i>
                                             <?= $productRow["category_name"] ?>

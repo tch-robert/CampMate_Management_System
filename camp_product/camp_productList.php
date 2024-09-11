@@ -158,9 +158,12 @@ if (isset($_GET["search"])) {
         LIMIT $start,$eachPageCount";
     }
 }
+
+
 $allResult = $conn->query($AllSql);
 $allRows = $allResult->fetch_all(MYSQLI_ASSOC);
 $countRows = count($allRows);
+
 $pageNum = ceil($countRows / $eachPageCount);
 $lastPageNum = $countRows % $eachPageCount;
 
@@ -287,6 +290,7 @@ for ($i = 0; $i < count($rows); $i++) {
 
 <body>
     <?php include("../index_modular/index_header_aside.php") ?>
+
     <main class="main-content row justify-content-center">
         <div class="col-lg-10">
             <!-- 頁面大標題＆新增商品 -->
