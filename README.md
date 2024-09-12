@@ -12,3 +12,8 @@
 | Javascript ES6 ![image](icon_img/javascript.png) |  |  |
 
 ### 資料夾簡介：
+  * 依據不同的功能建立資料夾。
+  * 資料夾內再以不同的頁面建立檔案。
+
+### 負責部分（camp_product）：
+  * 露營用品的上下架、軟刪除與修改資訊等。
