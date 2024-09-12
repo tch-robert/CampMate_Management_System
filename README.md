@@ -7,8 +7,8 @@
 | 前端（front-end） | 後端（back-end） | 其它（others） |
 |:----------------:|:--------------:|:-------------:|
 | HTML5 ![image](icon_img/html5.png) | PHP ![image](icon_img/php.png)  | Visual Studio Code ![image](icon_img/vscode.png) |
-| CSS3 ![image](icon_img/css3.png) | MySQL ![image](icon_img/mysql.png) |  |
-| Bootstrap ![image](icon_img/bootstrap.png)  |  |  |
+| CSS3 ![image](icon_img/css3.png) | MySQL ![image](icon_img/mysql.png) | Git ![image](icon_img/git.png) |
+| Bootstrap ![image](icon_img/bootstrap.png)  |  | Github ![image](icon_img/github.png) |
 | Javascript ES6 ![image](icon_img/javascript.png) |  |  |
 
 ### 資料夾簡介：
